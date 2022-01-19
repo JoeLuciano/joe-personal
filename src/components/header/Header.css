@@ -1,0 +1,29 @@
+.header {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  padding: 0.5rem 1rem;
+  width: 60vh;
+  justify-content: space-between;
+  align-items: end;
+}
+
+.logo {
+  color: #0c63d6;
+  text-decoration: none;
+}
+
+.headerItems {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-left: 3rem;
+}
+
+.headerItem {
+  color: #1985af;
+  text-decoration: none;
+}
