@@ -3,13 +3,33 @@
   line-height: 2rem;
 }
 
+.mobile-intro {
+  text-align: center;
+  position: relative;
+  top: -5rem;
+  font-size: 0.8rem;
+  line-height: 2rem;
+  padding: 1rem;
+}
+
 .salutation {
   position: relative;
   left: -4rem;
   text-align: left;
 }
 
+.mobile-salutation {
+  position: relative;
+  top: 2rem;
+  left: 4rem;
+  text-align: left;
+}
+
 .link {
   color: #2e39d3;
   text-decoration: none;
+}
+
+.block-text {
+  line-height: 4rem;
 }

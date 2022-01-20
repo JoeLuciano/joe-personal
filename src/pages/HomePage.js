@@ -32,10 +32,16 @@ const intro = {
   },
 };
 
-const Intro = () => {
+const Intro = ({ isMobile }) => {
   return (
-    <motion.div className={styles['intro']} variants={intro}>
-      <motion.h1 className={styles['salutation']} variants={introText}>
+    <motion.div
+      className={isMobile ? styles['mobile-intro'] : styles['intro']}
+      variants={intro}>
+      <motion.h1
+        className={
+          isMobile ? styles['mobile-salutation'] : styles['salutation']
+        }
+        variants={introText}>
         Hi!
       </motion.h1>
       <br />
@@ -75,19 +81,19 @@ const homepage = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 4,
+      staggerChildren: 3.2,
     },
   },
 };
 
-export const HomePage = ({ doAnimate = true }) => {
+export const HomePage = ({ doAnimate = true, isMobile }) => {
   return (
     <motion.div
       variants={homepage}
       initial={doAnimate && 'hidden'}
       animate='visible'>
-      <Header />
-      <Intro />
+      <Header isMobile={isMobile} doAnimate={doAnimate} />
+      <Intro isMobile={isMobile} />
     </motion.div>
   );
 };

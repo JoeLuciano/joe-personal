@@ -25,7 +25,7 @@ const l = 'l'.split('').map((char, index) => {
 const ucianoLetter = {
   hidden: {
     opacity: 0,
-    y: '100%',
+    y: '5rem',
     transition: {
       ease: [0.455, 0.03, 0.515, 0.955],
       duration: 0.4,

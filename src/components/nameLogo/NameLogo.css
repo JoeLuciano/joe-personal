@@ -4,7 +4,11 @@
 }
 
 .name--logo {
+  position: absolute;
+  top: 0;
+  left: 0;
   line-height: 1.5rem;
+  padding: 0.5rem 1rem;
 }
 
 .luciano {
