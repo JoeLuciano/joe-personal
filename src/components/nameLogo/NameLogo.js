@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import './NameLogo.css';
+import styles from './NameLogo.module.css';
 
 const lLetter = {
   hidden: {
@@ -77,11 +77,11 @@ const lucianoVariant = {
 };
 
 export const NameLogo = () => (
-  <motion.div className='name--logo'>
-    <motion.h1 className='joe' variants={joeVariant}>
+  <motion.div className={styles['name--logo']}>
+    <motion.h1 className={styles['joe']} variants={joeVariant}>
       Joe
     </motion.h1>
-    <motion.h1 className='luciano' variants={lucianoVariant}>
+    <motion.h1 className={styles['luciano']} variants={lucianoVariant}>
       {l}
       {uciano}
     </motion.h1>

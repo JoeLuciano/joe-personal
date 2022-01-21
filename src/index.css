@@ -4,16 +4,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* PLAY WITH THIS!!! */
-  background: linear-gradient(180deg, #ffffff 0%, rgb(235, 235, 235) 200%);
-  width: 100vw;
+  width: 100%;
   height: -webkit-fill-available;
   overflow: hidden;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 code {
