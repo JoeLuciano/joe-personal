@@ -4,6 +4,7 @@
   top: 0;
   width: 100vw;
   height: -webkit-fill-available;
+  z-index: 1;
 }
 
 .logo {

@@ -1,5 +1,7 @@
 .postcard {
-  padding: 2rem;
+  padding: 1rem;
+  margin: 1rem;
+  border: 0.4rem ridge rgb(0, 162, 190, 0.5);
 }
 
 .post-creation-info {
@@ -17,6 +19,8 @@
 }
 
 .post-content-info-text {
+  width: 100%;
+  padding: 1rem 0;
 }
 
 .post-pic {
