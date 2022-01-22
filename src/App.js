@@ -7,6 +7,7 @@ import { NotFound } from './pages/NotFound';
 import { ExperiencePage } from './pages/ExperiencePage';
 
 function App() {
+  const [apiData, setApiData] = useState({ message: 'test' });
   const [width, setWindowWidth] = useState(0);
   useEffect(() => {
     updateDimensions();
@@ -19,10 +20,22 @@ function App() {
     setWindowWidth(width);
   };
 
+  useEffect(() => {
+    fetch('/api')
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        }
+      })
+      .then((data) => setApiData(data))
+      .then((error) => console.log(error));
+  }, []);
+
   const isMobile = width < 1000;
 
   return (
     <div className='App'>
+      <h1>{apiData.message}</h1>
       <Router>
         <Routes>
           <Route
