@@ -1,9 +1,11 @@
-import logo from '../logo.svg';
 import { useState, useEffect } from 'react';
 import styles from './styles.module.css';
-import { NameLogo } from '../components/nameLogo/NameLogo';
+import { Link } from 'react-router-dom';
+import { Header } from '../components/header/Header';
+import { PostCard } from '../components/postcard/PostCard';
+import { motion } from 'framer-motion';
 
-export const PostsPage = () => {
+const Posts = ({ isMobile }) => {
   const [getMessage, setGetMessage] = useState({});
 
   useEffect(() => {
@@ -19,18 +21,24 @@ export const PostsPage = () => {
       });
   }, []);
 
+  return <motion.div></motion.div>;
+};
+
+const postPage = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+export const PostsPage = ({ doAnimate = true, isMobile }) => {
   return (
-    <>
-      <NameLogo />
-      <div className={styles['horizantal-list-center']}>
-        <h1>Hi!</h1>
-        <img src={logo} className='App-logo' alt='logo' />
-      </div>
-      <h2>{getMessage.message}</h2>
-      <h2>
-        I'm currently a SoC Design Engineer at Intel working in Pre-Silicon
-        Validation
-      </h2>
-    </>
+    <motion.div
+      variants={postPage}
+      initial={doAnimate && 'hidden'}
+      animate='visible'>
+      <Header isMobile={isMobile} doAnimate={doAnimate} />
+      <motion.div className={styles['page-content']}>
+        <PostCard isMobile={isMobile} />
+      </motion.div>
+    </motion.div>
   );
 };

@@ -93,7 +93,9 @@ export const HomePage = ({ doAnimate = true, isMobile }) => {
       initial={doAnimate && 'hidden'}
       animate='visible'>
       <Header isMobile={isMobile} doAnimate={doAnimate} />
-      <Intro isMobile={isMobile} />
+      <motion.div className={styles['page-content']}>
+        <Intro isMobile={isMobile} />
+      </motion.div>
     </motion.div>
   );
 };

@@ -1,12 +1,10 @@
 .intro {
   text-align: right;
   line-height: 2rem;
-  position: relative;
 }
 
 .mobile-intro {
   text-align: center;
-  position: relative;
   top: -5rem;
   font-size: 0.8rem;
   line-height: 2rem;
@@ -14,13 +12,11 @@
 }
 
 .salutation {
-  position: relative;
   left: -4rem;
   text-align: left;
 }
 
 .mobile-salutation {
-  position: relative;
   top: 2rem;
   left: 4rem;
   text-align: left;
@@ -33,4 +29,8 @@
 
 .block-text {
   line-height: 4rem;
+}
+
+.page-content {
+  position: relative;
 }
