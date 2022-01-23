@@ -12,37 +12,12 @@ default_app = initialize_app(cred)
 db = firestore.client()
 
 
-@app.route('/api', methods=['GET'])
-@cross_origin()
-def index():
-    return {
-        'resultStatus': 'SUCCESS',
-        'message': "Hello Api Handler"
-    }
-
-
-todo_ref = db.collection(u'todos')
-
-
-@app.route('/api/todolist/<string:document>', methods=['GET'])
-def read(document):
-    try:
-        # Check if ID was passed to URL query
-        if document:
-            todo = todo_ref.document(document).get()
-            return jsonify(todo.to_dict()), 200
-        else:
-            all_todos = [doc.to_dict() for doc in todo_ref.stream()]
-            return jsonify(all_todos), 200
-    except Exception as e:
-        return f"An Error Occured: {e}"
-
-
 posts_ref = db.collection(u'posts')
 
 
 @app.route('/api/posts/', methods=['GET'])
 @app.route('/api/posts/<string:document>', methods=['GET'])
+@cross_origin()
 def getPosts(document=None):
     try:
         # Check if ID was passed to URL query

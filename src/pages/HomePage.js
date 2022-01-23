@@ -8,11 +8,13 @@ import { ArrowText } from '../components/arrowtext/ArrowText';
 const introText = {
   hidden: {
     opacity: 0,
+    x: 0,
     y: '1rem',
   },
   visible: {
     opacity: 1,
     y: 0,
+    x: 0,
     tranistion: {
       duration: 2,
     },
@@ -22,10 +24,12 @@ const introText = {
 const intro = {
   hidden: {
     opacity: 0,
+    x: 0,
     y: '1rem',
   },
   visible: {
     opacity: 1,
+    x: 0,
     y: 0,
     transition: {
       staggerChildren: 1,

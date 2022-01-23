@@ -1,4 +1,5 @@
 import { Header } from '../components/pageComponents/header/Header';
+import { MobileNav } from '../components/pageComponents/mobilenav/MobileNav.js';
 import { motion } from 'framer-motion';
 
 const experiencePage = {
@@ -17,6 +18,8 @@ export const ExperiencePage = ({ isMobile }) => {
   return (
     <motion.div variants={experiencePage} initial='hidden' animate='visible'>
       <Header isMobile={isMobile} />
+      work in progress
+      <MobileNav isMobile={isMobile} />
     </motion.div>
   );
 };

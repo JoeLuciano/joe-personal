@@ -3,6 +3,7 @@ import styles from './styles.module.css';
 import { Header } from '../components/pageComponents/header/Header';
 import { PostCard } from '../components/posts/postcard/PostCard';
 import { PostNavbar } from '../components/posts/postnavbar/PostNavbar';
+import { MobileNav } from '../components/pageComponents/mobilenav/MobileNav.js';
 import { motion } from 'framer-motion';
 
 const Posts = (isMobile) => {
@@ -15,16 +16,14 @@ const Posts = (isMobile) => {
     })
       .then((respone) => respone.json())
       .then((data) => {
-        console.log(data);
         setAllPosts(data);
       });
   }, []);
 
   return (
     <motion.div className={styles['posts']}>
-      {allPosts.map((post) => {
-        console.log(post);
-        return <PostCard key={post.title} isMobile={isMobile} data={post} />;
+      {allPosts.map((post, index) => {
+        return <PostCard key={index} isMobile={isMobile} data={post} />;
       })}
     </motion.div>
   );
@@ -49,6 +48,7 @@ export const PostsPage = ({ doAnimate = true, isMobile }) => {
           {Posts(isMobile)}
         </motion.div>
       </motion.div>
+      <MobileNav isMobile={isMobile} />
     </motion.div>
   );
 };

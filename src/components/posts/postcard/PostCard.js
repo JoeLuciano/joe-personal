@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const PostCreationInfo = ({ image, author, date }) => {
   return (
     <motion.div className={styles['post-creation-info']}>
-      <img className={styles['pfp']} src={image} alt='test' />
+      {/* <img className={styles['pfp']} src={image} alt='test' /> */}
       <motion.h3>
         {author} · {date}
       </motion.h3>
@@ -20,7 +20,7 @@ const PostContentInfo = ({ title, body, image }) => {
         <motion.h1>{title}</motion.h1>
         <motion.p>{body}</motion.p>
       </motion.div>
-      <img className={styles['post-pic']} src={image} alt='test' />
+      {/* <img className={styles['post-pic']} src={image} alt='test' /> */}
     </motion.div>
   );
 };
