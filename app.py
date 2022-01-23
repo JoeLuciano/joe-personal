@@ -31,6 +31,7 @@ def getPosts(document=None):
         return f"An Error Occured: {e}"
 
 
+@app.route('/*')
 @app.route('/')
 @app.route('/home')
 @app.route('/posts')
