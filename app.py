@@ -1,3 +1,4 @@
+import os
 from firebase_admin import credentials, firestore, initialize_app
 from flask import Flask, jsonify, request
 from flask.helpers import send_from_directory
@@ -6,7 +7,11 @@ from flask_cors import CORS, cross_origin
 app = Flask(__name__, static_folder='./build', static_url_path='')
 CORS(app)
 
-cred = credentials.Certificate(r'C:\Users\jlspi\Downloads\key.json')
+cred = credentials.Certificate({
+    "projectId": os.getenv('FIREBASE_PROJECT_ID'),
+    "private_key": os.getenv('FIREBASE_PRIVATE_KEY'),
+    "client_email": os.getenv('FIREBASE_CLIENT_EMAIL'),
+})
 default_app = initialize_app(cred)
 db = firestore.client()
 
