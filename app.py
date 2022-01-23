@@ -11,7 +11,6 @@ default_app = initialize_app(cred)
 db = firestore.client()
 
 
-@app.route('/*')
 @app.route('/')
 @app.route('/home')
 @app.route('/posts')
