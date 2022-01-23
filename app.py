@@ -26,7 +26,6 @@ posts_ref = db.collection(u'posts')
 @cross_origin()
 def getPosts(document=None):
     try:
-        # Check if ID was passed to URL query
         if document:
             post = posts_ref.document(document).get()
             return jsonify(post.to_dict()), 200
