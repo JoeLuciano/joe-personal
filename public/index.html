@@ -16,18 +16,6 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <script>
-      app.use(function (req, res, next) {
-        if (
-          req.originalUrl &&
-          req.originalUrl.split('/').pop() === 'favicon.ico'
-        ) {
-          return res.sendStatus(204);
-        }
-
-        return next();
-      });
-    </script>
     <div id="root"></div>
   </body>
 </html>
