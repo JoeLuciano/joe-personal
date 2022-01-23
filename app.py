@@ -1,4 +1,3 @@
-import firebase_admin
 from firebase_admin import credentials, firestore, initialize_app
 from flask import Flask, jsonify, request
 from flask.helpers import send_from_directory
@@ -10,6 +9,14 @@ CORS(app)
 cred = credentials.Certificate(r'C:\Users\jlspi\Downloads\key.json')
 default_app = initialize_app(cred)
 db = firestore.client()
+
+
+@app.route('/*')
+@app.route('/')
+@app.route('/home')
+@app.route('/posts')
+def serve():
+    return send_from_directory(app.static_folder, 'index.html')
 
 
 posts_ref = db.collection(u'posts')
@@ -29,15 +36,6 @@ def getPosts(document=None):
             return jsonify(all_posts), 200
     except Exception as e:
         return f"An Error Occured: {e}"
-
-
-@app.route('/*')
-@app.route('/')
-@app.route('/home')
-@app.route('/posts')
-@cross_origin()
-def serve():
-    return send_from_directory(app.static_folder, 'index.html')
 
 
 if __name__ == '__main__':
