@@ -1,6 +1,7 @@
 import styles from './styles.module.css';
 import { Link } from 'react-router-dom';
-import { Header } from '../components/header/Header';
+import { Header } from '../components/pageComponents/header/Header';
+import { MobileNav } from '../components/pageComponents/mobilenav/MobileNav.js';
 import { motion } from 'framer-motion';
 import { ArrowText } from '../components/arrowtext/ArrowText';
 
@@ -96,6 +97,7 @@ export const HomePage = ({ doAnimate = true, isMobile }) => {
       <motion.div className={styles['page-content']}>
         <Intro isMobile={isMobile} />
       </motion.div>
+      <MobileNav isMobile={isMobile} />
     </motion.div>
   );
 };

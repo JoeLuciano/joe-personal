@@ -1,15 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import './Header.css';
-import { NameLogo } from '../nameLogo/NameLogo';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
-const headerVariant = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1 },
-};
-
-const headerItemsVariant = {
+const navItemsVariant = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -20,7 +13,7 @@ const headerItemsVariant = {
   },
 };
 
-const headerItem = {
+const navItem = {
   hidden: {
     opacity: 0,
     x: '-1rem',
@@ -34,36 +27,18 @@ const headerItem = {
   },
 };
 
-const headerItems = ['Experience', 'Resume', 'Posts', 'Library'];
-
-const HeaderLinks = () => {
-  return (
-    <motion.div className='header-items' variants={headerItemsVariant}>
-      {headerItems.map((item) => (
-        <Link key={item} to={`/${item.toLowerCase()}`} className='header-item'>
-          <motion.h3
-            variants={headerItem}
-            whileHover={{
-              scale: 1.5,
-            }}>
-            {item}
-          </motion.h3>
-        </Link>
-      ))}
-    </motion.div>
-  );
-};
+const navItems = ['Experience', 'Resume', 'Posts', 'Library'];
 
 const MobileHeaderLinks = () => {
   return (
-    <motion.div className='mobile-header-items' variants={headerItemsVariant}>
-      {headerItems.map((item) => (
+    <motion.div className='mobile-header-items' variants={navItemsVariant}>
+      {navItems.map((item) => (
         <Link
           key={item}
           to={`/${item.toLowerCase()}`}
           className='mobile-header-item'>
           <motion.h3
-            variants={headerItem}
+            variants={navItem}
             whileHover={{
               scale: 1.5,
             }}>
@@ -131,24 +106,7 @@ const MenuToggle = ({ toggle }) => (
   </motion.button>
 );
 
-const HeaderMenu = ({ isOpen, toggle }) => {
-  return (
-    <motion.div
-      className='mobile-header'
-      initial={{ x: '50rem' }}
-      animate={{ x: 0, transition: { delay: 1, duration: 1 } }}>
-      <motion.div
-        className='mobile-header-background'
-        variants={headerBackground}
-        animate={isOpen ? 'open' : 'closed'}>
-        {isOpen && <MobileHeaderLinks />}
-        <MenuToggle styles={{ position: 'absolute' }} toggle={toggle} />
-      </motion.div>
-    </motion.div>
-  );
-};
-
-export const Header = ({ isMobile = false, doAnimate }) => {
+export const MobileNav = ({ isMobile = false, doAnimate }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [show, setShow] = useState(!doAnimate);
 
@@ -161,19 +119,21 @@ export const Header = ({ isMobile = false, doAnimate }) => {
   }, []);
 
   return (
-    <motion.div className='header' variants={headerVariant}>
-      <Link className='logo' to='/home'>
-        <NameLogo />
-      </Link>
-      {isMobile ? (
-        show && (
-          <HeaderMenu
-            isOpen={isOpen}
+    <motion.div
+      className='mobile-header'
+      initial={{ x: '50rem' }}
+      animate={{ x: 0, transition: { delay: 1, duration: 1 } }}>
+      {isMobile && show && (
+        <motion.div
+          className='mobile-header-background'
+          variants={headerBackground}
+          animate={isOpen ? 'open' : 'closed'}>
+          {isOpen && <MobileHeaderLinks />}
+          <MenuToggle
+            styles={{ position: 'absolute' }}
             toggle={() => setIsOpen((isOpen) => !isOpen)}
           />
-        )
-      ) : (
-        <HeaderLinks />
+        </motion.div>
       )}
     </motion.div>
   );

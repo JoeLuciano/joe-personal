@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import styles from './styles.module.css';
-import { Link } from 'react-router-dom';
-import { Header } from '../components/header/Header';
+import { Header } from '../components/pageComponents/header/Header';
 import { PostCard } from '../components/posts/postcard/PostCard';
 import { PostNavbar } from '../components/posts/postnavbar/PostNavbar';
 import { motion } from 'framer-motion';

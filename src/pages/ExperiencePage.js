@@ -1,4 +1,4 @@
-import { Header } from '../components/header/Header';
+import { Header } from '../components/pageComponents/header/Header';
 import { motion } from 'framer-motion';
 
 const experiencePage = {
