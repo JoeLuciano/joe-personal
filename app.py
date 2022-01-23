@@ -8,6 +8,7 @@ app = Flask(__name__, static_folder='./build', static_url_path='')
 CORS(app)
 
 cred = credentials.Certificate({
+    "type": "service_account",
     "projectId": os.getenv('FIREBASE_PROJECT_ID'),
     "private_key": os.getenv('FIREBASE_PRIVATE_KEY'),
     "client_email": os.getenv('FIREBASE_CLIENT_EMAIL'),
