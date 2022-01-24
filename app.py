@@ -1,4 +1,5 @@
 import os
+from pydoc import doc
 from firebase_admin import credentials, firestore, initialize_app, auth
 from flask import Flask, jsonify, request, flash, redirect, url_for, render_template
 from flask.helpers import send_from_directory
@@ -19,30 +20,10 @@ firebase = initialize_app(cred)
 db = firestore.client()
 
 
-@app.route('/')
-@app.route('/home')
-@app.route('/posts')
-@app.route('/register')
-def serve():
+# CATCH ALL
+@app.errorhandler(404)
+def not_found(e):
     return send_from_directory(app.static_folder, 'index.html')
-
-
-posts_ref = db.collection(u'posts')
-
-
-@app.route('/api/posts/', methods=['GET'])
-# @app.route('/api/posts/<string:document>', methods=['GET'])
-@cross_origin()
-def getPosts(document=None):
-    try:
-        if document:
-            post = posts_ref.document(document).get()
-            return jsonify(post.to_dict()), 200
-        else:
-            all_posts = [doc.to_dict() for doc in posts_ref.stream()]
-            return jsonify(all_posts), 200
-    except Exception as e:
-        return f"An Error Occured: {e}"
 
 
 @app.route('/api/register', methods=['POST'])
@@ -61,6 +42,39 @@ def createUser():
     else:
         print('ERROR: User attempted to input incorrect secret code')
         return jsonify('ERROR: Incorrect secret code'), 412
+
+
+posts_ref = db.collection(u'posts')
+
+
+@app.route('/api/posts', methods=['GET'])
+@cross_origin()
+def getPosts():
+    document = request.args.get('title')
+    try:
+        if document:
+            post = posts_ref.document(document).get()
+            return jsonify(post.to_dict()), 200
+        else:
+            all_posts = [doc.to_dict() for doc in posts_ref.stream()]
+            return jsonify(all_posts), 200
+    except Exception as e:
+        return f"An Error Occured: {e}"
+
+
+@app.route('/api/posts/remove', methods=['POST'])
+@cross_origin()
+def removePost():
+    document = request.json.get('title')
+    print(document)
+    try:
+        if document:
+            result = posts_ref.delete(document)
+            print(result)
+            return jsonify(result), 200
+    except Exception as e:
+        return f"An Error Occured: {e}"
+    return 'Nothing happened', 200
 
 
 if __name__ == '__main__':

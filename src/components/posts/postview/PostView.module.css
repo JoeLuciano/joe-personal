@@ -1,0 +1,31 @@
+.postview {
+  max-width: 680px;
+}
+
+.post-creation-info {
+  display: flex;
+  width: 100%;
+}
+
+.pfp {
+  width: 2rem;
+}
+
+.post-content-info {
+  display: flex;
+  width: 100%;
+}
+
+.post-content-info-text {
+  width: 100%;
+  padding: 1rem 0;
+}
+
+.post-pic {
+  width: 10rem;
+}
+
+.post-options {
+  width: 100%;
+  display: flex;
+}

@@ -1,12 +1,43 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 import styles from './styles.module.css';
 import { Header } from '../components/pageComponents/header/Header';
 import { PostCard } from '../components/posts/postcard/PostCard';
+import { PostView } from '../components/posts/postview/PostView';
 import { PostNavbar } from '../components/posts/postnavbar/PostNavbar';
 import { MobileNav } from '../components/pageComponents/mobilenav/MobileNav.js';
 import { motion } from 'framer-motion';
 
-const Posts = (isMobile) => {
+const Post = (isMobile, title) => {
+  const [post, setPost] = useState([]);
+
+  useEffect(() => {
+    fetch(`/api/posts?title=${title}`, {
+      method: 'GET',
+      headers: { 'content-type': 'application/json; charset=UTF-8' },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+      })
+      .then((data) => {
+        if (data) {
+          setPost(data[0]);
+        } else {
+          setPost({ title: 'INVALID POST' });
+        }
+      });
+  }, [title]);
+
+  if (post.title === 'INVALID POST') {
+    return <motion.h1>INVALID POST</motion.h1>;
+  } else {
+    return <PostView isMobile={isMobile} data={post} />;
+  }
+};
+
+const AllPosts = (isMobile) => {
   const [allPosts, setAllPosts] = useState([]);
 
   useEffect(() => {
@@ -35,6 +66,9 @@ const postPage = {
 };
 
 export const PostsPage = ({ doAnimate = true, isMobile }) => {
+  const { search } = useLocation();
+  let query = useMemo(() => new URLSearchParams(search), [search]);
+  const currentTitle = query.get('title');
   return (
     <motion.div
       className={styles['page']}
@@ -45,7 +79,7 @@ export const PostsPage = ({ doAnimate = true, isMobile }) => {
       <motion.div className={styles['page-content']}>
         <motion.div className={styles['posts-page']}>
           <PostNavbar isMobile={isMobile} />
-          {Posts(isMobile)}
+          {currentTitle ? Post(isMobile, currentTitle) : AllPosts(isMobile)}
         </motion.div>
       </motion.div>
       <MobileNav isMobile={isMobile} />
