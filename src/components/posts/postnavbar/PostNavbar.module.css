@@ -3,4 +3,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100%;
+}
+
+.navbar-content {
+  height: 100vh;
+  position: fixed;
 }

@@ -1,10 +1,11 @@
 import os
-from firebase_admin import credentials, firestore, initialize_app
-from flask import Flask, jsonify, request
+from firebase_admin import credentials, firestore, initialize_app, auth
+from flask import Flask, jsonify, request, flash, redirect, url_for, render_template
 from flask.helpers import send_from_directory
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__, static_folder='./build', static_url_path='')
+app.secret_key = os.getenv('SECRET_KEY')
 CORS(app)
 
 cred = credentials.Certificate({
@@ -14,7 +15,7 @@ cred = credentials.Certificate({
     "client_email": os.getenv('FIREBASE_CLIENT_EMAIL'),
     "token_uri": os.getenv('FIREBASE_TOKEN_URI'),
 })
-default_app = initialize_app(cred)
+firebase = initialize_app(cred)
 db = firestore.client()
 
 
@@ -29,7 +30,7 @@ posts_ref = db.collection(u'posts')
 
 
 @app.route('/api/posts/', methods=['GET'])
-@app.route('/api/posts/<string:document>', methods=['GET'])
+# @app.route('/api/posts/<string:document>', methods=['GET'])
 @cross_origin()
 def getPosts(document=None):
     try:
@@ -41,6 +42,24 @@ def getPosts(document=None):
             return jsonify(all_posts), 200
     except Exception as e:
         return f"An Error Occured: {e}"
+
+
+@app.route('/api/register', methods=['POST'])
+@cross_origin()
+def createUser():
+    userInfo = request.json
+    if userInfo.get('secretCode') == os.getenv('SECRET_CODE'):
+        try:
+            user = auth.create_user(email=userInfo.get('email'),
+                                    password=userInfo.get('password'))
+        except Exception as err:
+            print(f'FAILED USER CREATION: {err}')
+            return jsonify(f'ERROR: {err}'), 406
+        print('NEW USER CREATED')
+        return jsonify('Your account has been created! You are now able to log in'), 200
+    else:
+        print('ERROR: User attempted to input incorrect secret code')
+        return jsonify('ERROR: Incorrect secret code'), 412
 
 
 if __name__ == '__main__':

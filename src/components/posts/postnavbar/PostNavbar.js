@@ -5,7 +5,9 @@ import { useState, useEffect } from 'react';
 export const PostNavbar = ({ isMobile, document }) => {
   return (
     <motion.div className={styles['navbar']}>
-      <motion.div>This will be a 'nav' 'bar'</motion.div>
+      <motion.div className={styles['navbar-content']}>
+        This will be a 'nav' 'bar'
+      </motion.div>
     </motion.div>
   );
 };

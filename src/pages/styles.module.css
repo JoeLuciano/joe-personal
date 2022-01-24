@@ -43,6 +43,7 @@
 .posts-page {
   display: grid;
   grid-template-columns: 20% 70% 10%;
+  margin-top: 10rem;
 }
 
 .posts {

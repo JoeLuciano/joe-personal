@@ -5,6 +5,7 @@ import { HomePage } from './pages/HomePage';
 import { PostsPage } from './pages/PostsPage';
 import { NotFound } from './pages/NotFound';
 import { ExperiencePage } from './pages/ExperiencePage';
+import { RegisterPage } from './pages/RegisterPage';
 
 function App() {
   const [width, setWindowWidth] = useState(0);
@@ -43,6 +44,10 @@ function App() {
             exact
             path='/experience'
             element={<ExperiencePage isMobile={isMobile} />}></Route>
+          <Route
+            exact
+            path='/register'
+            element={<RegisterPage isMobile={isMobile} />}></Route>
         </Routes>
       </Router>
     </div>
