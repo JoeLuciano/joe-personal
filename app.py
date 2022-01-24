@@ -22,6 +22,7 @@ db = firestore.client()
 @app.route('/')
 @app.route('/home')
 @app.route('/posts')
+@app.route('/register')
 def serve():
     return send_from_directory(app.static_folder, 'index.html')
 
