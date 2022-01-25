@@ -34,7 +34,7 @@ const headerItem = {
   },
 };
 
-const headerItems = ['Experience', 'Resume', 'Posts', 'Library'];
+const headerItems = ['Experience', 'Resume', 'Posts', 'Library', 'Register'];
 
 const HeaderLinks = () => {
   return (

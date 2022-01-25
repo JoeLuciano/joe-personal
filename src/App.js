@@ -24,15 +24,13 @@ function App() {
 
   const isUserLoggedIn = () => {
     fetch('/api/user', {
-      method: 'POST',
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
     }).then(async (response) => {
-      console.log(response);
       const data = await response.json();
-
       if (!response.ok) {
         const error = data || data.message || response.statusText;
         console.log(error);

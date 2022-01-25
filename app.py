@@ -34,8 +34,8 @@ def createUser():
     userInfo = request.json
     if userInfo.get('secretCode') == os.getenv('SECRET_CODE'):
         try:
-            CURRENT_USER = auth.create_user(email=userInfo.get('email'),
-                                            password=userInfo.get('password'))
+            print(auth.create_user(email=userInfo.get('email'),
+                                   password=userInfo.get('password')))
         except Exception as err:
             print(f'FAILED USER CREATION: {err}')
             return jsonify(f'ERROR: {err}'), 406
@@ -86,7 +86,7 @@ def getUser():
     if CURRENT_USER:
         return jsonify(CURRENT_USER), 200
     else:
-        return 'No current user', 200
+        return jsonify('No current user'), 200
 
 
 if __name__ == '__main__':
