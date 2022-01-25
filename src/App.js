@@ -9,15 +9,40 @@ import { RegisterPage } from './pages/RegisterPage';
 
 function App() {
   const [width, setWindowWidth] = useState(0);
+  const [user, setUser] = useState({});
   useEffect(() => {
     updateDimensions();
-
+    isUserLoggedIn();
     window.addEventListener('resize', updateDimensions);
     return () => window.removeEventListener('resize', updateDimensions);
   }, []);
+
   const updateDimensions = () => {
     const width = window.innerWidth;
     setWindowWidth(width);
+  };
+
+  const isUserLoggedIn = () => {
+    fetch('/api/user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    }).then(async (response) => {
+      console.log(response);
+      const data = await response.json();
+
+      if (!response.ok) {
+        const error = data || data.message || response.statusText;
+        console.log(error);
+        //  setFlash(<></>);
+        //   setFlash(<Flash message={error} type='error' duration='5000' />);
+      } else {
+        console.log(data);
+        //   setFlash(<Navigate to='/home' />);
+      }
+    });
   };
 
   const isMobile = width < 1000;

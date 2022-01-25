@@ -44,11 +44,16 @@ const AllPosts = (isMobile) => {
     fetch(`/api/posts`, {
       method: 'GET',
       headers: { 'content-type': 'application/json; charset=UTF-8' },
-    })
-      .then((respone) => respone.json())
-      .then((data) => {
+    }).then(async (response) => {
+      const data = await response.json();
+
+      if (!response.ok) {
+        const error = data || data.message || response.statusText;
+        console.log(error);
+      } else {
         setAllPosts(data);
-      });
+      }
+    });
   }, []);
 
   return (

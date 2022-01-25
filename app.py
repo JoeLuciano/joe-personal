@@ -19,6 +19,8 @@ cred = credentials.Certificate({
 firebase = initialize_app(cred)
 db = firestore.client()
 
+CURRENT_USER = None
+
 
 # CATCH ALL
 @app.errorhandler(404)
@@ -32,8 +34,8 @@ def createUser():
     userInfo = request.json
     if userInfo.get('secretCode') == os.getenv('SECRET_CODE'):
         try:
-            user = auth.create_user(email=userInfo.get('email'),
-                                    password=userInfo.get('password'))
+            CURRENT_USER = auth.create_user(email=userInfo.get('email'),
+                                            password=userInfo.get('password'))
         except Exception as err:
             print(f'FAILED USER CREATION: {err}')
             return jsonify(f'ERROR: {err}'), 406
@@ -75,6 +77,16 @@ def removePost():
     except Exception as e:
         return f"An Error Occured: {e}"
     return 'Nothing happened', 200
+
+
+@app.route('/api/user', methods=['GET'])
+@cross_origin()
+def getUser():
+    print(CURRENT_USER)
+    if CURRENT_USER:
+        return jsonify(CURRENT_USER), 200
+    else:
+        return 'No current user', 200
 
 
 if __name__ == '__main__':
