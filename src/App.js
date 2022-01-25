@@ -12,7 +12,7 @@ function App() {
   const [user, setUser] = useState({});
   useEffect(() => {
     updateDimensions();
-    isUserLoggedIn();
+    // isUserLoggedIn();
     window.addEventListener('resize', updateDimensions);
     return () => window.removeEventListener('resize', updateDimensions);
   }, []);
@@ -22,26 +22,26 @@ function App() {
     setWindowWidth(width);
   };
 
-  const isUserLoggedIn = () => {
-    fetch('/api/user', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    }).then(async (response) => {
-      const data = await response.json();
-      if (!response.ok) {
-        const error = data || data.message || response.statusText;
-        console.log(error);
-        //  setFlash(<></>);
-        //   setFlash(<Flash message={error} type='error' duration='5000' />);
-      } else {
-        console.log(data);
-        //   setFlash(<Navigate to='/home' />);
-      }
-    });
-  };
+  // const isUserLoggedIn = () => {
+  //   fetch('/api/user', {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Accept: 'application/json',
+  //     },
+  //   }).then(async (response) => {
+  //     const data = await response.json();
+  //     if (!response.ok) {
+  //       const error = data || data.message || response.statusText;
+  //       console.log(error);
+  //       //  setFlash(<></>);
+  //       //   setFlash(<Flash message={error} type='error' duration='5000' />);
+  //     } else {
+  //       console.log(data);
+  //       //   setFlash(<Navigate to='/home' />);
+  //     }
+  //   });
+  // };
 
   const isMobile = width < 1000;
 

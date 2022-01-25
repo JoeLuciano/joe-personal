@@ -4,7 +4,6 @@ import styles from './styles.module.css';
 import { Header } from '../components/pageComponents/header/Header';
 import { PostCard } from '../components/posts/postcard/PostCard';
 import { PostView } from '../components/posts/postview/PostView';
-import { PostNavbar } from '../components/posts/postnavbar/PostNavbar';
 import { MobileNav } from '../components/pageComponents/mobilenav/MobileNav.js';
 import { motion } from 'framer-motion';
 
@@ -83,7 +82,6 @@ export const PostsPage = ({ doAnimate = true, isMobile }) => {
       <Header isMobile={isMobile} doAnimate={doAnimate} />
       <motion.div className={styles['page-content']}>
         <motion.div className={styles['posts-page']}>
-          <PostNavbar isMobile={isMobile} />
           {currentTitle ? Post(isMobile, currentTitle) : AllPosts(isMobile)}
         </motion.div>
       </motion.div>

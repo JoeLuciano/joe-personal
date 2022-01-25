@@ -1,22 +1,12 @@
 import os
-from pydoc import doc
-from flask import Flask, jsonify, request, flash, redirect, url_for, render_template
+from flask import Blueprint, jsonify, request
 from flask.helpers import send_from_directory
-from flask_cors import CORS, cross_origin
+from flask_cors import cross_origin
 
-app = Flask(__name__, static_folder='./build', static_url_path='')
-app.secret_key = os.getenv('SECRET_KEY')
-CORS(app)
-
-# CATCH ALL
+backend = Blueprint('backend', __name__)
 
 
-@app.errorhandler(404)
-def not_found(e):
-    return send_from_directory(app.static_folder, 'index.html')
-
-
-@app.route('/api/register', methods=['POST'])
+@backend.route('/api/register', methods=['POST'])
 @cross_origin()
 def createUser():
     userInfo = request.json
@@ -33,7 +23,7 @@ def createUser():
         return jsonify('ERROR: Incorrect secret code'), 412
 
 
-@app.route('/api/posts', methods=['GET'])
+@backend.route('/api/posts', methods=['GET'])
 @cross_origin()
 def getPosts():
     document = request.args.get('title')
@@ -49,7 +39,7 @@ def getPosts():
         return f"An Error Occured: {e}"
 
 
-@app.route('/api/posts/remove', methods=['POST'])
+@backend.route('/api/posts/remove', methods=['POST'])
 @cross_origin()
 def removePost():
     document = request.json.get('title')
@@ -65,7 +55,7 @@ def removePost():
     return 'Nothing happened', 200
 
 
-@app.route('/api/user', methods=['GET'])
+@backend.route('/api/user', methods=['GET'])
 @cross_origin()
 def getUser():
     pass  # ADD IN SQLALCHEMY
@@ -74,7 +64,3 @@ def getUser():
     #     return jsonify(CURRENT_USER), 200
     # else:
     #     return jsonify('No current user'), 200
-
-
-if __name__ == '__main__':
-    app.run()
