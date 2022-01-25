@@ -7,9 +7,11 @@ from flask_cors import CORS, cross_origin
 app = Flask(__name__, static_folder='./build', static_url_path='')
 app.secret_key = os.getenv('SECRET_KEY')
 CORS(app)
-
+# IMPORT SQLALCHEMY
 
 # CATCH ALL
+
+
 @app.errorhandler(404)
 def not_found(e):
     return send_from_directory(app.static_folder, 'index.html')
