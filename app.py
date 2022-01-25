@@ -1,6 +1,5 @@
 import os
 from pydoc import doc
-from firebase_admin import credentials, firestore, initialize_app, auth
 from flask import Flask, jsonify, request, flash, redirect, url_for, render_template
 from flask.helpers import send_from_directory
 from flask_cors import CORS, cross_origin
@@ -8,18 +7,6 @@ from flask_cors import CORS, cross_origin
 app = Flask(__name__, static_folder='./build', static_url_path='')
 app.secret_key = os.getenv('SECRET_KEY')
 CORS(app)
-
-cred = credentials.Certificate({
-    "type": "service_account",
-    "project_id": os.getenv('FIREBASE_PROJECT_ID'),
-    "private_key": os.getenv('FIREBASE_PRIVATE_KEY').replace('\\n', '\n'),
-    "client_email": os.getenv('FIREBASE_CLIENT_EMAIL'),
-    "token_uri": os.getenv('FIREBASE_TOKEN_URI'),
-})
-firebase = initialize_app(cred)
-db = firestore.client()
-
-CURRENT_USER = None
 
 
 # CATCH ALL
@@ -34,8 +21,7 @@ def createUser():
     userInfo = request.json
     if userInfo.get('secretCode') == os.getenv('SECRET_CODE'):
         try:
-            print(auth.create_user(email=userInfo.get('email'),
-                                   password=userInfo.get('password')))
+            pass  # ADD IN SQLALCHEMY
         except Exception as err:
             print(f'FAILED USER CREATION: {err}')
             return jsonify(f'ERROR: {err}'), 406
@@ -46,20 +32,18 @@ def createUser():
         return jsonify('ERROR: Incorrect secret code'), 412
 
 
-posts_ref = db.collection(u'posts')
-
-
 @app.route('/api/posts', methods=['GET'])
 @cross_origin()
 def getPosts():
     document = request.args.get('title')
     try:
-        if document:
-            post = posts_ref.document(document).get()
-            return jsonify(post.to_dict()), 200
-        else:
-            all_posts = [doc.to_dict() for doc in posts_ref.stream()]
-            return jsonify(all_posts), 200
+        pass  # ADD IN SQLALCHEMY
+        # if document:
+        #     post = posts_ref.document(document).get()
+        #     return jsonify(post.to_dict()), 200
+        # else:
+        #     all_posts = [doc.to_dict() for doc in posts_ref.stream()]
+        #     return jsonify(all_posts), 200
     except Exception as e:
         return f"An Error Occured: {e}"
 
@@ -70,10 +54,11 @@ def removePost():
     document = request.json.get('title')
     print(document)
     try:
-        if document:
-            result = posts_ref.delete(document)
-            print(result)
-            return jsonify(result), 200
+        pass  # ADD IN SQLALCHEMY
+        # if document:
+        #     result = posts_ref.delete(document)
+        #     print(result)
+        #     return jsonify(result), 200
     except Exception as e:
         return f"An Error Occured: {e}"
     return 'Nothing happened', 200
@@ -82,11 +67,12 @@ def removePost():
 @app.route('/api/user', methods=['GET'])
 @cross_origin()
 def getUser():
-    print(CURRENT_USER)
-    if CURRENT_USER:
-        return jsonify(CURRENT_USER), 200
-    else:
-        return jsonify('No current user'), 200
+    pass  # ADD IN SQLALCHEMY
+    # print(CURRENT_USER)
+    # if CURRENT_USER:
+    #     return jsonify(CURRENT_USER), 200
+    # else:
+    #     return jsonify('No current user'), 200
 
 
 if __name__ == '__main__':
