@@ -1,7 +1,7 @@
 import os
 from flask import Blueprint, jsonify, request
 from flask_cors import cross_origin
-from flask_login import current_user, login_user, login_required
+from flask_login import current_user, login_user
 from backend import db, bcrypt
 from backend.models import User
 
