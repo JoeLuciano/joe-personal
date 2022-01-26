@@ -3,8 +3,6 @@ from flask import send_from_directory
 
 app = create_app()
 
-# CATCH ALL
-
 
 @app.errorhandler(404)
 def not_found(e):
