@@ -72,6 +72,14 @@ const LoginForm = () => {
             Show Password
           </button>
         </motion.div>
+        <motion.label>
+          Remember?
+          <motion.input
+            name='remember'
+            type='checkbox'
+            onChange={handleChange}
+          />
+        </motion.label>
         <motion.input type='submit' value='Submit' />
         {flash}
       </motion.form>
