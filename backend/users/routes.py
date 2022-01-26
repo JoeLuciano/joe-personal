@@ -36,7 +36,7 @@ def login():
     if current_user.is_authenticated:
         return jsonify(f'{current_user.username} is currently authenticated'), 200
     userInfo = request.json
-    user = User.query.filter_by(email=userInfo).first()
+    user = User.query.filter_by(email=userInfo.get('email')).first()
     if user and bcrypt.check_password_hash(user.password, userInfo.get('password')):
         login_user(user, remember=userInfo.get('remember'))
         print(current_user)
