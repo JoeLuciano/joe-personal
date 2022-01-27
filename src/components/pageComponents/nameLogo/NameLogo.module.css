@@ -11,6 +11,11 @@
   padding: 0.5rem 1rem;
 }
 
+.link {
+  color: #0c63d6;
+  text-decoration: none;
+}
+
 .joe {
   font-size: 1.5rem;
 }

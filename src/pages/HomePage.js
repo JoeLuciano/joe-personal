@@ -91,17 +91,25 @@ const homepage = {
   },
 };
 
-export const HomePage = ({ doAnimate = true, isMobile }) => {
+export const HomePage = ({ doAnimate = true, isMobile, user }) => {
+  const headerItems = [
+    'Experience',
+    'Resume',
+    'Posts',
+    'Library',
+    ...(user ? ['Account'] : ['Register', 'Login']),
+  ];
+
   return (
     <motion.div
       variants={homepage}
       initial={doAnimate && 'hidden'}
       animate='visible'>
-      <Header isMobile={isMobile} doAnimate={doAnimate} />
+      <Header isMobile={isMobile} headerItems={headerItems} />
       <motion.div className={styles['page-content']}>
         <Intro isMobile={isMobile} />
       </motion.div>
-      <MobileNav isMobile={isMobile} />
+      <MobileNav isMobile={isMobile} headerItems={headerItems} />
     </motion.div>
   );
 };

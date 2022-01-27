@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Header.css';
 import { NameLogo } from '../nameLogo/NameLogo';
@@ -34,9 +33,7 @@ const headerItem = {
   },
 };
 
-const headerItems = ['Experience', 'Resume', 'Posts', 'Library', 'Register'];
-
-const HeaderLinks = () => {
+const HeaderLinks = ({ headerItems }) => {
   return (
     <motion.div className='header-items' variants={headerItemsVariant}>
       {headerItems.map((item) => (
@@ -54,13 +51,11 @@ const HeaderLinks = () => {
   );
 };
 
-export const Header = ({ isMobile = false, doAnimate }) => {
+export const Header = ({ isMobile = false, headerItems }) => {
   return (
     <motion.div className='header' variants={headerVariant}>
-      <Link className='logo' to='/home'>
-        <NameLogo />
-      </Link>
-      {!isMobile && <HeaderLinks />}
+      <NameLogo />
+      {!isMobile && <HeaderLinks headerItems={headerItems} />}
     </motion.div>
   );
 };

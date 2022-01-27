@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import styles from './NameLogo.module.css';
+import { Link } from 'react-router-dom';
 
 const lLetter = {
   hidden: {
@@ -78,12 +79,14 @@ const lucianoVariant = {
 
 export const NameLogo = () => (
   <motion.div className={styles['name--logo']}>
-    <motion.h1 className={styles['joe']} variants={joeVariant}>
-      Joe
-    </motion.h1>
-    <motion.h1 className={styles['luciano']} variants={lucianoVariant}>
-      {l}
-      {uciano}
-    </motion.h1>
+    <Link className={styles['link']} to='/home'>
+      <motion.h1 className={styles['joe']} variants={joeVariant}>
+        Joe
+      </motion.h1>
+      <motion.h1 className={styles['luciano']} variants={lucianoVariant}>
+        {l}
+        {uciano}
+      </motion.h1>
+    </Link>
   </motion.div>
 );

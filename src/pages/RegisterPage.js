@@ -36,6 +36,7 @@ const RegisterForm = () => {
           setFlash(<></>);
           setFlash(<Flash message={error} type='error' duration='5000' />);
         } else {
+          console.log(data);
           setFlash(<Navigate to='/home' />);
         }
       })

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import styles from './MobileNav.module.css';
 
 const navItemsVariant = {
   hidden: { opacity: 0 },
@@ -27,16 +28,16 @@ const navItem = {
   },
 };
 
-const navItems = ['Experience', 'Resume', 'Posts', 'Library'];
-
-const MobileHeaderLinks = () => {
+const MobileHeaderLinks = ({ navItems }) => {
   return (
-    <motion.div className='mobile-header-items' variants={navItemsVariant}>
+    <motion.div
+      className={styles['mobile-header-items']}
+      variants={navItemsVariant}>
       {navItems.map((item) => (
         <Link
           key={item}
           to={`/${item.toLowerCase()}`}
-          className='mobile-header-item'>
+          className={styles['mobile-header-item']}>
           <motion.h3
             variants={navItem}
             whileHover={{
@@ -80,7 +81,7 @@ const Path = (props) => (
 );
 
 const MenuToggle = ({ toggle }) => (
-  <motion.button className='mobile-header-button' onClick={toggle}>
+  <motion.button className={styles['mobile-header-button']} onClick={toggle}>
     <motion.svg width='23' height='23' viewBox='0 0 23 23'>
       <Path
         variants={{
@@ -106,9 +107,9 @@ const MenuToggle = ({ toggle }) => (
   </motion.button>
 );
 
-export const MobileNav = ({ isMobile = false, doAnimate }) => {
+export const MobileNav = ({ isMobile = false, headerItems }) => {
   const [isOpen, setIsOpen] = useState(true);
-  const [show, setShow] = useState(!doAnimate);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -120,15 +121,15 @@ export const MobileNav = ({ isMobile = false, doAnimate }) => {
 
   return (
     <motion.div
-      className='mobile-header'
+      className={styles['mobile-header']}
       initial={{ x: '50rem' }}
       animate={{ x: 0, transition: { delay: 1, duration: 1 } }}>
       {isMobile && show && (
         <motion.div
-          className='mobile-header-background'
+          className={styles['mobile-header-background']}
           variants={headerBackground}
           animate={isOpen ? 'open' : 'closed'}>
-          {isOpen && <MobileHeaderLinks />}
+          {isOpen && <MobileHeaderLinks navItems={headerItems} />}
           <MenuToggle
             styles={{ position: 'absolute' }}
             toggle={() => setIsOpen((isOpen) => !isOpen)}

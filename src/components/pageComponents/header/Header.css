@@ -6,11 +6,6 @@
   z-index: 1;
 }
 
-.logo {
-  color: #0c63d6;
-  text-decoration: none;
-}
-
 .header-items {
   display: inline-grid;
   grid-template-columns: repeat(5, 8rem);
@@ -23,55 +18,4 @@
   text-align: center;
   color: #1985af;
   text-decoration: none;
-}
-
-.mobile-header-items {
-  display: inline-grid;
-  grid-template-rows: repeat(5, 2rem);
-}
-
-.mobile-header-item {
-  text-align: center;
-  color: black;
-  text-decoration: none;
-}
-
-.mobile-header {
-  position: absolute;
-  bottom: 3vh;
-  right: 5vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-}
-
-.mobile-header-background {
-  position: absolute;
-  bottom: 0vh;
-  right: 0vw;
-  width: 8rem;
-  height: 12rem;
-  border-radius: 1rem;
-  background: rgb(0, 255, 255, 0.5);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-}
-
-.mobile-header-button {
-  outline: none;
-  border: none;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  cursor: pointer;
-  position: absolute;
-  bottom: 0.5rem;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  background: transparent;
 }

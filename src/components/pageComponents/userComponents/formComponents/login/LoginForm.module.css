@@ -1,0 +1,80 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.form {
+  border: solid gray;
+  padding: 2rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.header {
+  margin-bottom: 1rem;
+  align-self: start;
+}
+
+.text-input-container {
+  position: relative;
+  display: flex;
+  margin: 0.5rem;
+  width: 100%;
+}
+
+.text-input {
+  font-size: 1rem;
+  padding: 0.7rem;
+  width: 100%;
+}
+
+.password-button {
+  height: 2rem;
+  width: 2rem;
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  margin-top: -1rem;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-button > * {
+  font-size: 1.5rem;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.login-button {
+  margin: 1rem;
+  width: 100%;
+  padding: 0.5rem;
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: 1rem;
+  border: none;
+  color: aliceblue;
+  background: rgba(0, 36, 82, 0.5);
+  cursor: pointer;
+}
+
+.checkbox-label {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.checkbox {
+  margin-left: 0.5rem;
+  display: inline;
+  width: 1rem;
+  height: 1rem;
+}
