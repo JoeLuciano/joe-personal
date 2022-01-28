@@ -12,7 +12,7 @@ const buttonHover = {
   },
 };
 
-export const UpdateAccountForm = ({ setFlash }) => {
+export const UpdateAccountForm = ({ setFlash, setUser }) => {
   const [userInfo, setUserInfo] = useState();
 
   function handleChange(event) {
@@ -93,10 +93,12 @@ export const UpdateAccountForm = ({ setFlash }) => {
             />
           );
         } else {
-          console.log(data);
+          console.log(data.message);
+          setUser();
+          navigate('/home');
           setFlash(
             <Flash
-              message={data}
+              message={data.message}
               type='success'
               duration='5000'
               setFlash={setFlash}

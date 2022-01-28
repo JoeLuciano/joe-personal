@@ -57,11 +57,17 @@ const HeaderLinks = ({ headerItems }) => {
   );
 };
 
-export const Header = ({ isMobile = false, setFlash, headerItems }) => {
+export const Header = ({
+  isMobile = false,
+  setFlash,
+  headerItems,
+  userItems,
+}) => {
   return (
     <motion.div className={styles['header']} variants={headerVariant}>
       <NameLogo />
       {!isMobile && <HeaderLinks headerItems={headerItems} />}
+      <HeaderLinks headerItems={userItems} />
     </motion.div>
   );
 };

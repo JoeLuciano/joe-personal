@@ -24,7 +24,7 @@ def createUser():
         db.session.add(user)
         db.session.commit()
         print('NEW USER CREATED')
-        return jsonify('Your account has been created! You are now able to log in'), 200
+        return jsonify({'message': 'Your account has been created! You are now able to log in', 'username': current_user.username}), 200
     else:
         print('ERROR: User attempted to input incorrect secret code')
         return jsonify('ERROR: Incorrect secret code'), 412
@@ -40,7 +40,7 @@ def login():
     if user and bcrypt.check_password_hash(user.password, userInfo.get('password')):
         login_user(user, remember=userInfo.get('remember'))
         print(current_user)
-        return jsonify('Login Successful!'), 200
+        return jsonify({'message': 'Login Successful!', 'username': current_user.username}), 200
     else:
         return jsonify('ERROR: Login Unsuccessful'), 412
 
@@ -50,7 +50,7 @@ def login():
 def logout():
     if current_user.is_authenticated:
         logout_user()
-        return jsonify(f"You've been logged out"), 200
+        return jsonify({'message': "You've been logged out"}), 200
     else:
         return jsonify('ERROR: No user is logged in'), 412
 

@@ -9,7 +9,7 @@ import { UserPage } from './pages/UserPage';
 
 function App() {
   const [width, setWindowWidth] = useState(0);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState();
   const [flash, setFlash] = useState();
 
   useEffect(() => {

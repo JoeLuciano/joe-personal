@@ -14,7 +14,6 @@ export const UserPage = ({
   register,
   account,
 }) => {
-  console.log(register);
   return (
     <motion.div className={styles['page']}>
       <NameLogo />
@@ -25,10 +24,12 @@ export const UserPage = ({
           ) : (
             <Navigate to='/account' />
           )
+        ) : register ? (
+          <RegisterForm setFlash={setFlash} />
+        ) : login ? (
+          <LoginForm setFlash={setFlash} />
         ) : (
-          (register && <RegisterForm setFlash={setFlash} />)(
-            login && <LoginForm setFlash={setFlash} />
-          )
+          <Navigate to='/home' />
         )}
       </motion.div>
     </motion.div>

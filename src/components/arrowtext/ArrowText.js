@@ -6,7 +6,7 @@ export const ArrowText = ({ mainText, subText }) => {
     <motion.div className='text-container'>
       <motion.span className='main-text'>{mainText}</motion.span>
       <motion.a
-        animate={{ x: '-6.5rem', y: '1.8rem' }}
+        initial={{ x: '-6.5rem', y: '1.8rem' }}
         className='sub-text'
         href='https://en.wikipedia.org/wiki/System_on_a_chip'
         target='_blank'

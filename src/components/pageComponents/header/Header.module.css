@@ -1,5 +1,6 @@
 .header {
   position: absolute;
+  display: flex;
   left: 0;
   top: 0;
   width: 100%;
@@ -8,7 +9,7 @@
 
 .header-items {
   display: inline-grid;
-  grid-template-columns: repeat(5, 8rem);
+  grid-template-columns: repeat(6, 8rem);
   width: 100%;
   margin-top: 1rem;
   margin-left: 8rem;

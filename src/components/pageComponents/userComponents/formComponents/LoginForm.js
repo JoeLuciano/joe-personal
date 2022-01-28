@@ -13,7 +13,7 @@ const buttonHover = {
   },
 };
 
-export const LoginForm = ({ setFlash }) => {
+export const LoginForm = ({ setFlash, setUser }) => {
   const [userInfo, setUserInfo] = useState();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -53,7 +53,8 @@ export const LoginForm = ({ setFlash }) => {
             />
           );
         } else {
-          console.log(data);
+          console.log(data.message);
+          setUser(data.username);
           navigate('/home');
         }
       })

@@ -13,7 +13,7 @@ const buttonHover = {
   },
 };
 
-export const RegisterForm = ({ setFlash }) => {
+export const RegisterForm = ({ setFlash, setUser }) => {
   const [userInfo, setUserInfo] = useState();
   const [showPassword, setShowPassword] = useState(false);
   const [showSecretCode, setShowSecretCode] = useState(false);
@@ -54,7 +54,8 @@ export const RegisterForm = ({ setFlash }) => {
             />
           );
         } else {
-          console.log(data);
+          console.log(data.message);
+          setUser(data.username);
           navigate('/home');
         }
       })
