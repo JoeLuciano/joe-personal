@@ -5,13 +5,12 @@ import { HomePage } from './pages/HomePage';
 import { PostsPage } from './pages/PostsPage';
 import { NotFound } from './pages/NotFound';
 import { ExperiencePage } from './pages/ExperiencePage';
-import { RegisterPage } from './pages/RegisterPage';
-import { LoginPage } from './pages/LoginPage';
-import { AccountPage } from './pages/AccountPage';
+import { UserPage } from './pages/UserPage';
 
 function App() {
   const [width, setWindowWidth] = useState(0);
   const [user, setUser] = useState({});
+  const [flash, setFlash] = useState();
 
   useEffect(() => {
     updateDimensions();
@@ -53,43 +52,80 @@ function App() {
   return (
     <div className='App'>
       <Router>
+        {flash}
         <Routes>
+          <Route
+            path='*'
+            element={
+              <NotFound isMobile={isMobile} user={user} setFlash={setFlash} />
+            }
+          />
           <Route
             exact
             path='/'
-            element={<HomePage isMobile={isMobile} user={user} />}></Route>
+            element={
+              <HomePage isMobile={isMobile} user={user} setFlash={setFlash} />
+            }></Route>
           <Route
             exact
             path='/home'
             element={
-              <HomePage doAnimate={false} isMobile={isMobile} user={user} />
+              <HomePage
+                doAnimate={false}
+                isMobile={isMobile}
+                user={user}
+                setFlash={setFlash}
+              />
             }></Route>
           <Route
             exact
             path='/posts'
-            element={<PostsPage isMobile={isMobile} />}></Route>
-          <Route
-            path='*'
-            element={<NotFound isMobile={isMobile} user={user} />}
-          />
+            element={
+              <PostsPage isMobile={isMobile} setFlash={setFlash} />
+            }></Route>
           <Route
             exact
             path='/experience'
             element={
-              <ExperiencePage isMobile={isMobile} user={user} />
+              <ExperiencePage
+                isMobile={isMobile}
+                user={user}
+                setFlash={setFlash}
+              />
             }></Route>
           <Route
             exact
             path='/register'
-            element={<RegisterPage isMobile={isMobile} user={user} />}></Route>
+            element={
+              <UserPage
+                isMobile={isMobile}
+                user={user}
+                setFlash={setFlash}
+                register={true}
+              />
+            }></Route>
           <Route
             exact
             path='/login'
-            element={<LoginPage isMobile={isMobile} user={user} />}></Route>
+            element={
+              <UserPage
+                isMobile={isMobile}
+                user={user}
+                setFlash={setFlash}
+                login={true}
+              />
+            }></Route>
           <Route
             exact
             path='/account'
-            element={<AccountPage isMobile={isMobile} user={user} />}></Route>
+            element={
+              <UserPage
+                isMobile={isMobile}
+                user={user}
+                setFlash={setFlash}
+                account={true}
+              />
+            }></Route>
         </Routes>
       </Router>
     </div>

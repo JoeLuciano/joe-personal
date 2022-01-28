@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Flash } from 'components/pageComponents/flash/Flash';
-import { Navigate } from 'react-router-dom';
-import styles from './LoginForm.module.css';
+import { useNavigate } from 'react-router-dom';
+import styles from './Form.module.css';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 
 const buttonHover = {
@@ -13,10 +13,10 @@ const buttonHover = {
   },
 };
 
-export const LoginForm = () => {
+export const RegisterForm = ({ setFlash }) => {
   const [userInfo, setUserInfo] = useState();
-  const [flash, setFlash] = useState();
   const [showPassword, setShowPassword] = useState(false);
+  const [showSecretCode, setShowSecretCode] = useState(false);
 
   function handleChange(event) {
     const target = event.target;
@@ -24,6 +24,8 @@ export const LoginForm = () => {
     const name = target.name;
     setUserInfo({ ...userInfo, [name]: value });
   }
+
+  const navigate = useNavigate();
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -35,7 +37,7 @@ export const LoginForm = () => {
       },
       body: JSON.stringify(userInfo),
     };
-    fetch('/api/login', requestOptions)
+    fetch('/api/register', requestOptions)
       .then(async (response) => {
         const data = await response.json();
 
@@ -43,10 +45,17 @@ export const LoginForm = () => {
           const error = data || data.message || response.statusText;
           console.log(error);
           setFlash(<></>);
-          setFlash(<Flash message={error} type='error' duration='5000' />);
+          setFlash(
+            <Flash
+              message={error}
+              type='error'
+              duration='5000'
+              setFlash={setFlash}
+            />
+          );
         } else {
           console.log(data);
-          return () => setFlash(<Navigate to='/home' />);
+          navigate('/home');
         }
       })
       .catch((error) => {
@@ -56,12 +65,12 @@ export const LoginForm = () => {
 
   return (
     <motion.form onSubmit={handleSubmit} className={styles['form']}>
-      <motion.h1 className={styles['header']}>Log in</motion.h1>
+      <motion.h1 className={styles['header']}>Register</motion.h1>
       <motion.div className={styles['text-input-container']}>
         <motion.input
           className={styles['text-input']}
-          placeholder='E-mail'
           type='email'
+          placeholder='E-mail'
           name='email'
           onChange={handleChange}
           required
@@ -70,8 +79,8 @@ export const LoginForm = () => {
       <motion.div className={styles['text-input-container']}>
         <motion.input
           className={styles['text-input']}
-          placeholder='Password'
           type={showPassword ? 'text' : 'password'}
+          placeholder='Password'
           name='password'
           onChange={handleChange}
           required
@@ -84,27 +93,34 @@ export const LoginForm = () => {
           {showPassword ? <BsEye /> : <BsEyeSlash />}
         </motion.button>
       </motion.div>
-      <motion.label className={styles['checkbox-label']}>
-        Stay logged in?
+      <motion.div className={styles['text-input-container']}>
         <motion.input
-          name='remember'
-          type='checkbox'
+          className={styles['text-input']}
+          type={showSecretCode ? 'text' : 'password'}
+          placeholder='Secret Code'
+          name='secretCode'
           onChange={handleChange}
-          className={styles['checkbox']}
+          required
         />
-      </motion.label>
-      <motion.input
-        type='submit'
-        value='Log in'
-        className={styles['login-button']}
-        whileHover={buttonHover}
-      />
+        <motion.button
+          className={styles['password-button']}
+          type='button'
+          onClick={() => setShowSecretCode((previous) => !previous)}
+          whileHover={buttonHover}>
+          {showPassword ? <BsEye /> : <BsEyeSlash />}
+        </motion.button>
+      </motion.div>
       <motion.button // TODO: CHANGE TO A LINK
         type='button'
-        onClick={() => setFlash(<Flash message='Come back to this' />)}>
-        Forgot password?
+        onClick={() => navigate('/login')}>
+        Already have an account?
       </motion.button>
-      {flash}
+      <motion.input
+        type='submit'
+        value='Register'
+        className={styles['submit-button']}
+        whileHover={buttonHover}
+      />
     </motion.form>
   );
 };

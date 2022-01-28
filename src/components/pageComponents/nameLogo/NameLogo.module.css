@@ -9,6 +9,7 @@
   left: -5;
   line-height: 1.5rem;
   padding: 0.5rem 1rem;
+  z-index: 1;
 }
 
 .link {

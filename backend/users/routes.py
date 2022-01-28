@@ -1,7 +1,7 @@
 import os
 from flask import Blueprint, jsonify, request
 from flask_cors import cross_origin
-from flask_login import current_user, login_user
+from flask_login import current_user, login_user, logout_user
 from backend import db, bcrypt
 from backend.models import User
 
@@ -43,6 +43,16 @@ def login():
         return jsonify('Login Successful!'), 200
     else:
         return jsonify('ERROR: Login Unsuccessful'), 412
+
+
+@users.route("/api/logout", methods=['POST'])
+@cross_origin()
+def logout():
+    if current_user.is_authenticated:
+        logout_user()
+        return jsonify(f"You've been logged out"), 200
+    else:
+        return jsonify('ERROR: No user is logged in'), 412
 
 
 @users.route('/api/user', methods=['GET'])

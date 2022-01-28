@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom';
-import './Header.css';
+import { Link, useNavigate } from 'react-router-dom';
+import styles from './Header.module.css';
 import { NameLogo } from '../nameLogo/NameLogo';
 import { motion } from 'framer-motion';
+import { Flash } from 'components/pageComponents/flash/Flash';
 
 const headerVariant = {
   hidden: { opacity: 0 },
@@ -35,9 +36,14 @@ const headerItem = {
 
 const HeaderLinks = ({ headerItems }) => {
   return (
-    <motion.div className='header-items' variants={headerItemsVariant}>
+    <motion.div
+      className={styles['header-items']}
+      variants={headerItemsVariant}>
       {headerItems.map((item) => (
-        <Link key={item} to={`/${item.toLowerCase()}`} className='header-item'>
+        <Link
+          key={item}
+          to={`/${item.toLowerCase()}`}
+          className={styles['header-item']}>
           <motion.h3
             variants={headerItem}
             whileHover={{
@@ -51,9 +57,9 @@ const HeaderLinks = ({ headerItems }) => {
   );
 };
 
-export const Header = ({ isMobile = false, headerItems }) => {
+export const Header = ({ isMobile = false, setFlash, headerItems }) => {
   return (
-    <motion.div className='header' variants={headerVariant}>
+    <motion.div className={styles['header']} variants={headerVariant}>
       <NameLogo />
       {!isMobile && <HeaderLinks headerItems={headerItems} />}
     </motion.div>

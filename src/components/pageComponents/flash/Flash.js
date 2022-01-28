@@ -17,7 +17,12 @@ const flashVariant = {
   },
 };
 
-export const Flash = ({ message, type = 'info', duration = '5000' }) => {
+export const Flash = ({
+  message,
+  type = 'info',
+  duration = '5000',
+  setFlash,
+}) => {
   const [show, setShow] = useState(true);
 
   useEffect(() => {
@@ -27,7 +32,7 @@ export const Flash = ({ message, type = 'info', duration = '5000' }) => {
     return () => {
       clearTimeout(timeout);
     };
-  }, [duration]);
+  }, [duration, setFlash]);
 
   return (
     <AnimatePresence exitBeforeEnter={true} oxExitComplete={() => null}>
