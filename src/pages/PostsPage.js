@@ -1,10 +1,11 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import styles from './styles.module.css';
-import { Header } from '../components/pageComponents/header/Header';
-import { PostCard } from '../components/posts/postcard/PostCard';
-import { PostView } from '../components/posts/postview/PostView';
-import { MobileNav } from '../components/pageComponents/mobilenav/MobileNav.js';
+import { Header } from 'components/pageComponents/header/Header';
+import { PostCard } from 'components/posts/postcard/PostCard';
+import { PostView } from 'components/posts/postview/PostView';
+import { CreatePostForm } from 'components/formComponents/createPostForm/CreatePostForm';
+import { MobileNav } from 'components/pageComponents/mobilenav/MobileNav';
 import { motion } from 'framer-motion';
 
 const Post = (isMobile, title) => {
@@ -104,6 +105,7 @@ export const PostsPage = ({
           {currentTitle ? Post(isMobile, currentTitle) : AllPosts(isMobile)}
         </motion.div>
       </motion.div>
+      <CreatePostForm />
       <MobileNav
         isMobile={isMobile}
         headerItems={headerItems}

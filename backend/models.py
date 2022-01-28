@@ -8,7 +8,7 @@ from flask_login import UserMixin
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
-    image_file = db.Column(db.String(20), nullable=False,
+    image_file = db.Column(db.String(20), nullable=True,
                            default='default.jpg')
     date_posted = db.Column(db.DateTime, nullable=False,
                             default=datetime.utcnow)

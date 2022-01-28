@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
-import { LoginForm } from 'components/pageComponents/userComponents/formComponents/LoginForm';
-import { RegisterForm } from 'components/pageComponents/userComponents/formComponents/RegisterForm';
-import { UpdateAccountForm } from 'components/pageComponents/userComponents/formComponents/AccountForm';
+import { LoginForm } from 'components/formComponents/userForms/LoginForm';
+import { RegisterForm } from 'components/formComponents/userForms/RegisterForm';
+import { UpdateAccountForm } from 'components/formComponents/userForms/AccountForm';
 import { NameLogo } from 'components/pageComponents/nameLogo/NameLogo';
 import styles from './styles.module.css';
 import { Navigate } from 'react-router-dom';
