@@ -20,7 +20,7 @@ def getPosts():
             all_posts = [doc.to_dict() for doc in Post.query.all()]
             return jsonify(all_posts), 200
     except Exception as e:
-        return f"An Error Occured: {e}"
+        return jsonify(f"An Error Occured: {e}"), 400
 
 
 @posts.route('/api/posts/create', methods=['POST'])
@@ -36,7 +36,7 @@ def createPost():
         db.session.commit()
         return jsonify({'message': 'Sucessfully created post!'}), 200
     except Exception as e:
-        return f"An Error Occured: {e}"
+        return jsonify(f"An Error Occured: {e}"), 400
 
 
 @posts.route('/api/posts/remove', methods=['POST'])
@@ -51,5 +51,5 @@ def removePost():
         #     print(result)
         #     return jsonify(result), 200
     except Exception as e:
-        return f"An Error Occured: {e}"
-    return 'Nothing happened', 200
+        return jsonify(f"An Error Occured: {e}"), 400
+    return jsonify('Nothing happened'), 200
