@@ -8,6 +8,7 @@ import { Navigate } from 'react-router-dom';
 
 export const UserPage = ({
   isMobile,
+  setUser,
   user,
   setFlash,
   login,
@@ -20,14 +21,14 @@ export const UserPage = ({
       <motion.div className={styles['page-content']}>
         {user ? (
           account ? (
-            <UpdateAccountForm setFlash={setFlash} />
+            <UpdateAccountForm setFlash={setFlash} setUser={setUser} />
           ) : (
             <Navigate to='/account' />
           )
         ) : register ? (
-          <RegisterForm setFlash={setFlash} />
+          <RegisterForm setFlash={setFlash} setUser={setUser} />
         ) : login ? (
-          <LoginForm setFlash={setFlash} />
+          <LoginForm setFlash={setFlash} setUser={setUser} />
         ) : (
           <Navigate to='/home' />
         )}

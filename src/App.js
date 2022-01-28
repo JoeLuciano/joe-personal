@@ -121,6 +121,7 @@ function App() {
             element={
               <UserPage
                 isMobile={isMobile}
+                setUser={setUser}
                 user={user}
                 setFlash={setFlash}
                 account={true}
