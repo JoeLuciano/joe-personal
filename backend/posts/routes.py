@@ -25,7 +25,7 @@ def getPosts():
 
 @posts.route('/api/posts/create', methods=['POST'])
 @cross_origin()
-def getPosts():
+def createPost():
     if not current_user.is_authenticated:
         return jsonify({'message': 'Please log in before creating a post'}), 200
     postInfo = request.json
