@@ -7,8 +7,6 @@ from backend.models import User
 
 users = Blueprint('users', __name__)
 
-# TODO: Set custom @login_reuiqred() decorator to communicate back to React so that the correct action is taken
-
 
 @users.route('/api/register', methods=['POST'])
 @cross_origin()

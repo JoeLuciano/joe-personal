@@ -14,12 +14,20 @@ const experiencePage = {
   },
 };
 
-export const ExperiencePage = ({ isMobile }) => {
+export const ExperiencePage = ({ isMobile, user, headerItems, userItems }) => {
   return (
     <motion.div variants={experiencePage} initial='hidden' animate='visible'>
-      <Header isMobile={isMobile} />
+      <Header
+        isMobile={isMobile}
+        headerItems={headerItems}
+        userItems={userItems}
+      />
       work in progress
-      <MobileNav isMobile={isMobile} />
+      <MobileNav
+        isMobile={isMobile}
+        headerItems={headerItems}
+        userItems={userItems}
+      />
     </motion.div>
   );
 };

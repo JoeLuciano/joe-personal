@@ -13,20 +13,25 @@ const Post = (isMobile, title) => {
   useEffect(() => {
     fetch(`/api/posts?title=${title}`, {
       method: 'GET',
-      headers: { 'content-type': 'application/json; charset=UTF-8' },
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-      })
-      .then((data) => {
+      headers: {
+        'content-type': 'application/json; charset=UTF-8',
+        Accept: 'application/json',
+      },
+    }).then(async (response) => {
+      const data = await response.json();
+
+      if (!response.ok) {
+        const error = data || data.message || response.statusText;
+        console.log(error);
+      } else {
+        console.log(data);
         if (data) {
           setPost(data[0]);
         } else {
           setPost({ title: 'INVALID POST' });
         }
-      });
+      }
+    });
   }, [title]);
 
   if (post.title === 'INVALID POST') {
@@ -42,7 +47,10 @@ const AllPosts = (isMobile) => {
   useEffect(() => {
     fetch(`/api/posts`, {
       method: 'GET',
-      headers: { 'content-type': 'application/json; charset=UTF-8' },
+      headers: {
+        'content-type': 'application/json; charset=UTF-8',
+        Accept: 'application/json',
+      },
     }).then(async (response) => {
       const data = await response.json();
 
@@ -50,6 +58,7 @@ const AllPosts = (isMobile) => {
         const error = data || data.message || response.statusText;
         console.log(error);
       } else {
+        console.log(data);
         setAllPosts(data);
       }
     });
@@ -69,7 +78,12 @@ const postPage = {
   visible: { opacity: 1 },
 };
 
-export const PostsPage = ({ doAnimate = true, isMobile }) => {
+export const PostsPage = ({
+  doAnimate = true,
+  isMobile,
+  headerItems,
+  userItems,
+}) => {
   const { search } = useLocation();
   let query = useMemo(() => new URLSearchParams(search), [search]);
   const currentTitle = query.get('title');
@@ -79,13 +93,22 @@ export const PostsPage = ({ doAnimate = true, isMobile }) => {
       variants={postPage}
       initial={doAnimate && 'hidden'}
       animate='visible'>
-      <Header isMobile={isMobile} doAnimate={doAnimate} />
+      <Header
+        isMobile={isMobile}
+        doAnimate={doAnimate}
+        headerItems={headerItems}
+        userItems={userItems}
+      />
       <motion.div className={styles['page-content']}>
         <motion.div className={styles['posts-page']}>
           {currentTitle ? Post(isMobile, currentTitle) : AllPosts(isMobile)}
         </motion.div>
       </motion.div>
-      <MobileNav isMobile={isMobile} />
+      <MobileNav
+        isMobile={isMobile}
+        headerItems={headerItems}
+        userItems={userItems}
+      />
     </motion.div>
   );
 };

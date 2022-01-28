@@ -7,7 +7,7 @@
   position: absolute;
   top: 0;
   left: -5;
-  line-height: 1.5rem;
+  line-height: 2rem;
   padding: 0.5rem 1rem;
   z-index: 1;
 }
@@ -18,12 +18,12 @@
 }
 
 .joe {
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
 
 .luciano {
   display: flex;
   position: relative;
-  left: 5px;
-  font-size: 1.5rem;
+  left: 0.5rem;
+  font-size: 2rem;
 }

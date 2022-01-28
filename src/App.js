@@ -49,6 +49,14 @@ function App() {
 
   const isMobile = width < 1000;
 
+  const headerItems = ['Experience', 'Resume', 'Posts', 'Library'];
+  let userItems = [];
+  if (user === undefined) {
+    userItems = ['Register', 'Login'];
+  } else if (user) {
+    userItems = ['Account'];
+  }
+
   return (
     <div className='App'>
       <Router>
@@ -64,7 +72,13 @@ function App() {
             exact
             path='/'
             element={
-              <HomePage isMobile={isMobile} user={user} setFlash={setFlash} />
+              <HomePage
+                isMobile={isMobile}
+                user={user}
+                setFlash={setFlash}
+                headerItems={headerItems}
+                userItems={userItems}
+              />
             }></Route>
           <Route
             exact
@@ -75,13 +89,20 @@ function App() {
                 isMobile={isMobile}
                 user={user}
                 setFlash={setFlash}
+                headerItems={headerItems}
+                userItems={userItems}
               />
             }></Route>
           <Route
             exact
             path='/posts'
             element={
-              <PostsPage isMobile={isMobile} setFlash={setFlash} />
+              <PostsPage
+                isMobile={isMobile}
+                setFlash={setFlash}
+                headerItems={headerItems}
+                userItems={userItems}
+              />
             }></Route>
           <Route
             exact
@@ -91,6 +112,8 @@ function App() {
                 isMobile={isMobile}
                 user={user}
                 setFlash={setFlash}
+                headerItems={headerItems}
+                userItems={userItems}
               />
             }></Route>
           <Route

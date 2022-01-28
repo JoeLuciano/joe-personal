@@ -57,6 +57,27 @@ const HeaderLinks = ({ headerItems }) => {
   );
 };
 
+const UserLinks = ({ userItems }) => {
+  return (
+    <motion.div className={styles['user-items']} variants={headerItemsVariant}>
+      {userItems.map((item) => (
+        <Link
+          key={item}
+          to={`/${item.toLowerCase()}`}
+          className={styles['user-item']}>
+          <motion.h3
+            variants={headerItem}
+            whileHover={{
+              scale: 1.5,
+            }}>
+            {item}
+          </motion.h3>
+        </Link>
+      ))}
+    </motion.div>
+  );
+};
+
 export const Header = ({
   isMobile = false,
   setFlash,
@@ -67,7 +88,7 @@ export const Header = ({
     <motion.div className={styles['header']} variants={headerVariant}>
       <NameLogo />
       {!isMobile && <HeaderLinks headerItems={headerItems} />}
-      <HeaderLinks headerItems={userItems} />
+      <UserLinks userItems={userItems} />
     </motion.div>
   );
 };

@@ -38,9 +38,13 @@
 }
 
 .page-content {
+  display: flex;
   position: relative;
   width: 100%;
   min-height: 80vh;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .posts-page {
