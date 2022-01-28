@@ -9,7 +9,7 @@ import { UserPage } from './pages/UserPage';
 
 function App() {
   const [width, setWindowWidth] = useState(0);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
   const [flash, setFlash] = useState();
 
   useEffect(() => {
@@ -37,11 +37,11 @@ function App() {
         const error = data || data.message || response.statusText;
         console.log(error);
       } else {
-        console.log(data);
+        console.log(data.username);
         if (data === 'No current user') {
           setUser(undefined);
         } else {
-          setUser(data);
+          setUser(data.username);
         }
       }
     });
@@ -99,6 +99,7 @@ function App() {
             element={
               <UserPage
                 isMobile={isMobile}
+                setUser={setUser}
                 user={user}
                 setFlash={setFlash}
                 register={true}
@@ -110,6 +111,7 @@ function App() {
             element={
               <UserPage
                 isMobile={isMobile}
+                setUser={setUser}
                 user={user}
                 setFlash={setFlash}
                 login={true}

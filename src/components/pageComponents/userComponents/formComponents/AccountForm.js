@@ -22,6 +22,8 @@ export const UpdateAccountForm = ({ setFlash, setUser }) => {
     setUserInfo({ ...userInfo, [name]: value });
   }
 
+  const navigate = useNavigate();
+
   function handleSubmit(event) {
     event.preventDefault();
     const requestOptions = {
@@ -49,23 +51,22 @@ export const UpdateAccountForm = ({ setFlash, setUser }) => {
             />
           );
         } else {
-          console.log(data);
+          console.log(data.message);
           setFlash(
             <Flash
-              message={data}
+              message={data.message}
               type='success'
               duration='5000'
               setFlash={setFlash}
             />
           );
+          navigate('/home');
         }
       })
       .catch((error) => {
         console.error('There was an error!', error.toString());
       });
   }
-
-  const navigate = useNavigate();
 
   function logout(event) {
     event.preventDefault();

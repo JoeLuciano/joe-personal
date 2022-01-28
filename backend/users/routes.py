@@ -24,7 +24,8 @@ def createUser():
         db.session.add(user)
         db.session.commit()
         print('NEW USER CREATED')
-        return jsonify({'message': 'Your account has been created! You are now able to log in', 'username': current_user.username}), 200
+        return jsonify({'message': 'Your account has been created! You are now able to log in',
+                        'username': user.username}), 200
     else:
         print('ERROR: User attempted to input incorrect secret code')
         return jsonify('ERROR: Incorrect secret code'), 412
@@ -77,6 +78,6 @@ def updateUser():
         if email:
             current_user.email = email
         db.session.commit()
-        return jsonify('Your account has been updated!'), 200
+        return jsonify({'message': 'Your account has been updated!'}), 200
     else:
         return jsonify('No current user'), 412

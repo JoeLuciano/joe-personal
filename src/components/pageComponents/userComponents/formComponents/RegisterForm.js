@@ -56,6 +56,14 @@ export const RegisterForm = ({ setFlash, setUser }) => {
         } else {
           console.log(data.message);
           setUser(data.username);
+          setFlash(
+            <Flash
+              message={data.message}
+              type='success'
+              duration='5000'
+              setFlash={setFlash}
+            />
+          );
           navigate('/home');
         }
       })

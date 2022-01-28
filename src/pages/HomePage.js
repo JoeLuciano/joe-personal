@@ -93,7 +93,12 @@ const homepage = {
 
 export const HomePage = ({ doAnimate = true, isMobile, user }) => {
   const headerItems = ['Experience', 'Resume', 'Posts', 'Library'];
-  const userItems = [...(user ? ['Account'] : ['Register', 'Login'])];
+  let userItems = [];
+  if (user === undefined) {
+    userItems = ['Register', 'Login'];
+  } else if (user) {
+    userItems = ['Account'];
+  }
 
   return (
     <motion.div
