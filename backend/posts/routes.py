@@ -14,9 +14,9 @@ def getPost(title):
     try:
         if title:
             post = Post.query.filter_by(title=title).first()
-            return jsonify(post.serialize), 200
+            return jsonify({'message': 'Got post', 'payload': post.serialize}), 200
         else:
-            return jsonify('Please specify a post to view'), 200
+            return jsonify({'message': 'Please specify a post to view'}), 200
     except Exception as e:
         return jsonify(f"An Error Occured: {e}"), 400
 
@@ -26,7 +26,7 @@ def getPost(title):
 def getPosts():
     try:
         all_posts = [post.serialize for post in Post.query.all()]
-        return jsonify(all_posts), 200
+        return jsonify({'message': '', 'payload': all_posts}), 200
     except Exception as e:
         return jsonify(f"An Error Occured: {e}"), 400
 
@@ -35,7 +35,7 @@ def getPosts():
 @cross_origin()
 def createPost():
     if not current_user.is_authenticated:
-        return jsonify('Please log in before creating a post'), 412
+        return jsonify({'message': 'Please log in before creating a post'}), 412
     postInfo = request.json
     try:
         post = Post(title=postInfo.get('title'), date_posted=datetime.utcnow(),
@@ -44,7 +44,7 @@ def createPost():
         db.session.commit()
         return jsonify({'message': 'Sucessfully created post!'}), 200
     except Exception as e:
-        return jsonify(f"An Error Occured: {e}"), 400
+        return jsonify({'message': f"An Error Occured: {e}"}), 400
 
 
 @posts.route('/api/posts/remove', methods=['POST'])

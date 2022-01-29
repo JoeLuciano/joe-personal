@@ -36,14 +36,14 @@ export const PostPage = ({
         console.log(error);
       } else {
         console.log(data);
-        setPost(data);
+        setPost(data.payload);
       }
     });
   }, [title]);
 
   return (
     <motion.div
-      className={styles['page']}
+      className={styles.page}
       variants={postPage}
       initial={doAnimate && 'hidden'}
       animate='visible'>
@@ -53,8 +53,8 @@ export const PostPage = ({
         headerItems={headerItems}
         userItems={userItems}
       />
-      <motion.div className={styles['page-content']}>
-        <motion.div className={styles['posts-page']}>
+      <motion.div className={styles.pageContent}>
+        <motion.div className={styles.postsPage}>
           <PostView isMobile={isMobile} data={post} setFlash={setFlash} />
         </motion.div>
       </motion.div>

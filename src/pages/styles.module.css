@@ -4,40 +4,7 @@
   top: 0;
 }
 
-.intro {
-  text-align: right;
-  line-height: 2rem;
-}
-
-.mobile-intro {
-  text-align: center;
-  top: -5rem;
-  font-size: 0.8rem;
-  line-height: 2rem;
-  padding: 1rem;
-}
-
-.salutation {
-  left: -4rem;
-  text-align: left;
-}
-
-.mobile-salutation {
-  top: 2rem;
-  left: 4rem;
-  text-align: left;
-}
-
-.link {
-  color: #2e39d3;
-  text-decoration: none;
-}
-
-.block-text {
-  line-height: 4rem;
-}
-
-.page-content {
+.pageContent {
   display: flex;
   flex-direction: column;
   position: relative;
@@ -48,7 +15,7 @@
   justify-content: center;
 }
 
-.posts-page {
+.postsPage {
   display: flex;
   flex-direction: column;
   text-align: center;

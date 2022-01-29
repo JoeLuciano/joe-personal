@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { Flash } from 'components/pageComponents/flash/Flash';
 import styles from './CreatePostForm.module.css';
 
 const buttonHover = {
@@ -11,7 +10,7 @@ const buttonHover = {
   },
 };
 
-export const CreatePostForm = ({ setFlash, getAllPosts }) => {
+export const CreatePostForm = ({ setFlash, getAllPosts, smartFetch }) => {
   const [postInfo, setPostInfo] = useState();
 
   function handleChange(event) {
@@ -21,36 +20,15 @@ export const CreatePostForm = ({ setFlash, getAllPosts }) => {
     setPostInfo({ ...postInfo, [name]: value });
   }
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify(postInfo),
-    };
-    fetch('/api/posts/create', requestOptions)
-      .then(async (response) => {
-        const data = await response.json();
-
-        if (!response.ok) {
-          const error = data || data.message || response.statusText;
-          console.log(error);
-          setFlash(<></>);
-          setFlash(<Flash message={error} type='error' />);
-        } else {
-          setPostInfo();
-          console.log(data.message);
-          setFlash(<Flash message={data.message} type='success' />);
-          getAllPosts();
-        }
-      })
-      .catch((error) => {
-        console.error('There was an error!', error.toString());
-      });
-  }
+  const handleSubmit = useCallback(
+    async (event) => {
+      event.preventDefault();
+      console.log('test');
+      await smartFetch('/api/posts/create', 'POST', postInfo);
+      getAllPosts();
+    },
+    [smartFetch, postInfo, getAllPosts]
+  );
 
   return (
     <motion.form onSubmit={handleSubmit} className={styles['form']}>

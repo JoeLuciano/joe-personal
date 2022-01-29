@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import styles from './styles.module.css';
 import { Header } from 'components/pageComponents/header/Header';
 import { PostCard } from 'components/postComponents/postcard/PostCard';
@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 
 const AllPosts = (isMobile, allPosts) => {
   return (
-    <motion.div className={styles['posts']}>
+    <motion.div className={styles.posts}>
       {allPosts.map((post, index) => {
         return <PostCard key={index} isMobile={isMobile} data={post} />;
       })}
@@ -27,28 +27,16 @@ export const PostsPage = ({
   headerItems,
   userItems,
   setFlash,
+  smartFetch,
 }) => {
   const [allPosts, setAllPosts] = useState([]);
 
-  const getAllPosts = () => {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    };
-    fetch('/api/posts', requestOptions).then(async (response) => {
-      const data = await response.json();
-      if (!response.ok) {
-        const error = data || data.message || response.statusText;
-        console.log(error);
-      } else {
-        console.log(data);
-        setAllPosts(data);
-      }
-    });
-  };
+  const getAllPosts = useCallback(async () => {
+    const allPostsResponse = await smartFetch('/api/posts', 'GET');
+    if (allPostsResponse.ok) {
+      setAllPosts(allPostsResponse.result);
+    }
+  }, [smartFetch]);
 
   useEffect(() => {
     getAllPosts();
@@ -56,7 +44,7 @@ export const PostsPage = ({
 
   return (
     <motion.div
-      className={styles['page']}
+      className={styles.page}
       variants={postPage}
       initial={doAnimate && 'hidden'}
       animate='visible'>
@@ -66,11 +54,15 @@ export const PostsPage = ({
         headerItems={headerItems}
         userItems={userItems}
       />
-      <motion.div className={styles['page-content']}>
-        <motion.div className={styles['posts-page']}>
+      <motion.div className={styles.pageContent}>
+        <motion.div className={styles.postsPage}>
           {AllPosts(isMobile, allPosts)}
         </motion.div>
-        <CreatePostForm setFlash={setFlash} getAllPosts={getAllPosts} />
+        <CreatePostForm
+          setFlash={setFlash}
+          getAllPosts={getAllPosts}
+          smartFetch={smartFetch}
+        />
       </motion.div>
       <MobileNav
         isMobile={isMobile}

@@ -109,7 +109,7 @@ const MenuToggle = ({ toggle }) => (
   </motion.button>
 );
 
-export const MobileNav = ({ isMobile = false, headerItems }) => {
+export const MobileNav = ({ isMobile = false, headerItems, userItems }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [show, setShow] = useState(false);
 
@@ -131,7 +131,9 @@ export const MobileNav = ({ isMobile = false, headerItems }) => {
           className={styles['mobile-header-background']}
           variants={headerBackground}
           animate={isOpen ? 'open' : 'closed'}>
-          {isOpen && <MobileHeaderLinks navItems={headerItems} />}
+          {isOpen && (
+            <MobileHeaderLinks navItems={headerItems.concat(userItems)} />
+          )}
           <MenuToggle
             styles={{ position: 'absolute' }}
             toggle={() => setIsOpen((isOpen) => !isOpen)}

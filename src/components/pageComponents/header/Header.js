@@ -87,7 +87,7 @@ export const Header = ({
     <motion.div className={styles['header']} variants={headerVariant}>
       <NameLogo />
       {!isMobile && <HeaderLinks headerItems={headerItems} />}
-      <UserLinks userItems={userItems} />
+      {!isMobile && <UserLinks userItems={userItems} />}
     </motion.div>
   );
 };

@@ -6,8 +6,8 @@ from flask_login import UserMixin
 
 
 class Post(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
+    id = db.Column(db.Integer, primary_key=True, unique=True)
+    title = db.Column(db.String(100), nullable=False, unique=True)
     image_file = db.Column(db.String(20), nullable=True,
                            default='default.jpg')
     date_posted = db.Column(db.DateTime, nullable=False,

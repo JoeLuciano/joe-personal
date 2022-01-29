@@ -12,6 +12,7 @@ flask-sqlalchemy = "*"
 flask-bcrypt = "*"
 psycopg2 = "*"
 flask-login = "*"
+flask-migrate = "*"
 
 [dev-packages]
 autopep8 = "*"

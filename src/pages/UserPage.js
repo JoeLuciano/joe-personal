@@ -16,9 +16,9 @@ export const UserPage = ({
   account,
 }) => {
   return (
-    <motion.div className={styles['page']}>
+    <motion.div className={styles.page}>
       <NameLogo />
-      <motion.div className={styles['page-content']}>
+      <motion.div className={styles.pageContent}>
         {user === undefined ? (
           register ? (
             <RegisterForm setFlash={setFlash} setUser={setUser} />
