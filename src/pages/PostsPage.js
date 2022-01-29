@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import styles from './styles.module.css';
 import { Header } from 'components/pageComponents/header/Header';
@@ -27,7 +27,7 @@ const Post = (isMobile, title) => {
       } else {
         console.log(data);
         if (data) {
-          setPost(data[0]);
+          setPost(data);
         } else {
           setPost({ title: 'INVALID POST' });
         }
@@ -46,13 +46,14 @@ const AllPosts = (isMobile) => {
   const [allPosts, setAllPosts] = useState([]);
 
   useEffect(() => {
-    fetch(`/api/posts`, {
+    const requestOptions = {
       method: 'GET',
       headers: {
-        'content-type': 'application/json; charset=UTF-8',
+        'Content-Type': 'application/json',
         Accept: 'application/json',
       },
-    }).then(async (response) => {
+    };
+    fetch('/api/posts', requestOptions).then(async (response) => {
       const data = await response.json();
 
       if (!response.ok) {
@@ -64,7 +65,6 @@ const AllPosts = (isMobile) => {
       }
     });
   }, []);
-
   return (
     <motion.div className={styles['posts']}>
       {allPosts.map((post, index) => {
@@ -84,10 +84,12 @@ export const PostsPage = ({
   isMobile,
   headerItems,
   userItems,
+  setFlash,
 }) => {
   const { search } = useLocation();
   let query = useMemo(() => new URLSearchParams(search), [search]);
   const currentTitle = query.get('title');
+
   return (
     <motion.div
       className={styles['page']}
@@ -104,8 +106,8 @@ export const PostsPage = ({
         <motion.div className={styles['posts-page']}>
           {currentTitle ? Post(isMobile, currentTitle) : AllPosts(isMobile)}
         </motion.div>
+        {!currentTitle && <CreatePostForm setFlash={setFlash} />}
       </motion.div>
-      <CreatePostForm />
       <MobileNav
         isMobile={isMobile}
         headerItems={headerItems}

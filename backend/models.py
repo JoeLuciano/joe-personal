@@ -18,6 +18,17 @@ class Post(db.Model):
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
 
+    @property
+    def serialize(self):
+        """Return object data in easily serializable format"""
+        return {
+            'id': self.id,
+            'title': self.title,
+            'date_posted': self.date_posted,
+            'content': self.content,
+            'user_id': self.user_id
+        }
+
 # class PostTag(db.model):
 #     id = db.Column(db.Integer, primary_key=True)
 #     tag = db.Column(db.String, nullable=False)

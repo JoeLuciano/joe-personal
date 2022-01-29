@@ -15,9 +15,9 @@ def getPosts():
     try:
         if title:
             post = Post.query.filter_by(title=title).first()
-            return jsonify(post.to_dict()), 200
+            return jsonify(post.serialize), 200
         else:
-            all_posts = [doc.to_dict() for doc in Post.query.all()]
+            all_posts = [post.serialize for post in Post.query.all()]
             return jsonify(all_posts), 200
     except Exception as e:
         return jsonify(f"An Error Occured: {e}"), 400
@@ -42,14 +42,9 @@ def createPost():
 @posts.route('/api/posts/remove', methods=['POST'])
 @cross_origin()
 def removePost():
-    document = request.json.get('title')
-    print(document)
+    title = request.json.get('title')
     try:
-        pass  # ADD IN SQLALCHEMY
-        # if document:
-        #     result = posts_ref.delete(document)
-        #     print(result)
-        #     return jsonify(result), 200
+        Post.query.filter_by(title=title).delete()
+        return jsonify({'message': 'Sucessfully deleted post!'}), 200
     except Exception as e:
         return jsonify(f"An Error Occured: {e}"), 400
-    return jsonify('Nothing happened'), 200

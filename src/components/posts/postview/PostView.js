@@ -61,9 +61,13 @@ export const PostView = ({ isMobile, data }) => {
       <PostCreationInfo
         image='get user pfp'
         author={data.author}
-        date={data.date}
+        date={data.date_posted}
       />
-      <PostContentInfo title={data.title} body={data.body} image={data.image} />
+      <PostContentInfo
+        title={data.title}
+        body={data.content}
+        image={data.image}
+      />
       <PostOptions tags={data.tags} info={data.info} />
     </motion.div>
   );

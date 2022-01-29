@@ -22,7 +22,6 @@ export const CreatePostForm = ({ setFlash }) => {
   }
 
   function handleSubmit(event) {
-    event.preventDefault();
     const requestOptions = {
       method: 'POST',
       headers: {

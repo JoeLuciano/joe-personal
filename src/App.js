@@ -38,11 +38,7 @@ function App() {
         console.log(error);
       } else {
         console.log(data.username);
-        if (data === 'No current user') {
-          setUser(undefined);
-        } else {
-          setUser(data.username);
-        }
+        setUser(data.username);
       }
     });
   };
