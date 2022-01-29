@@ -39,7 +39,7 @@
 
 .page-content {
   display: flex;
-  /* flex-direction: column; */
+  flex-direction: column;
   position: relative;
   width: 100%;
   min-height: 80vh;

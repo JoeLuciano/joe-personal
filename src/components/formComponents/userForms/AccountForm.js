@@ -100,7 +100,7 @@ export const UpdateAccountForm = ({ setFlash, setUser }) => {
       </motion.div>
       <motion.div className={styles['text-input-container']}>
         <motion.input
-          className={styles['text-input']}
+          className={styles.textInput}
           placeholder='E-mail'
           type='email'
           name='email'

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styles from './styles.module.css';
 import { Header } from 'components/pageComponents/header/Header';
-import { PostCard } from 'components/posts/postcard/PostCard';
+import { PostCard } from 'components/postComponents/postcard/PostCard';
 import { CreatePostForm } from 'components/formComponents/createPostForm/CreatePostForm';
 import { MobileNav } from 'components/pageComponents/mobilenav/MobileNav';
 import { motion } from 'framer-motion';

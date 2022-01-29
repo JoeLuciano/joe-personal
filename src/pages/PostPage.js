@@ -4,7 +4,7 @@ import { Header } from 'components/pageComponents/header/Header';
 import { MobileNav } from 'components/pageComponents/mobilenav/MobileNav';
 import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom';
-import { PostView } from 'components/posts/postview/PostView';
+import { PostView } from 'components/postComponents/postview/PostView';
 
 const postPage = {
   hidden: { opacity: 0 },

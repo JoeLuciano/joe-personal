@@ -1,8 +1,7 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styles from './Header.module.css';
 import { NameLogo } from '../nameLogo/NameLogo';
 import { motion } from 'framer-motion';
-import { Flash } from 'components/pageComponents/flash/Flash';
 
 const headerVariant = {
   hidden: { opacity: 0 },

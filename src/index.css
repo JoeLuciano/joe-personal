@@ -3,8 +3,8 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Roboto', 'Segoe UI', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+  background: linear-gradient(180deg, #ffffff -100%, rgb(235, 235, 235) 100%);
   overflow-x: hidden;
-  background: linear-gradient(180deg, #ffffff 0%, rgb(235, 235, 235) 200%);
 }
 
 code {

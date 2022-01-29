@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Header } from '../components/pageComponents/header/Header';
 import { MobileNav } from '../components/pageComponents/mobilenav/MobileNav.js';
 import { motion } from 'framer-motion';
-import { ArrowText } from '../components/arrowtext/ArrowText';
+import { ArrowText } from '../components/pageComponents/arrowtext/ArrowText';
 
 const introText = {
   hidden: {
@@ -93,10 +93,9 @@ const homepage = {
 
 export const HomePage = ({
   doAnimate = true,
-  isMobile,
-  user,
   headerItems,
   userItems,
+  isMobile,
 }) => {
   return (
     <motion.div

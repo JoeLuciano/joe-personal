@@ -19,18 +19,18 @@ export const UserPage = ({
     <motion.div className={styles['page']}>
       <NameLogo />
       <motion.div className={styles['page-content']}>
-        {user ? (
-          account ? (
-            <UpdateAccountForm setFlash={setFlash} setUser={setUser} />
+        {user === undefined ? (
+          register ? (
+            <RegisterForm setFlash={setFlash} setUser={setUser} />
+          ) : login ? (
+            <LoginForm setFlash={setFlash} setUser={setUser} />
           ) : (
-            <Navigate to='/account' />
+            <Navigate to='/home' />
           )
-        ) : register ? (
-          <RegisterForm setFlash={setFlash} setUser={setUser} />
-        ) : login ? (
-          <LoginForm setFlash={setFlash} setUser={setUser} />
+        ) : account ? (
+          <UpdateAccountForm setFlash={setFlash} setUser={setUser} />
         ) : (
-          <Navigate to='/home' />
+          <Navigate to='/account' />
         )}
       </motion.div>
     </motion.div>
