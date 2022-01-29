@@ -17,7 +17,9 @@ const PostContentInfo = ({ title, body, image }) => {
   return (
     <motion.div className={styles['post-content-info']}>
       <motion.div className={styles['post-content-info-text']}>
-        <motion.h1>{title}</motion.h1>
+        <Link to={`/post/${title}`}>
+          <motion.h1>{title}</motion.h1>
+        </Link>
         <motion.p>{body}</motion.p>
       </motion.div>
       {/* <img className={styles['post-pic']} src={image} alt='test' /> */}

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HomePage } from './pages/HomePage';
 import { PostsPage } from './pages/PostsPage';
+import { PostPage } from './pages/PostPage';
 import { NotFound } from './pages/NotFound';
 import { ExperiencePage } from './pages/ExperiencePage';
 import { UserPage } from './pages/UserPage';
@@ -94,6 +95,17 @@ function App() {
             path='/posts'
             element={
               <PostsPage
+                isMobile={isMobile}
+                setFlash={setFlash}
+                headerItems={headerItems}
+                userItems={userItems}
+              />
+            }></Route>
+          <Route
+            exact
+            path='/post/:title'
+            element={
+              <PostPage
                 isMobile={isMobile}
                 setFlash={setFlash}
                 headerItems={headerItems}

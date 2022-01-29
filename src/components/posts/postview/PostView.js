@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import styles from './PostView.module.css';
 import { Link } from 'react-router-dom';
+import { Flash } from 'components/pageComponents/flash/Flash';
+import { useNavigate } from 'react-router-dom';
 
 const PostCreationInfo = ({ image, author, date }) => {
   return (
@@ -13,17 +15,33 @@ const PostCreationInfo = ({ image, author, date }) => {
   );
 };
 
-const PostContentInfo = ({ title, body, image }) => {
+const PostContentInfo = ({ title, body, image, setFlash, getAllPosts }) => {
+  const navigate = useNavigate();
+
   const remove = () => {
     const requestOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
       body: JSON.stringify({ title: title }),
     };
-    fetch('/api/posts/remove', requestOptions)
-      .then((response) => response.json())
-      .then((data) => this.setState({ postId: data.id }));
+    fetch('/api/posts/remove', requestOptions).then(async (response) => {
+      const data = await response.json();
+      if (!response.ok) {
+        const error = data || data.message || response.statusText;
+        setFlash(<></>);
+        setFlash(<Flash message={data} type='error' />);
+        console.log(error);
+      } else {
+        setFlash(<></>);
+        setFlash(<Flash message={data.message} type='success' />);
+        navigate('/posts');
+      }
+    });
   };
+
   return (
     <motion.div className={styles['post-content-info']}>
       <motion.div className={styles['post-content-info-text']}>
@@ -55,7 +73,7 @@ const PostOptions = ({ tags, info }) => {
   );
 };
 
-export const PostView = ({ isMobile, data }) => {
+export const PostView = ({ isMobile, data, setFlash }) => {
   return (
     <motion.div className={styles['postview']}>
       <PostCreationInfo
@@ -67,6 +85,7 @@ export const PostView = ({ isMobile, data }) => {
         title={data.title}
         body={data.content}
         image={data.image}
+        setFlash={setFlash}
       />
       <PostOptions tags={data.tags} info={data.info} />
     </motion.div>

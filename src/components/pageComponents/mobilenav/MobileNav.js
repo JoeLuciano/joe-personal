@@ -81,7 +81,9 @@ const Path = (props) => (
 );
 
 const MenuToggle = ({ toggle }) => (
-  <motion.button className={styles['mobile-header-button']} onClick={toggle}>
+  <motion.button
+    className={styles['mobile-header-button']}
+    onClick={() => toggle}>
     <motion.svg width='23' height='23' viewBox='0 0 23 23'>
       <Path
         variants={{

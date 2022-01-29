@@ -1,10 +1,12 @@
 .flash {
-  position: absolute;
+  position: fixed;
   top: 1rem;
   left: 1rem;
   width: calc(100% - 3rem);
   display: flex;
   align-items: center;
+  pointer-events: none;
+  z-index: 1111;
 }
 
 .info {
@@ -13,7 +15,6 @@
   padding: 0.5rem 1rem;
   border-radius: 1rem;
   background-color: rgb(24, 173, 173, 0.5);
-  z-index: 1111;
 }
 
 .error {

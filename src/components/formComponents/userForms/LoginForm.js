@@ -44,25 +44,11 @@ export const LoginForm = ({ setFlash, setUser }) => {
           const error = data || data.message || response.statusText;
           console.log(error);
           setFlash(<></>);
-          setFlash(
-            <Flash
-              message={error}
-              type='error'
-              duration='5000'
-              setFlash={setFlash}
-            />
-          );
+          setFlash(<Flash message={error} type='error' />);
         } else {
           console.log(data.message);
           setUser(data.username);
-          setFlash(
-            <Flash
-              message={data.message}
-              type='success'
-              duration='5000'
-              setFlash={setFlash}
-            />
-          );
+          setFlash(<Flash message={data.message} type='success' />);
           navigate('/home');
         }
       })
@@ -118,9 +104,7 @@ export const LoginForm = ({ setFlash, setUser }) => {
       />
       <motion.button // TODO: CHANGE TO A LINK
         type='button'
-        onClick={() =>
-          setFlash(<Flash message='Come back to this' setFlash={setFlash} />)
-        }>
+        onClick={() => setFlash(<Flash message='Come back to this' />)}>
         Forgot password?
       </motion.button>
     </motion.form>

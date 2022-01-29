@@ -8,17 +8,25 @@ from datetime import datetime
 posts = Blueprint('posts', __name__)
 
 
-@posts.route('/api/posts', methods=['GET'])
+@posts.route('/api/post/<string:title>', methods=['GET'])
 @cross_origin()
-def getPosts():
-    title = request.args.get('title')
+def getPost(title):
     try:
         if title:
             post = Post.query.filter_by(title=title).first()
             return jsonify(post.serialize), 200
         else:
-            all_posts = [post.serialize for post in Post.query.all()]
-            return jsonify(all_posts), 200
+            return jsonify('Please specify a post to view'), 200
+    except Exception as e:
+        return jsonify(f"An Error Occured: {e}"), 400
+
+
+@posts.route('/api/posts', methods=['GET'])
+@cross_origin()
+def getPosts():
+    try:
+        all_posts = [post.serialize for post in Post.query.all()]
+        return jsonify(all_posts), 200
     except Exception as e:
         return jsonify(f"An Error Occured: {e}"), 400
 
@@ -27,7 +35,7 @@ def getPosts():
 @cross_origin()
 def createPost():
     if not current_user.is_authenticated:
-        return jsonify({'message': 'Please log in before creating a post'}), 200
+        return jsonify('Please log in before creating a post'), 412
     postInfo = request.json
     try:
         post = Post(title=postInfo.get('title'), date_posted=datetime.utcnow(),
@@ -44,7 +52,9 @@ def createPost():
 def removePost():
     title = request.json.get('title')
     try:
-        Post.query.filter_by(title=title).delete()
+        post = Post.query.filter_by(title=title).first()
+        db.session.delete(post)
+        db.session.commit()
         return jsonify({'message': 'Sucessfully deleted post!'}), 200
     except Exception as e:
         return jsonify(f"An Error Occured: {e}"), 400

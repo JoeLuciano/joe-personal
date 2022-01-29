@@ -11,7 +11,7 @@ const buttonHover = {
   },
 };
 
-export const CreatePostForm = ({ setFlash }) => {
+export const CreatePostForm = ({ setFlash, getAllPosts }) => {
   const [postInfo, setPostInfo] = useState();
 
   function handleChange(event) {
@@ -22,6 +22,7 @@ export const CreatePostForm = ({ setFlash }) => {
   }
 
   function handleSubmit(event) {
+    event.preventDefault();
     const requestOptions = {
       method: 'POST',
       headers: {
@@ -38,24 +39,12 @@ export const CreatePostForm = ({ setFlash }) => {
           const error = data || data.message || response.statusText;
           console.log(error);
           setFlash(<></>);
-          setFlash(
-            <Flash
-              message={error}
-              type='error'
-              duration='5000'
-              setFlash={setFlash}
-            />
-          );
+          setFlash(<Flash message={error} type='error' />);
         } else {
+          setPostInfo();
           console.log(data.message);
-          setFlash(
-            <Flash
-              message={data.message}
-              type='success'
-              duration='5000'
-              setFlash={setFlash}
-            />
-          );
+          setFlash(<Flash message={data.message} type='success' />);
+          getAllPosts();
         }
       })
       .catch((error) => {

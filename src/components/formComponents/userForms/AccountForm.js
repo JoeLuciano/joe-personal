@@ -42,24 +42,10 @@ export const UpdateAccountForm = ({ setFlash, setUser }) => {
           const error = data || data.message || response.statusText;
           console.log(error);
           setFlash(<></>);
-          setFlash(
-            <Flash
-              message={error}
-              type='error'
-              duration='5000'
-              setFlash={setFlash}
-            />
-          );
+          setFlash(<Flash message={error} type='error' />);
         } else {
           console.log(data.message);
-          setFlash(
-            <Flash
-              message={data.message}
-              type='success'
-              duration='5000'
-              setFlash={setFlash}
-            />
-          );
+          setFlash(<Flash message={data.message} type='success' />);
           navigate('/home');
         }
       })
@@ -85,26 +71,12 @@ export const UpdateAccountForm = ({ setFlash, setUser }) => {
           const error = data || data.message || response.statusText;
           console.log(error);
           setFlash(<></>);
-          setFlash(
-            <Flash
-              message={error}
-              type='error'
-              duration='5000'
-              setFlash={setFlash}
-            />
-          );
+          setFlash(<Flash message={error} type='error' />);
         } else {
           console.log(data.message);
           setUser();
           navigate('/home');
-          setFlash(
-            <Flash
-              message={data.message}
-              type='success'
-              duration='5000'
-              setFlash={setFlash}
-            />
-          );
+          setFlash(<Flash message={data.message} type='success' />);
         }
       })
       .catch((error) => {
@@ -142,7 +114,7 @@ export const UpdateAccountForm = ({ setFlash, setUser }) => {
         whileHover={buttonHover}
       />
       <motion.button
-        onClick={logout}
+        onClick={() => logout}
         className={styles['submit-button']}
         style={{ backgroundColor: 'rgb(190, 0, 25)' }}
         whileHover={buttonHover}>

@@ -45,25 +45,11 @@ export const RegisterForm = ({ setFlash, setUser }) => {
           const error = data || data.message || response.statusText;
           console.log(error);
           setFlash(<></>);
-          setFlash(
-            <Flash
-              message={error}
-              type='error'
-              duration='5000'
-              setFlash={setFlash}
-            />
-          );
+          setFlash(<Flash message={error} type='error' />);
         } else {
           console.log(data.message);
           setUser(data.username);
-          setFlash(
-            <Flash
-              message={data.message}
-              type='success'
-              duration='5000'
-              setFlash={setFlash}
-            />
-          );
+          setFlash(<Flash message={data.message} type='success' />);
           navigate('/home');
         }
       })

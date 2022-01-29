@@ -1,36 +1,27 @@
 import { useState, useEffect } from 'react';
 import styles from './styles.module.css';
 import { Header } from 'components/pageComponents/header/Header';
-import { PostCard } from 'components/posts/postcard/PostCard';
-import { CreatePostForm } from 'components/formComponents/createPostForm/CreatePostForm';
 import { MobileNav } from 'components/pageComponents/mobilenav/MobileNav';
 import { motion } from 'framer-motion';
-
-const AllPosts = (isMobile, allPosts) => {
-  return (
-    <motion.div className={styles['posts']}>
-      {allPosts.map((post, index) => {
-        return <PostCard key={index} isMobile={isMobile} data={post} />;
-      })}
-    </motion.div>
-  );
-};
+import { useParams } from 'react-router-dom';
+import { PostView } from 'components/posts/postview/PostView';
 
 const postPage = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 },
 };
 
-export const PostsPage = ({
+export const PostPage = ({
   doAnimate = true,
   isMobile,
   headerItems,
   userItems,
   setFlash,
 }) => {
-  const [allPosts, setAllPosts] = useState([]);
+  const [post, setPost] = useState([]);
+  const { title } = useParams();
 
-  const getAllPosts = () => {
+  useEffect(() => {
     const requestOptions = {
       method: 'GET',
       headers: {
@@ -38,21 +29,17 @@ export const PostsPage = ({
         Accept: 'application/json',
       },
     };
-    fetch('/api/posts', requestOptions).then(async (response) => {
+    fetch(`/api/post/${title}`, requestOptions).then(async (response) => {
       const data = await response.json();
       if (!response.ok) {
         const error = data || data.message || response.statusText;
         console.log(error);
       } else {
         console.log(data);
-        setAllPosts(data);
+        setPost(data);
       }
     });
-  };
-
-  useEffect(() => {
-    getAllPosts();
-  }, []);
+  }, [title]);
 
   return (
     <motion.div
@@ -68,9 +55,8 @@ export const PostsPage = ({
       />
       <motion.div className={styles['page-content']}>
         <motion.div className={styles['posts-page']}>
-          {AllPosts(isMobile, allPosts)}
+          <PostView isMobile={isMobile} data={post} setFlash={setFlash} />
         </motion.div>
-        <CreatePostForm setFlash={setFlash} getAllPosts={getAllPosts} />
       </motion.div>
       <MobileNav
         isMobile={isMobile}
