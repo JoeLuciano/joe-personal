@@ -49,7 +49,7 @@ def login():
 def logout():
     if current_user.is_authenticated:
         logout_user()
-        return jsonify({"You've been logged out"}), 200
+        return jsonify("You've been logged out"), 200
     else:
         return jsonify('ERROR: No user is logged in'), 412
 
