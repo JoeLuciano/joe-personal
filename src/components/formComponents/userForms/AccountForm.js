@@ -114,7 +114,7 @@ export const UpdateAccountForm = ({ setFlash, setUser }) => {
         whileHover={buttonHover}
       />
       <motion.button
-        onClick={() => logout}
+        onClick={logout}
         className={styles['submit-button']}
         style={{ backgroundColor: 'rgb(190, 0, 25)' }}
         whileHover={buttonHover}>
