@@ -10,7 +10,7 @@ const buttonHover = {
   },
 };
 
-export const CreatePostForm = ({ setFlash, getAllPosts, smartFetch }) => {
+export const CreatePostForm = ({ setFlash, smartFetch, getAllPosts }) => {
   const [postInfo, setPostInfo] = useState();
 
   function handleChange(event) {

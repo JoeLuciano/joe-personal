@@ -35,9 +35,8 @@ export const RegisterForm = ({ setUser, setFlash, smartFetch }) => {
         userInfo
       );
       if (registerResponse.ok) {
-        setUser('not logged in');
-        navigate('/home');
         setUser(registerResponse.result);
+        navigate('/home');
       } else {
         setUser(undefined);
       }

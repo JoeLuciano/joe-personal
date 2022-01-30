@@ -1,7 +1,9 @@
 .page {
   width: 100%;
-  position: absolute;
+  position: relative;
   top: 0;
+  min-height: 100vh;
+  overflow: hidden;
 }
 
 .pageContent {

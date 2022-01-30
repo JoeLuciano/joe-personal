@@ -22,19 +22,15 @@ export const LoginForm = ({ setFlash, setUser, smartFetch }) => {
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
     setUserInfo({ ...userInfo, [name]: value });
-    console.log(userInfo);
   }
 
   const navigate = useNavigate();
 
   const handleSubmit = useCallback(
     async (event) => {
-      console.log(userInfo);
-
       event.preventDefault();
       const registerResponse = await smartFetch('/api/login', 'POST', userInfo);
       if (registerResponse.ok) {
-        setUser('not logged in');
         setUser(registerResponse.result);
         navigate('/home');
       } else {

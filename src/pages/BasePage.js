@@ -6,13 +6,12 @@ import styles from './styles.module.css';
 const page = {
   hidden: { opacity: 0, x: 0 },
   visible: { opacity: 1, x: 0 },
-
   exit: { opacity: 0, x: '100%', transition: { duration: 0.5 } },
 };
 
 const pageAppear = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1 },
+  hidden: { opacity: 0, y: '100%' },
+  visible: { opacity: 1, y: 0, transition: { duration: 2 } },
 };
 
 export const BasePage = (props) => {

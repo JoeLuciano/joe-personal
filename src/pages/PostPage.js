@@ -8,15 +8,15 @@ import { PostView } from 'components/postComponents/postview/PostView';
 export const PostPage = (props) => {
   const [post, setPost] = useState([]);
   const { title } = useParams();
-
+  const { smartFetch } = props;
   const getPost = useCallback(async () => {
-    const postResponse = await props.smartFetch(`/api/post/${title}`, 'GET');
+    const postResponse = await smartFetch(`/api/post/${title}`, 'GET');
     if (postResponse.ok) {
       setPost(postResponse.result);
     } else {
       setPost([{ title: 'ERROR: Could not get post' }]);
     }
-  }, [props, title]);
+  }, [smartFetch, title]);
 
   useEffect(() => {
     getPost();
