@@ -1,5 +1,15 @@
-from flask import Blueprint, jsonify, request
-from flask_cors import cross_origin
-from backend.models import Post
+from flask import jsonify
 
-backend = Blueprint('backend', __name__)
+
+class Message:
+    def msg(message):
+        json_dict = {'message': message}
+        return jsonify(json_dict)
+
+    def data(message, data):
+        json_dict = {'message': message, 'payload': str(data)}
+        return jsonify(json_dict)
+
+    def error(message):
+        json_dict = {'message': f'ERROR: {message}'}
+        return jsonify(json_dict)
