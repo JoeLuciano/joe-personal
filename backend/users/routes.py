@@ -42,7 +42,7 @@ def login():
         user = User.query.filter_by(email=userInfo.get('email')).first()
         if user and bcrypt.check_password_hash(user.password, userInfo.get('password')):
             login_user(user, remember=userInfo.get('remember'))
-            return Message.msg('Login Successful!', str(current_user)), 200
+            return Message.data('Login Successful!', str(current_user)), 200
         else:
             return Message.error('Login Unsuccessful'), 412
     except Exception as e:
