@@ -24,7 +24,7 @@ def createUser():
             db.session.add(user)
             db.session.commit()
             login_user(user)
-            return Message.data("Your account has been created!\nYou are already logged in and able to set your username under 'Account'",
+            return Message.data("Your account has been created! Set your username under 'Account'",
                                 current_user), 200
         else:
             return Message.msg('ERROR: Incorrect secret code'), 412

@@ -43,6 +43,8 @@ export const UpdateAccountForm = ({ setFlash, setUser, smartFetch }) => {
     [smartFetch, navigate, setUser]
   );
 
+  // TODO: MAKE THIS MORE ROBUST AND ADD FEATURES (don't allow submission with no changes)
+
   return (
     <motion.form onSubmit={handleSubmit} className={styles.form}>
       <motion.h1 className={styles.header}>

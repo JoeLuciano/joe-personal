@@ -58,7 +58,7 @@ export const PostsPage = ({
       />
       <motion.div className={styles.pageContent}>
         <motion.div className={styles.postsPage}>
-          {AllPosts(isMobile, allPosts)}
+          {allPosts && AllPosts(isMobile, allPosts)}
         </motion.div>
         <CreatePostForm
           setFlash={setFlash}
