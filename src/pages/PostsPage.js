@@ -7,8 +7,10 @@ import { MobileNav } from 'components/pageComponents/mobilenav/MobileNav';
 import { motion } from 'framer-motion';
 
 const AllPosts = (isMobile, allPosts) => {
+  console.log(allPosts);
   return (
     <motion.div className={styles.posts}>
+      {!allPosts[0] && <motion.h1>No Posts... Why not post one?</motion.h1>}
       {allPosts.map((post, index) => {
         return <PostCard key={index} isMobile={isMobile} data={post} />;
       })}
@@ -58,7 +60,7 @@ export const PostsPage = ({
       />
       <motion.div className={styles.pageContent}>
         <motion.div className={styles.postsPage}>
-          {allPosts && AllPosts(isMobile, allPosts)}
+          {AllPosts(isMobile, allPosts)}
         </motion.div>
         <CreatePostForm
           setFlash={setFlash}

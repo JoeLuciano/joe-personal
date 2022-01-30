@@ -7,7 +7,7 @@ class Message:
         return jsonify(json_dict)
 
     def data(message, data):
-        json_dict = {'message': message, 'payload': str(data)}
+        json_dict = {'message': message, 'payload': data}
         return jsonify(json_dict)
 
     def error(message):

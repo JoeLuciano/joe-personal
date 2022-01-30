@@ -25,7 +25,7 @@ def createUser():
             db.session.commit()
             login_user(user)
             return Message.data("Your account has been created! Set your username under 'Account'",
-                                current_user), 200
+                                str(current_user)), 200
         else:
             return Message.msg('ERROR: Incorrect secret code'), 412
     except Exception as e:
@@ -67,7 +67,7 @@ def logout():
 def getUser():
     try:
         if current_user.is_authenticated:
-            return Message.data('', current_user), 200
+            return Message.data('', str(current_user)), 200
         else:
             return Message.msg(''), 200
     except Exception as e:
