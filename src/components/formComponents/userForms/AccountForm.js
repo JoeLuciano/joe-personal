@@ -1,7 +1,6 @@
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Flash } from 'components/pageComponents/flash/Flash';
 import styles from './Form.module.css';
 
 const buttonHover = {
@@ -12,7 +11,7 @@ const buttonHover = {
   },
 };
 
-export const UpdateAccountForm = ({ setFlash, setUser }) => {
+export const UpdateAccountForm = ({ setFlash, setUser, smartFetch }) => {
   const [userInfo, setUserInfo] = useState();
 
   function handleChange(event) {
@@ -24,81 +23,41 @@ export const UpdateAccountForm = ({ setFlash, setUser }) => {
 
   const navigate = useNavigate();
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify(userInfo),
-    };
-    fetch('/api/user/update', requestOptions)
-      .then(async (response) => {
-        const data = await response.json();
+  const handleSubmit = useCallback(
+    async (event) => {
+      event.preventDefault();
+      await smartFetch('/api/user/update', 'POST', userInfo);
+    },
+    [smartFetch, userInfo]
+  );
 
-        if (!response.ok) {
-          const error = data || data.message || response.statusText;
-          console.log(error);
-          setFlash(<></>);
-          setFlash(<Flash message={error} type='error' />);
-        } else {
-          console.log(data.message);
-          setFlash(<Flash message={data.message} type='success' />);
-          navigate('/home');
-        }
-      })
-      .catch((error) => {
-        console.error('There was an error!', error.toString());
-      });
-  }
-
-  function logout(event) {
-    event.preventDefault();
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    };
-    fetch('/api/logout', requestOptions)
-      .then(async (response) => {
-        const data = await response.json();
-
-        if (!response.ok) {
-          const error = data || data.message || response.statusText;
-          console.log(error);
-          setFlash(<></>);
-          setFlash(<Flash message={error} type='error' />);
-        } else {
-          console.log(data.message);
-          setUser();
-          navigate('/home');
-          setFlash(<Flash message={data.message} type='success' />);
-        }
-      })
-      .catch((error) => {
-        console.error('There was an error!', error.toString());
-      });
-  }
+  const logout = useCallback(
+    async (event) => {
+      event.preventDefault();
+      const logoutResponse = await smartFetch('/api/logout', 'POST');
+      if (logoutResponse.ok) {
+        setUser(undefined);
+        navigate('/home');
+      }
+    },
+    [smartFetch, navigate, setUser]
+  );
 
   return (
-    <motion.form onSubmit={handleSubmit} className={styles['form']}>
-      <motion.h1 className={styles['header']}>
+    <motion.form onSubmit={handleSubmit} className={styles.form}>
+      <motion.h1 className={styles.header}>
         Update Account Information
       </motion.h1>
-      <motion.div className={styles['text-input-container']}>
+      <motion.div className={styles.textInputContainer}>
         <motion.input
-          className={styles['text-input']}
+          className={styles.textInput}
           placeholder='Username'
           type='username'
           name='username'
           onChange={handleChange}
         />
       </motion.div>
-      <motion.div className={styles['text-input-container']}>
+      <motion.div className={styles.textInputContainer}>
         <motion.input
           className={styles.textInput}
           placeholder='E-mail'
@@ -110,12 +69,12 @@ export const UpdateAccountForm = ({ setFlash, setUser }) => {
       <motion.input
         type='submit'
         value='Update'
-        className={styles['submit-button']}
+        className={styles.submitButton}
         whileHover={buttonHover}
       />
       <motion.button
         onClick={logout}
-        className={styles['submit-button']}
+        className={styles.submitButton}
         style={{ backgroundColor: 'rgb(190, 0, 25)' }}
         whileHover={buttonHover}>
         Logout

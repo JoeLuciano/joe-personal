@@ -32,15 +32,17 @@ export const PostsPage = ({
   const [allPosts, setAllPosts] = useState([]);
 
   const getAllPosts = useCallback(async () => {
-    const allPostsResponse = await smartFetch('/api/posts', 'GET');
+    const allPostsResponse = await smartFetch('/api/allposts', 'GET');
     if (allPostsResponse.ok) {
       setAllPosts(allPostsResponse.result);
+    } else {
+      setAllPosts([{ title: 'ERROR: Could not get posts' }]);
     }
   }, [smartFetch]);
 
   useEffect(() => {
     getAllPosts();
-  }, []);
+  }, [getAllPosts]);
 
   return (
     <motion.div

@@ -1,7 +1,6 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Flash } from 'components/pageComponents/flash/Flash';
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import styles from './Form.module.css';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 
@@ -13,7 +12,7 @@ const buttonHover = {
   },
 };
 
-export const RegisterForm = ({ setFlash, setUser }) => {
+export const RegisterForm = ({ setUser, setFlash, smartFetch }) => {
   const [userInfo, setUserInfo] = useState();
   const [showPassword, setShowPassword] = useState(false);
   const [showSecretCode, setShowSecretCode] = useState(false);
@@ -27,43 +26,31 @@ export const RegisterForm = ({ setFlash, setUser }) => {
 
   const navigate = useNavigate();
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify(userInfo),
-    };
-    fetch('/api/register', requestOptions)
-      .then(async (response) => {
-        const data = await response.json();
-
-        if (!response.ok) {
-          const error = data || data.message || response.statusText;
-          console.log(error);
-          setFlash(<></>);
-          setFlash(<Flash message={error} type='error' />);
-        } else {
-          console.log(data.message);
-          setUser(data.username);
-          setFlash(<Flash message={data.message} type='success' />);
-          navigate('/home');
-        }
-      })
-      .catch((error) => {
-        console.error('There was an error!', error.toString());
-      });
-  }
+  const handleSubmit = useCallback(
+    async (event) => {
+      event.preventDefault();
+      const registerResponse = await smartFetch(
+        '/api/register',
+        'POST',
+        userInfo
+      );
+      if (registerResponse.ok) {
+        setUser('not logged in');
+        navigate('/home');
+        setUser(registerResponse.result);
+      } else {
+        setUser(undefined);
+      }
+    },
+    [smartFetch, userInfo, setUser, navigate]
+  );
 
   return (
-    <motion.form onSubmit={handleSubmit} className={styles['form']}>
-      <motion.h1 className={styles['header']}>Register</motion.h1>
-      <motion.div className={styles['text-input-container']}>
+    <motion.form onSubmit={handleSubmit} className={styles.form}>
+      <motion.h1 className={styles.header}>Register</motion.h1>
+      <motion.div className={styles.textInputContainer}>
         <motion.input
-          className={styles['text-input']}
+          className={styles.textInput}
           type='email'
           placeholder='E-mail'
           name='email'
@@ -71,9 +58,9 @@ export const RegisterForm = ({ setFlash, setUser }) => {
           required
         />
       </motion.div>
-      <motion.div className={styles['text-input-container']}>
+      <motion.div className={styles.textInputContainer}>
         <motion.input
-          className={styles['text-input']}
+          className={styles.textInput}
           type={showPassword ? 'text' : 'password'}
           placeholder='Password'
           name='password'
@@ -81,16 +68,16 @@ export const RegisterForm = ({ setFlash, setUser }) => {
           required
         />
         <motion.button
-          className={styles['password-button']}
+          className={styles.passwordButton}
           type='button'
           onClick={() => setShowPassword((previous) => !previous)}
           whileHover={buttonHover}>
           {showPassword ? <BsEye /> : <BsEyeSlash />}
         </motion.button>
       </motion.div>
-      <motion.div className={styles['text-input-container']}>
+      <motion.div className={styles.textInputContainer}>
         <motion.input
-          className={styles['text-input']}
+          className={styles.textInput}
           type={showSecretCode ? 'text' : 'password'}
           placeholder='Secret Code'
           name='secretCode'
@@ -98,7 +85,7 @@ export const RegisterForm = ({ setFlash, setUser }) => {
           required
         />
         <motion.button
-          className={styles['password-button']}
+          className={styles.passwordButton}
           type='button'
           onClick={() => setShowSecretCode((previous) => !previous)}
           whileHover={buttonHover}>
@@ -113,7 +100,7 @@ export const RegisterForm = ({ setFlash, setUser }) => {
       <motion.input
         type='submit'
         value='Register'
-        className={styles['submit-button']}
+        className={styles.submitButton}
         whileHover={buttonHover}
       />
     </motion.form>

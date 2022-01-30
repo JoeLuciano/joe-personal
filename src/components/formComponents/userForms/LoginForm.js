@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Flash } from 'components/pageComponents/flash/Flash';
-import { useNavigate } from 'react-router-dom';
 import styles from './Form.module.css';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 
@@ -13,7 +13,7 @@ const buttonHover = {
   },
 };
 
-export const LoginForm = ({ setFlash, setUser }) => {
+export const LoginForm = ({ setFlash, setUser, smartFetch }) => {
   const [userInfo, setUserInfo] = useState();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -26,43 +26,27 @@ export const LoginForm = ({ setFlash, setUser }) => {
 
   const navigate = useNavigate();
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify(userInfo),
-    };
-    fetch('/api/login', requestOptions)
-      .then(async (response) => {
-        const data = await response.json();
-
-        if (!response.ok) {
-          const error = data || data.message || response.statusText;
-          console.log(error);
-          setFlash(<></>);
-          setFlash(<Flash message={error} type='error' />);
-        } else {
-          console.log(data.message);
-          setUser(data.username);
-          setFlash(<Flash message={data.message} type='success' />);
-          navigate('/home');
-        }
-      })
-      .catch((error) => {
-        console.error('There was an error!', error.toString());
-      });
-  }
+  const handleSubmit = useCallback(
+    async (event) => {
+      event.preventDefault();
+      const registerResponse = await smartFetch('/api/login', 'POST', userInfo);
+      if (registerResponse.ok) {
+        setUser('not logged in');
+        navigate('/home');
+        setUser(registerResponse.result);
+      } else {
+        setUser(undefined);
+      }
+    },
+    [smartFetch, userInfo, setUser, navigate]
+  );
 
   return (
-    <motion.form onSubmit={handleSubmit} className={styles['form']}>
-      <motion.h1 className={styles['header']}>Log in</motion.h1>
-      <motion.div className={styles['text-input-container']}>
+    <motion.form onSubmit={handleSubmit} className={styles.form}>
+      <motion.h1 className={styles.header}>Log in</motion.h1>
+      <motion.div className={styles.textInputContainer}>
         <motion.input
-          className={styles['text-input']}
+          className={styles.textInput}
           placeholder='E-mail'
           type='email'
           name='email'
@@ -70,9 +54,9 @@ export const LoginForm = ({ setFlash, setUser }) => {
           required
         />
       </motion.div>
-      <motion.div className={styles['text-input-container']}>
+      <motion.div className={styles.textInputContainer}>
         <motion.input
-          className={styles['text-input']}
+          className={styles.textInput}
           placeholder='Password'
           type={showPassword ? 'text' : 'password'}
           name='password'
@@ -80,26 +64,26 @@ export const LoginForm = ({ setFlash, setUser }) => {
           required
         />
         <motion.button
-          className={styles['password-button']}
+          className={styles.passwordButton}
           type='button'
           onClick={() => setShowPassword((previous) => !previous)}
           whileHover={buttonHover}>
           {showPassword ? <BsEye /> : <BsEyeSlash />}
         </motion.button>
       </motion.div>
-      <motion.label className={styles['checkbox-label']}>
+      <motion.label className={styles.checkboxLabel}>
         Stay logged in?
         <motion.input
           name='remember'
           type='checkbox'
           onChange={handleChange}
-          className={styles['checkbox']}
+          className={styles.checkbox}
         />
       </motion.label>
       <motion.input
         type='submit'
         value='Log in'
-        className={styles['submit-button']}
+        className={styles.submitButton}
         whileHover={buttonHover}
       />
       <motion.button // TODO: CHANGE TO A LINK

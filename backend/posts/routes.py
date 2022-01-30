@@ -14,14 +14,14 @@ def getPost(title):
     try:
         if title:
             post = Post.query.filter_by(title=title).first()
-            return jsonify({'message': 'Got post', 'payload': post.serialize}), 200
+            return jsonify({'message': '', 'payload': post.serialize}), 200
         else:
             return jsonify({'message': 'Please specify a post to view'}), 200
     except Exception as e:
         return jsonify(f"An Error Occured: {e}"), 400
 
 
-@posts.route('/api/posts', methods=['GET'])
+@posts.route('/api/allposts', methods=['GET'])
 @cross_origin()
 def getPosts():
     try:
@@ -31,7 +31,7 @@ def getPosts():
         return jsonify(f"An Error Occured: {e}"), 400
 
 
-@posts.route('/api/posts/create', methods=['POST'])
+@posts.route('/api/post/create', methods=['POST'])
 @cross_origin()
 def createPost():
     if not current_user.is_authenticated:
@@ -47,9 +47,11 @@ def createPost():
         return jsonify({'message': f"An Error Occured: {e}"}), 400
 
 
-@posts.route('/api/posts/remove', methods=['POST'])
+@posts.route('/api/post/delete', methods=['POST'])
 @cross_origin()
 def removePost():
+    if not current_user.is_authenticated:
+        return jsonify({'message': 'You must be logged in to delete a post'}), 412
     title = request.json.get('title')
     try:
         post = Post.query.filter_by(title=title).first()

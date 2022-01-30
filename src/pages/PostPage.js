@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import styles from './styles.module.css';
 import { Header } from 'components/pageComponents/header/Header';
 import { MobileNav } from 'components/pageComponents/mobilenav/MobileNav';
@@ -17,29 +17,23 @@ export const PostPage = ({
   headerItems,
   userItems,
   setFlash,
+  smartFetch,
 }) => {
   const [post, setPost] = useState([]);
   const { title } = useParams();
 
+  const getPost = useCallback(async () => {
+    const postResponse = await smartFetch(`/api/post/${title}`, 'GET');
+    if (postResponse.ok) {
+      setPost(postResponse.result);
+    } else {
+      setPost([{ title: 'ERROR: Could not get post' }]);
+    }
+  }, [smartFetch, title]);
+
   useEffect(() => {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    };
-    fetch(`/api/post/${title}`, requestOptions).then(async (response) => {
-      const data = await response.json();
-      if (!response.ok) {
-        const error = data || data.message || response.statusText;
-        console.log(error);
-      } else {
-        console.log(data);
-        setPost(data.payload);
-      }
-    });
-  }, [title]);
+    getPost();
+  }, [getPost]);
 
   return (
     <motion.div
@@ -55,7 +49,12 @@ export const PostPage = ({
       />
       <motion.div className={styles.pageContent}>
         <motion.div className={styles.postsPage}>
-          <PostView isMobile={isMobile} data={post} setFlash={setFlash} />
+          <PostView
+            isMobile={isMobile}
+            data={post}
+            setFlash={setFlash}
+            smartFetch={smartFetch}
+          />
         </motion.div>
       </motion.div>
       <MobileNav

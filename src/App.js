@@ -1,5 +1,5 @@
 import './App.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Flash } from 'components/pageComponents/flash/Flash';
 import {
@@ -15,88 +15,78 @@ function App() {
   const [width, setWindowWidth] = useState(0);
   const [user, setUser] = useState('not logged in');
   const [flash, setFlash] = useState();
-
-  useEffect(() => {
-    updateDimensions();
-    getUser();
-    window.addEventListener('resize', updateDimensions);
-    return () => window.removeEventListener('resize', updateDimensions);
-  }, []);
+  const [userItems, setUserItems] = useState([]);
 
   const updateDimensions = () => {
     const width = window.innerWidth;
     setWindowWidth(width);
   };
 
-  const getUser = () => {
-    fetch('/api/user', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    }).then(async (response) => {
-      const data = await response.json();
-      if (!response.ok) {
-        const error = data || data.message || response.statusText;
-        console.log(error);
-      } else {
-        console.log(`Username: ${data.username}`);
-        setUser(data.username);
-      }
-    });
-  };
-
-  const smartFetch = async (
-    url,
-    type,
-    payload = null,
-    setLoading = () => {}
-  ) => {
-    console.groupCollapsed(`${type} Request - ${url}`);
-    const requestOptions = {
-      method: type,
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      ...(payload && { body: JSON.stringify(payload) }),
-    };
-    const response = await fetch(url, requestOptions)
-      .then(async (response) => {
-        const data = await response.json();
-        if (!response.ok) {
-          const error = data || data.message || response.statusText;
-          console.error(`Error from ${url}: ${error}`);
-          setFlash(<></>);
-          setFlash(<Flash message={error.message} type='error' />);
-          return { ok: false, result: data };
-        } else {
-          console.info(`Data from ${url}: ${JSON.stringify(data, null, 4)}`);
-          if (data.message) {
-            console.info(data.message);
+  const smartFetch = useCallback(
+    async (url, type, payload = null, setLoading = () => {}) => {
+      const requestOptions = {
+        method: type,
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        ...(payload && { body: JSON.stringify(payload) }),
+      };
+      const response = await fetch(url, requestOptions)
+        .then(async (response) => {
+          const data = await response.json();
+          console.groupCollapsed(`${type} Request - ${url}`);
+          if (!response.ok) {
+            const error = data || data.message || response.statusText;
+            console.error(`Error from ${url}: ${error}`);
             setFlash(<></>);
-            setFlash(<Flash message={data.message} type='success' />);
+            setFlash(<Flash message={error.message} type='error' />);
+            return { ok: false, result: data };
+          } else {
+            console.info(`Data from ${url}: ${JSON.stringify(data, null, 4)}`);
+            if (data.message) {
+              console.info(data.message);
+              setFlash(<></>);
+              setFlash(<Flash message={data.message} type='success' />);
+            }
+            return { ok: true, result: data.payload };
           }
-          return { ok: true, result: data.payload };
-        }
-      })
-      .catch((error) => {
-        console.error('There was an error!\n', error.toString());
-        return { ok: false, result: error };
-      });
-    setLoading(false);
-    console.groupEnd(`${type} Request - ${url}`);
-    return response;
-  };
+        })
+        .catch((error) => {
+          console.error('There was an error!\n', error.toString());
+          return { ok: false, result: error };
+        });
+      setLoading(false);
+      console.groupEnd(`${type} Request - ${url}`);
+      return response;
+    },
+    []
+  );
+
+  const getUser = useCallback(async () => {
+    const userResponse = await smartFetch('/api/user', 'GET');
+    if (userResponse.ok) {
+      setUser(userResponse.result);
+    }
+  }, [smartFetch]);
 
   const headerItems = ['Experience', 'Resume', 'Posts', 'Library'];
-  let userItems = [];
-  if (user === undefined) {
-    userItems = ['Register', 'Login'];
-  } else if (user !== 'not logged in') {
-    userItems = ['Account'];
-  }
+
+  useEffect(() => {
+    updateDimensions();
+    getUser();
+    window.addEventListener('resize', updateDimensions);
+
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, [getUser]);
+
+  useEffect(() => {
+    if (user === undefined) {
+      setUserItems(['Register', 'Login']);
+    } else if (user !== 'not logged in') {
+      setUserItems(['Account']);
+    }
+  }, [setUserItems, user]);
 
   const isMobile = width < 1000;
   const pageState = {

@@ -23,8 +23,7 @@ export const CreatePostForm = ({ setFlash, getAllPosts, smartFetch }) => {
   const handleSubmit = useCallback(
     async (event) => {
       event.preventDefault();
-      console.log('test');
-      await smartFetch('/api/posts/create', 'POST', postInfo);
+      await smartFetch('/api/post/create', 'POST', postInfo);
       getAllPosts();
     },
     [smartFetch, postInfo, getAllPosts]

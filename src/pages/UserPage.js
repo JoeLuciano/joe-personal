@@ -7,28 +7,34 @@ import styles from './styles.module.css';
 import { Navigate } from 'react-router-dom';
 
 export const UserPage = ({
-  isMobile,
-  setUser,
-  user,
-  setFlash,
   login,
   register,
   account,
+  user,
+  setUser,
+  isMobile,
+  setFlash,
+  smartFetch,
 }) => {
+  const formState = {
+    setUser: setUser,
+    setFlash: setFlash,
+    smartFetch: smartFetch,
+  };
   return (
     <motion.div className={styles.page}>
       <NameLogo />
       <motion.div className={styles.pageContent}>
-        {user === undefined ? (
+        {user === undefined || (user === 'not logged in' && !account) ? (
           register ? (
-            <RegisterForm setFlash={setFlash} setUser={setUser} />
+            <RegisterForm {...formState} />
           ) : login ? (
-            <LoginForm setFlash={setFlash} setUser={setUser} />
+            <LoginForm {...formState} />
           ) : (
             <Navigate to='/home' />
           )
         ) : account ? (
-          <UpdateAccountForm setFlash={setFlash} setUser={setUser} />
+          <UpdateAccountForm {...formState} />
         ) : (
           <Navigate to='/account' />
         )}
