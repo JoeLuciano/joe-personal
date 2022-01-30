@@ -13,9 +13,6 @@ const introText = {
     opacity: 1,
     y: 0,
     x: 0,
-    tranistion: {
-      duration: 2,
-    },
   },
 };
 
@@ -30,6 +27,7 @@ const intro = {
     x: 0,
     y: 0,
     transition: {
+      delayChildren: 1.5,
       staggerChildren: 1,
     },
   },

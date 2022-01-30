@@ -1,6 +1,11 @@
 import './App.css';
 import { useState, useEffect, useCallback } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from 'react-router-dom';
 import { Flash } from 'components/pageComponents/flash/Flash';
 import {
   HomePage,
@@ -9,7 +14,9 @@ import {
   NotFound,
   ExperiencePage,
   UserPage,
+  BasePage,
 } from './pages/pageIndex';
+import { AnimatePresence } from 'framer-motion';
 
 function App() {
   const [width, setWindowWidth] = useState(0);
@@ -98,44 +105,47 @@ function App() {
     setFlash: setFlash,
     smartFetch: smartFetch,
   };
-
+  const location = useLocation();
   return (
     <div className='App'>
-      <Router>
-        {flash}
-        <Routes>
-          <Route path='*' element={<NotFound isMobile={isMobile} />} />
-          <Route exact path='/' element={<HomePage {...pageState} />}></Route>
+      {flash}
+      <AnimatePresence exitBeforeEnter>
+        <Routes location={location} key={location.key}>
+          <Route path='*' element={<NotFound doAnimate {...pageState} />} />
+          <Route
+            exact
+            path='/'
+            element={<HomePage doAnimate {...pageState} />}></Route>
           <Route
             exact
             path='/home'
-            element={<HomePage doAnimate={false} {...pageState} />}></Route>
+            element={<HomePage doAnimate {...pageState} />}></Route>
           <Route
             exact
             path='/posts'
-            element={<PostsPage {...pageState} />}></Route>
+            element={<PostsPage doAnimate {...pageState} />}></Route>
           <Route
             exact
             path='/post/:title'
-            element={<PostPage {...pageState} />}></Route>
+            element={<PostPage doAnimate {...pageState} />}></Route>
           <Route
             exact
             path='/experience'
-            element={<ExperiencePage {...pageState} />}></Route>
+            element={<ExperiencePage doAnimate {...pageState} />}></Route>
           <Route
             exact
             path='/register'
-            element={<UserPage register {...pageState} />}></Route>
+            element={<UserPage doAnimate register {...pageState} />}></Route>
           <Route
             exact
             path='/login'
-            element={<UserPage login {...pageState} />}></Route>
+            element={<UserPage doAnimate login {...pageState} />}></Route>
           <Route
             exact
             path='/account'
-            element={<UserPage account {...pageState} />}></Route>
+            element={<UserPage doAnimate account {...pageState} />}></Route>
         </Routes>
-      </Router>
+      </AnimatePresence>
     </div>
   );
 }

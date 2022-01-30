@@ -2,43 +2,32 @@ import { motion } from 'framer-motion';
 import { LoginForm } from 'components/formComponents/userForms/LoginForm';
 import { RegisterForm } from 'components/formComponents/userForms/RegisterForm';
 import { UpdateAccountForm } from 'components/formComponents/userForms/AccountForm';
-import { NameLogo } from 'components/pageComponents/nameLogo/NameLogo';
+import { BasePage } from './BasePage';
 import styles from './styles.module.css';
 import { Navigate } from 'react-router-dom';
 
-export const UserPage = ({
-  login,
-  register,
-  account,
-  user,
-  setUser,
-  isMobile,
-  setFlash,
-  smartFetch,
-}) => {
-  const formState = {
-    setUser: setUser,
-    setFlash: setFlash,
-    smartFetch: smartFetch,
-  };
+export const UserPage = (props) => {
+  const { user, account, login, register } = props;
   return (
-    <motion.div className={styles.page}>
-      <NameLogo />
-      <motion.div className={styles.pageContent}>
-        {user === undefined || (user === 'not logged in' && !account) ? (
-          register ? (
-            <RegisterForm {...formState} />
-          ) : login ? (
-            <LoginForm {...formState} />
+    <BasePage
+      {...props}
+      pageContent={
+        <motion.div className={styles.pageContent}>
+          {user === undefined || (user === 'not logged in' && !account) ? (
+            register ? (
+              <RegisterForm {...props} />
+            ) : login ? (
+              <LoginForm {...props} />
+            ) : (
+              <Navigate to='/home' />
+            )
+          ) : account ? (
+            <UpdateAccountForm {...props} />
           ) : (
-            <Navigate to='/home' />
-          )
-        ) : account ? (
-          <UpdateAccountForm {...formState} />
-        ) : (
-          <Navigate to='/account' />
-        )}
-      </motion.div>
-    </motion.div>
+            <Navigate to='/account' />
+          )}
+        </motion.div>
+      }
+    />
   );
 };

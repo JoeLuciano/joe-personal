@@ -30,7 +30,7 @@ export const Flash = ({ message, type = 'info', duration = '5000' }) => {
   }, [duration]);
 
   return (
-    <AnimatePresence exitBeforeEnter={true} oxExitComplete={() => null}>
+    <AnimatePresence exitBeforeEnter onExitComplete={() => null}>
       {show && (
         <motion.div
           className={styles['flash']}
