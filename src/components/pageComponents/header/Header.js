@@ -35,14 +35,12 @@ const headerItem = {
 
 const HeaderLinks = ({ headerItems }) => {
   return (
-    <motion.div
-      className={styles['header-items']}
-      variants={headerItemsVariant}>
+    <motion.div className={styles.headerItems} variants={headerItemsVariant}>
       {headerItems.map((item) => (
         <Link
           key={item}
           to={`/${item.toLowerCase()}`}
-          className={styles['header-item']}>
+          className={styles.headerItem}>
           <motion.h3
             variants={headerItem}
             whileHover={{
@@ -58,12 +56,12 @@ const HeaderLinks = ({ headerItems }) => {
 
 const UserLinks = ({ userItems }) => {
   return (
-    <motion.div className={styles['user-items']} variants={headerItemsVariant}>
+    <motion.div className={styles.userItems} variants={headerItemsVariant}>
       {userItems.map((item) => (
         <Link
           key={item}
           to={`/${item.toLowerCase()}`}
-          className={styles['user-item']}>
+          className={styles.userItem}>
           <motion.h3
             variants={headerItem}
             whileHover={{
@@ -84,7 +82,7 @@ export const Header = ({
   userItems,
 }) => {
   return (
-    <motion.div className={styles['header']} variants={headerVariant}>
+    <motion.div className={styles.header} variants={headerVariant}>
       <NameLogo />
       {!isMobile && <HeaderLinks headerItems={headerItems} />}
       {!isMobile && <UserLinks userItems={userItems} />}

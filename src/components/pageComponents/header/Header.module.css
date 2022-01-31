@@ -8,24 +8,24 @@
 }
 
 .header > * {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 }
 
-.header-items {
+.headerItems {
   display: inline-grid;
-  grid-template-columns: repeat(6, 12rem);
-  width: 100%;
+  grid-auto-flow: column;
   margin-top: 1rem;
   margin-left: 9rem;
 }
 
-.header-item {
+.headerItem {
+  margin: 0 1.5rem;
   text-align: center;
   color: #1985af;
   text-decoration: none;
 }
 
-.user-items {
+.userItems {
   display: inline-grid;
   position: absolute;
   right: 0;
@@ -33,7 +33,7 @@
   margin-right: 3rem;
 }
 
-.user-item {
+.userItem {
   margin-bottom: 1rem;
   text-align: center;
   color: #1985af;
