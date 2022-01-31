@@ -1,39 +1,33 @@
-.mobile-header-items {
-  display: inline-grid;
-  grid-template-rows: repeat(5, 2rem);
+:root {
+  --blue: #6495ed;
+  --white: #faf0e6;
+  --nav-width: 10rem;
+  --nav-height: 12rem;
+  --button-width: 2rem;
+  --button-height: 2rem;
+  --button-position-bottom: 0.5rem;
+  --button-position-right: 0.5rem;
 }
 
-.mobile-header-item {
-  text-align: center;
-  color: black;
-  text-decoration: none;
+.mobileNav {
+  position: fixed;
+  width: var(--nav-width);
+  height: var(--nav-height);
+  bottom: 1rem;
+  right: 1rem;
 }
 
-.mobile-header {
-  position: absolute;
-  bottom: 3vh;
-  right: 5vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-}
-
-.mobile-header-background {
-  position: absolute;
-  bottom: 0vh;
-  right: 0vw;
-  padding: 1.5rem;
-  padding-bottom: 4rem;
+.mobileNavContents {
+  width: 100%;
+  height: 100%;
   border-radius: 1rem;
-  background: rgb(0, 255, 255, 0.5);
+  background: var(--blue);
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
 }
 
-.mobile-header-button {
+.mobileNavButton {
   outline: none;
   border: none;
   user-select: none;
@@ -42,9 +36,25 @@
   -ms-user-select: none;
   cursor: pointer;
   position: absolute;
-  bottom: 0.5rem;
-  width: 2rem;
-  height: 2rem;
+  bottom: var(--button-position-bottom);
+  right: var(--button-position-right);
+  width: var(--button-width);
+  height: var(--button-height);
+  background: var(--white);
   border-radius: 50%;
   background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobileHeaderItems {
+  display: inline-grid;
+  grid-gap: 0.5rem;
+}
+
+.mobileHeaderItem {
+  text-align: center;
+  color: black;
+  text-decoration: none;
 }
