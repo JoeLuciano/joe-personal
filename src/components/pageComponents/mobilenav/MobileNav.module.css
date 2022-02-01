@@ -15,6 +15,7 @@
   height: var(--nav-height);
   bottom: 1rem;
   right: 1rem;
+  filter: drop-shadow(-1px 6px 3px rgba(50, 50, 0, 0.5));
 }
 
 .mobileNavContents {
@@ -41,7 +42,6 @@
   width: var(--button-width);
   height: var(--button-height);
   background: var(--white);
-  border-radius: 50%;
   background: transparent;
   display: flex;
   align-items: center;

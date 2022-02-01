@@ -47,7 +47,9 @@ const PostOptions = ({ tags, info }) => {
 
 export const PostCard = ({ isMobile, data }) => {
   return (
-    <motion.div className={styles['postcard']}>
+    <motion.div
+      className={styles['postcard']}
+      whileHover={{ boxShadow: '1px 4px 20px rgba(50, 50, 0, 0.5)' }}>
       <PostCreationInfo
         image='get user pfp'
         author={data.author}

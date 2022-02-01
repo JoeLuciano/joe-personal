@@ -1,7 +1,8 @@
 .postcard {
   padding: 1rem;
   margin: 1rem;
-  border: 0.4rem ridge rgb(0, 162, 190, 0.5);
+  border: 0.2rem solid var(--blue);
+  border-radius: 1rem;
 }
 
 .post-creation-info {

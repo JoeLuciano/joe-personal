@@ -6,28 +6,24 @@
   overflow: hidden;
 }
 
-.pageContent {
+.desktopContent {
   display: flex;
   flex-direction: column;
   position: relative;
-  width: 100%;
+  min-height: 50vh;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  margin: 10rem 20vw;
+}
+
+.mobileContent {
+  display: flex;
+  flex-direction: column;
+  position: relative;
   min-height: 80vh;
   text-align: center;
   align-items: center;
   justify-content: center;
-}
-
-.postsPage {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  margin-top: 10rem;
-  width: 100%;
-}
-
-.posts {
-  display: flex;
-  flex-direction: column;
+  margin: 2rem 0;
 }

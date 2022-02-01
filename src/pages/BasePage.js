@@ -11,10 +11,11 @@ const page = {
 
 const pageAppear = {
   hidden: { opacity: 0, y: '100%' },
-  visible: { opacity: 1, y: 0, transition: { duration: 1 } },
+  visible: { opacity: 1, y: 0, transition: { duration: 1, delay: 1 } },
 };
 
 export const BasePage = (props) => {
+  const { isMobile } = props;
   return (
     <motion.div
       className={styles.page}
@@ -23,7 +24,9 @@ export const BasePage = (props) => {
       animate='visible'
       exit='exit'>
       <Header {...props} />
-      <motion.div className={styles.pageContent} variants={pageAppear}>
+      <motion.div
+        className={isMobile ? styles.mobileContent : styles.desktopContent}
+        variants={pageAppear}>
         {props.pageContent}
       </motion.div>
       <MobileNav {...props} key='mobile-nav' />

@@ -30,11 +30,11 @@ export const CreatePostForm = ({ setFlash, smartFetch, getAllPosts }) => {
   );
 
   return (
-    <motion.form onSubmit={handleSubmit} className={styles['form']}>
-      <motion.h1 className={styles['header']}>Create a post</motion.h1>
-      <motion.div className={styles['text-input-container']}>
+    <motion.form onSubmit={handleSubmit} className={styles.form}>
+      <motion.h1 className={styles.header}>Create a post</motion.h1>
+      <motion.div className={styles.textInputContainer}>
         <motion.input
-          className={styles['text-input']}
+          className={styles.textInput}
           type='text'
           placeholder='Title'
           name='title'
@@ -42,20 +42,21 @@ export const CreatePostForm = ({ setFlash, smartFetch, getAllPosts }) => {
           required
         />
       </motion.div>
-      <motion.div className={styles['text-input-container']}>
+      <motion.div className={styles.textInputContainer}>
         <motion.textarea
-          className={styles['text-input']}
+          className={styles.textInput}
           type='text'
           placeholder="What's on your mind?"
           name='content'
           onChange={handleChange}
+          rows={5}
           required
         />
       </motion.div>
       <motion.input
         type='submit'
         value='Post'
-        className={styles['submit-button']}
+        className={styles.submitButton}
         whileHover={buttonHover}
       />
     </motion.form>
