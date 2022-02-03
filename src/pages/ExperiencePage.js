@@ -3,34 +3,22 @@ import { motion } from 'framer-motion';
 import PythonWheel from 'customImages/PythonWheel.svg';
 
 const pythonWheel = {
-  start: { x: '-100vw', rotate: 0 },
-  end: { x: 0, y: [-100, 100, 0], rotate: 720, transition: { duration: 2 } },
-};
-
-const bounceTransition = {
-  x: {
-    duration: 2,
-    yoyo: Infinity,
-    ease: 'easeOut',
-  },
-  y: {
-    duration: 2,
-    yoyo: Infinity,
-    type: 'spring',
-    damping: 100,
-    mass: 0.75,
-    stiffness: 100,
-  },
-  rotate: {
-    duration: 5,
-    ease: 'linear',
+  start: { x: '-120vw', y: 0, rotate: 0 },
+  end: {
+    x: '30vw',
+    y: 0,
+    rotate: 1080,
+    transition: { duration: 6 },
   },
 };
 
-const bounceAnimation = {
-  x: [-500, -100],
-  y: [-200, 400],
-  rotate: 360,
+const pythonText = {
+  hidden: { y: '-2rem', opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { delay: 6 },
+  },
 };
 
 export const ExperiencePage = (props) => {
@@ -38,14 +26,19 @@ export const ExperiencePage = (props) => {
     <BasePage
       {...props}
       pageContent={
-        <motion.img
-          src={PythonWheel}
-          alt='PythonWheel'
-          width='200'
-          // variants={test}
-          transition={bounceTransition}
-          animate={bounceAnimation}
-        />
+        <motion.div>
+          <motion.p variants={pythonText}>
+            I've been using Python for a few years now
+          </motion.p>
+          <motion.img
+            src={PythonWheel}
+            alt='PythonWheel'
+            width='200'
+            variants={pythonWheel}
+            initial='start'
+            animate='end'
+          />
+        </motion.div>
       }
     />
   );
