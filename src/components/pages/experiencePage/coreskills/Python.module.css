@@ -1,0 +1,51 @@
+.pythonSection {
+  position: relative;
+}
+
+.pythonTextContainer {
+  width: calc(100% - 5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pythonHeader {
+  color: #003863;
+  font-size: 2rem;
+}
+
+.pythonText {
+  color: #003863;
+  font-size: 1.3rem;
+}
+
+.pythonUnorderedList {
+  margin: 2rem 0;
+  display: flex;
+  grid-gap: 2rem;
+  list-style-type: none;
+}
+
+.pythonUnorderedList > li {
+  font-size: 1rem;
+  color: #6e4b00;
+  width: 10rem;
+}
+
+.pythonUnorderedList > li > h3,
+.pythonUnorderedList > li > a > h3 {
+  font-size: 2rem;
+}
+
+.pythonUnorderedList > li > a {
+  font-size: inherit;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+}
+
+.pythonWheel {
+  position: absolute;
+}
