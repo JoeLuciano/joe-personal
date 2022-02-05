@@ -1,41 +1,29 @@
-import PythonWheel from 'customImages/PythonWheel.svg';
 import { motion } from 'framer-motion';
 import { styles } from './Education.module.css';
 
-const pythonWheel = {
-  start: { x: '-120vw', y: 0, rotate: 0 },
-  end: {
-    x: '30vw',
-    y: 0,
-    rotate: 1080,
-    transition: { duration: 6 },
-  },
-};
-
-const pythonText = {
-  hidden: { y: '-10rem', opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: { delay: 6 },
-  },
-};
-
-export const PythonExperience = (props) => {
+export const Education = (props) => {
   return (
     <>
-      {' '}
-      <motion.p variants={pythonText}>
-        I've been using Python for a few years now
+      <motion.h1>Education</motion.h1>
+      <motion.p>
+        I recieved my undergraduate and graduate degrees in Computer Engineering
+        at Binghamton University from 2017 to 2021.
       </motion.p>
-      <motion.img
-        src={PythonWheel}
-        alt='PythonWheel'
-        width='200'
-        variants={pythonWheel}
-        initial='start'
-        animate='end'
-      />
+      <motion.p>Watson course</motion.p>
+      <motion.p>C projects - Pololu Robot, </motion.p>
+      <motion.p>VHDL Courses</motion.p>
+      <motion.p>
+        Capstones - Image recognition with Nvidia chip, Javascript app for
+        Digital Design
+      </motion.p>
+      <motion.p>
+        Grad courses - Baremetal Programming in Embedded systems with C,{' '}
+        <motion.a href='https://youtu.be/HcxlbCVMm9Y' target='blank'>
+          IoT
+        </motion.a>
+        final project, link report and code.
+      </motion.p>
+      <motion.p>Innovation Scholars</motion.p>
     </>
   );
 };

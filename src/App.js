@@ -9,6 +9,7 @@ import {
   NotFound,
   ExperiencePage,
   UserPage,
+  DocumentPage,
 } from './pages/pageIndex';
 import { AnimatePresence } from 'framer-motion';
 
@@ -136,6 +137,10 @@ function App() {
             exact
             path='/account'
             element={<UserPage account {...pageState} />}></Route>
+          <Route
+            exact
+            path='/document'
+            element={<DocumentPage {...pageState} />}></Route>
         </Routes>
       </AnimatePresence>
     </div>
