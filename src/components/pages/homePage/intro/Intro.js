@@ -1,4 +1,4 @@
-import { ArrowText } from 'components/pageComponents/arrowtext/ArrowText';
+import { ArrowText } from 'components/pageComponents/textComponents/arrowtext/ArrowText';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import styles from './Intro.module.css';

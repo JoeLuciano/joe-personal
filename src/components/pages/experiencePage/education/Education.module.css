@@ -1,0 +1,49 @@
+:root {
+  --bing-green: #00704f;
+}
+
+.header {
+  font-size: 2.5rem;
+  text-align: center;
+  width: 100%;
+  color: var(--bing-green);
+  border-bottom: double 3px var(--bing-green);
+}
+
+.headerDescription {
+  margin: 1rem;
+  display: flex;
+  align-items: center;
+  grid-gap: 2rem;
+  color: var(--bing-green);
+}
+
+.gradList {
+  list-style-type: none;
+}
+
+.gradList > h2 {
+  font-size: 2rem;
+  text-align: right;
+}
+
+.gradList > h3 {
+  font-size: 1.5rem;
+  text-align: left;
+}
+
+.gradList > li {
+  margin: 2rem 0;
+  font-size: 1.3rem;
+}
+
+.gradList > li > h3 {
+  text-align: left;
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.gradList > li > a {
+  color: #005070;
+  text-decoration: none;
+}

@@ -13,7 +13,8 @@ export const ExperiencePage = (props) => {
       {...props}
       pageContent={
         <>
-          <Python {...props} />
+          {/* <Python {...props} /> */}
+          <Education {...props} />
         </>
       }
     />

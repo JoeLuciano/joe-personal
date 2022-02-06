@@ -94,7 +94,7 @@ const PythonList = (props) => {
         icon={SiKeras}
       />
       <PythonListItem
-        main='CoCoTB'
+        main='cocotb'
         sub='Hardware Verification'
         link='https://www.cocotb.org/'
         icon={VscCircuitBoard}
