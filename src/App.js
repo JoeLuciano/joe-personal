@@ -139,7 +139,7 @@ function App() {
             element={<UserPage account {...pageState} />}></Route>
           <Route
             exact
-            path='/document'
+            path='/document/:filename'
             element={<DocumentPage {...pageState} />}></Route>
         </Routes>
       </AnimatePresence>

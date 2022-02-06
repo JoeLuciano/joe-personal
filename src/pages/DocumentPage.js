@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-// import FinalProject from '/files/MS Project Report.pdf';
-// import { PDFViewer } from '@react-pdf/renderer';
+import { useParams } from 'react-router-dom';
+import { BasePage } from 'pages/BasePage';
+import { PdfViewer } from 'components/pageComponents/pdfViewer/PdfViewer';
 
 export const DocumentPage = (props) => {
-  return <>test</>;
+  const { filename } = useParams();
+  return (
+    <BasePage
+      {...props}
+      pageContent={<PdfViewer file={`/files/${filename}`} />}
+    />
+  );
 };
