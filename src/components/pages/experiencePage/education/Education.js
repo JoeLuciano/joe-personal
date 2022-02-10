@@ -9,14 +9,14 @@ import {
   ShimmerLink,
 } from 'components/pageComponents/textComponents/shimmer/ShimmerText';
 
-export const Education = (props) => {
+export const Education = ({ isMobile, ...props }) => {
   return (
     <>
       <motion.h1 className={styles.header}>Education</motion.h1>
       <motion.div className={styles.headerDescription}>
         <motion.h3>
-          I recieved my undergraduate and graduate degrees in Computer
-          Engineering at Binghamton University from 2017 to 2021.
+          Computer Engineering BS {'&'} MS from Binghamton University
+          (2017-2021)
         </motion.h3>
         <motion.img src={Binghamton} alt='Binghamton University' height='100' />
       </motion.div>
@@ -31,6 +31,11 @@ export const Education = (props) => {
             link='https://youtu.be/HcxlbCVMm9Y'
             text='Frozen Pipe Detection System'
           />
+        </motion.li>
+        <motion.li>
+          <motion.h3>Deep Learning</motion.h3>
+          Developed and deployed (Python) convolutional neural networks which
+          emulated widely known architectures such as ResNet.
         </motion.li>
         <motion.li>
           <motion.h3>Masters Project</motion.h3>
@@ -61,11 +66,6 @@ export const Education = (props) => {
           Physics and Tech of Solar Cells - Studied material physics up to
           energy applications at the grid level with a primary focus on
           renewables. <ShimmerLink link='/document/' text='ADD PROJECT' />
-        </motion.li>
-        <motion.li>
-          <motion.h3>Deep Learning</motion.h3>
-          Developed and deployed (Python) convolutional neural networks which
-          emulated widely known architectures such as ResNet.
         </motion.li>
         <motion.li>
           <motion.h3>Embedded Systems Design</motion.h3>

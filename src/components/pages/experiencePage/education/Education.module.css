@@ -20,26 +20,25 @@
 
 .gradList {
   list-style-type: none;
+  box-shadow: 0px 0px 2px 2px rgba(0, 46, 15, 0.5),
+    inset 0px 0px 2px 2px rgba(0, 0, 0, 0.2);
+  margin: 1rem;
 }
 
 .gradList > h2 {
+  padding: 0.5rem;
   font-size: 2rem;
-  text-align: right;
-}
-
-.gradList > h3 {
-  font-size: 1.5rem;
-  text-align: left;
+  text-align: center;
 }
 
 .gradList > li {
-  margin: 2rem 0;
+  padding: 1rem;
   font-size: 1.3rem;
 }
 
 .gradList > li > h3 {
   text-align: left;
-  margin: 0;
+  margin: 0.5rem;
   font-size: 1.5rem;
 }
 
