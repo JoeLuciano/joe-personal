@@ -12,13 +12,12 @@ import {
 export const Education = ({ isMobile, ...props }) => {
   return (
     <>
-      <motion.h1 className={styles.header}>Education</motion.h1>
-      <motion.div className={styles.headerDescription}>
-        <motion.h3>
-          Computer Engineering BS {'&'} MS from Binghamton University
-          (2017-2021)
-        </motion.h3>
-        <motion.img src={Binghamton} alt='Binghamton University' height='100' />
+      <motion.div
+        className={
+          isMobile ? styles.headerDescriptionMobile : styles.headerDescription
+        }>
+        <motion.h3>BS {'&'} MS in Computer Engineering (2017-2021)</motion.h3>
+        <motion.img src={Binghamton} alt='Binghamton University' height='120' />
       </motion.div>
       <motion.ul className={styles.gradList}>
         <motion.h2>Graduate Highlights</motion.h2>

@@ -1,41 +1,45 @@
-import PythonWheel from 'customImages/PythonWheel.svg';
 import { motion } from 'framer-motion';
 import { styles } from './Professional.module.css';
 
-const pythonWheel = {
-  start: { x: '-120vw', y: 0, rotate: 0 },
-  end: {
-    x: '30vw',
-    y: 0,
-    rotate: 1080,
-    transition: { duration: 6 },
-  },
-};
-
-const pythonText = {
-  hidden: { y: '-10rem', opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: { delay: 6 },
-  },
-};
-
-export const PythonExperience = (props) => {
+export const Professional = (props) => {
   return (
     <>
-      {' '}
-      <motion.p variants={pythonText}>
-        I've been using Python for a few years now
-      </motion.p>
-      <motion.img
-        src={PythonWheel}
-        alt='PythonWheel'
-        width='200'
-        variants={pythonWheel}
-        initial='start'
-        animate='end'
-      />
+      <h1>Intel</h1>
+      <p>
+        Automated weekly regression triage with Python scripts to greatly reduce
+        time to identify 'real' hardware bugs
+      </p>
+      <p>
+        Implemented communication protocols to construct insightful Python logs
+      </p>
+      <p>
+        Built effective test infrastructure in C++ to validate architect
+        expectations
+      </p>
+      <p>
+        Cooperated with dozens of engineers across multiple departments to root
+        cause test failures
+      </p>
+      <h1>Saab</h1>
+      <p>
+        Began learning the absurd complexity of solving real world problems as a
+        Systems Engineer. Triaging failures in airport monitoring systems
+        exposed me to absurd complexity as well as time (and life) sensitive
+        issues.
+      </p>
+      <p></p>
+      <h1>Tutoring</h1>
+      <p>
+        Began tutoring the Math and Sciences in High School. I continued
+        tutoring SAT/ACT students in College. My first experience with the
+        beauty and horrors of remote work.
+      </p>
+      <h1>Construction {'&'} Landscaping</h1>
+      <p>
+        Always worked in construction as a kid until I went off for college. Got
+        to learn EVERYTHING that goes into building a residential home.
+        Continued working summers before internships and starting my career.
+      </p>
     </>
   );
 };

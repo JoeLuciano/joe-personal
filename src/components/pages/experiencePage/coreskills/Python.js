@@ -7,12 +7,16 @@ import { SiFlask } from 'react-icons/si';
 import { SiKeras } from 'react-icons/si';
 import { SiTensorflow } from 'react-icons/si';
 import { VscCircuitBoard } from 'react-icons/vsc';
+import {
+  ShimmerAnchor,
+  ShimmerLink,
+} from 'components/pageComponents/textComponents/shimmer/ShimmerText';
 
 const pythonWheel = {
   start: { x: '-120vw', y: '-14rem', rotate: 0 },
   end: {
     x: '35vw',
-    y: '-20rem',
+    y: '0rem',
     rotate: 1080,
     transition: { duration: 5 },
   },
@@ -66,11 +70,15 @@ const PythonListItem = (props) => {
   );
 };
 
-const PythonList = (props) => {
+const PythonList = ({ isMobile }) => {
   return (
-    <motion.ul className={styles.pythonUnorderedList} variants={pythonText}>
+    <motion.ul
+      className={
+        isMobile ? styles.pythonUnorderedListMobile : styles.pythonUnorderedList
+      }
+      variants={pythonText}>
       <PythonListItem
-        main='Tools'
+        main='Tools/Scripts'
         sub='Protocol Implementation and Automation'
         link=''
         icon=''
@@ -103,25 +111,25 @@ const PythonList = (props) => {
   );
 };
 
-const PythonBlurb = () => {
+const PythonBlurb = ({ setSelectedView }) => {
   return (
     <motion.p variants={pythonText} className={styles.pythonText}>
-      Interning at Intel really taught me what software can truly do. I
-      developed a few Python scripts and I continued using it in my grad courses
-      for{' '}
-      <motion.a href='link to education' target='blank'>
-        Deep Learning
-      </motion.a>{' '}
+      Working in bare metal and exploring pure software has taught me what can
+      be accomplished. I began scripting with Python while intering at Intel and
+      I continued using it in my{' '}
+      <motion.span onClick={() => setSelectedView('EDUCATION')}>
+        <ShimmerAnchor text='grad courses' />
+      </motion.span>
       as well as my{' '}
-      <motion.a href='link to education' target='blank'>
-        grad project
-      </motion.a>{' '}
-      . I've used it on a daily basis since and have used it in some cool{' '}
+      <motion.span onClick={() => setSelectedView('EDUCATION')}>
+        <ShimmerAnchor text='masters project' />
+      </motion.span>
+      . I've written Python code on a daily basis since and have used it in some
+      cool{' '}
       <motion.a href='link to personal projects' target='blank'>
         projects
-      </motion.a>{' '}
-      . Sadly I can't share some of my proudest work{' '}
-      <FaRegFrown size={'1rem'} />
+      </motion.a>
+      .
     </motion.p>
   );
 };
@@ -132,7 +140,7 @@ export const Python = (props) => {
     const timer = setTimeout(() => setShowWheel(false), 5500);
     return () => clearTimeout(timer);
   }, []);
-  const { isMobile } = props;
+  const { isMobile, setSelectedView } = props;
   return (
     <>
       <motion.div
@@ -141,8 +149,8 @@ export const Python = (props) => {
         <motion.h2 className={styles.pythonHeader} variants={pythonText}>
           Python - Automation Tools and Data Processing
         </motion.h2>
-        <PythonList />
-        <PythonBlurb />
+        <PythonList isMobile={isMobile} />
+        <PythonBlurb setSelectedView={setSelectedView} />
       </motion.div>
       <PythonWheel showWheel={showWheel} />
     </>

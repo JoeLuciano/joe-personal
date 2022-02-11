@@ -1,21 +1,42 @@
 import { motion } from 'framer-motion';
 import styles from './Selector.module.css';
 
-const ViewButton = ({ name, onClick }) => {
+const buttonVariant = {
+  unselected: {
+    backgroundColor: 'rgb(0, 0, 0, 0.1)',
+    boxShadow: '0px',
+  },
+  selected: {
+    color: 'rgb(240, 240, 240)',
+    backgroundColor: 'rgb(22, 148, 66)',
+    boxShadow: '1px 1px 4px 2px rgba(0, 0, 0, 1)',
+    transition: {
+      duration: 0.5,
+    },
+  },
+};
+
+const ViewButton = ({ name, selectedView, onClick }) => {
+  const isActive = selectedView === name;
   return (
-    <motion.button className={styles.btn} onClick={onClick}>
-      <motion.h1>{name}</motion.h1>
+    <motion.button
+      className={styles.btn}
+      variants={buttonVariant}
+      animate={isActive ? 'selected' : 'unselected'}
+      onClick={onClick}>
+      {name}
     </motion.button>
   );
 };
 
-export const Selector = ({ views, setSelectedView }) => {
+export const Selector = ({ views, selectedView, setSelectedView }) => {
   return (
-    <motion.div>
+    <motion.div className={styles.selector}>
       {views.map((name) => (
         <ViewButton
           key={name}
           name={name}
+          selectedView={selectedView}
           onClick={() => {
             setSelectedView(name);
           }}

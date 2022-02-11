@@ -1,3 +1,8 @@
+span > a {
+  color: #003863;
+  cursor: pointer;
+}
+
 .pythonSection {
   position: relative;
 }
@@ -12,10 +17,10 @@
 .pythonHeader {
   color: #003863;
   font-size: 2rem;
+  margin-top: 2rem;
 }
 
 .pythonText {
-  color: #003863;
   font-size: 1.3rem;
 }
 
@@ -26,17 +31,28 @@
   list-style-type: none;
 }
 
+.pythonUnorderedListMobile {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  grid-gap: 2rem;
+  list-style-type: none;
+}
+
+.pythonUnorderedListMobile > li,
 .pythonUnorderedList > li {
   font-size: 1rem;
   color: #6e4b00;
   width: 10rem;
 }
 
+.pythonUnorderedListMobile > li > h3,
+.pythonUnorderedListMobile > li > a > h3,
 .pythonUnorderedList > li > h3,
 .pythonUnorderedList > li > a > h3 {
   font-size: 2rem;
 }
-
+.pythonUnorderedListMobile > li > a,
 .pythonUnorderedList > li > a {
   font-size: inherit;
   color: inherit;
@@ -47,5 +63,7 @@
 }
 
 .pythonWheel {
-  position: absolute;
+  position: fixed;
+  top: 20vh;
+  left: 10vw;
 }
