@@ -35,9 +35,8 @@
 .gradList > li {
   padding: 1rem;
   margin: 1rem;
-  padding-top: 0rem;
   font-size: 1.3rem;
-  border-bottom: solid black 1px;
+  border-top: solid rgb(0, 0, 0, 0.3) 2px;
 }
 
 .gradList > li > h3 {

@@ -2,15 +2,11 @@ import { useState, useEffect } from 'react';
 import PythonWheelImage from 'customImages/PythonWheel.svg';
 import { AnimatePresence, motion } from 'framer-motion';
 import styles from './Python.module.css';
-import { FaRegFrown } from 'react-icons/fa';
 import { SiFlask } from 'react-icons/si';
 import { SiKeras } from 'react-icons/si';
 import { SiTensorflow } from 'react-icons/si';
 import { VscCircuitBoard } from 'react-icons/vsc';
-import {
-  ShimmerAnchor,
-  ShimmerLink,
-} from 'components/pageComponents/textComponents/shimmer/ShimmerText';
+import { ShimmerAnchor } from 'components/pageComponents/textComponents/shimmer/ShimmerText';
 
 const pythonWheel = {
   start: { x: '-120vw', y: '-14rem', rotate: 0 },
