@@ -1,6 +1,6 @@
 import './App.css';
 import { useState, useEffect, useCallback } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { Flash } from 'components/pageComponents/flash/Flash';
 import {
   HomePage,
@@ -139,7 +139,11 @@ function App() {
             element={<UserPage account {...pageState} />}></Route>
           <Route
             exact
-            path='/document/:filename'
+            path='/resume'
+            element={<DocumentPage file='resume' {...pageState} />}></Route>
+          <Route
+            exact
+            path='/document/:document'
             element={<DocumentPage {...pageState} />}></Route>
         </Routes>
       </AnimatePresence>

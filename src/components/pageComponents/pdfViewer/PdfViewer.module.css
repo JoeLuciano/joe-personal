@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 800px;
+  min-height: 800px;
   overflow-y: auto;
   margin-bottom: 10px;
   width: 100%;
@@ -12,4 +12,16 @@
 .header {
   margin-top: -5.5rem;
   margin-bottom: 0.5rem;
+}
+
+.mobileDocument {
+  margin-top: -2rem;
+  background-color: #e4e4e4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 800px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  width: 100%;
 }

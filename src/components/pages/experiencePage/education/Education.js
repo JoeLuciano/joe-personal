@@ -39,7 +39,7 @@ export const Education = ({ isMobile, ...props }) => {
         <motion.li>
           <motion.h3>Masters Project</motion.h3>
           <ShimmerLink
-            link='/document/MS Project Report.pdf'
+            link='/document/msProjectReport'
             text='ARM Processor Hardware Verification in cocotb'
           />
           Created a cocotb template for verifying the design for an
@@ -64,7 +64,11 @@ export const Education = ({ isMobile, ...props }) => {
           Electrical Entergy Storage {'&'} Devices for Energy Materials {'&'}{' '}
           Physics and Tech of Solar Cells - Studied material physics up to
           energy applications at the grid level with a primary focus on
-          renewables. <ShimmerLink link='/document/' text='ADD PROJECT' />
+          renewables.{' '}
+          <ShimmerLink
+            link='/document/virtualPowerPlants'
+            text='Virtual Power Plants Report'
+          />
         </motion.li>
         <motion.li>
           <motion.h3>Embedded Systems Design</motion.h3>
