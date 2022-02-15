@@ -11,6 +11,7 @@ import {
   UserPage,
   DocumentPage,
 } from './pages/pageIndex';
+import { Tweedle } from 'components/tweedle/Tweedle';
 import { AnimatePresence } from 'framer-motion';
 
 function App() {
@@ -145,6 +146,10 @@ function App() {
             exact
             path='/document/:document'
             element={<DocumentPage {...pageState} />}></Route>
+          <Route
+            exact
+            path='/tweedle'
+            element={<Tweedle wordle='IRONY' {...pageState} />}></Route>
         </Routes>
       </AnimatePresence>
     </div>
