@@ -149,7 +149,7 @@ function App() {
           <Route
             exact
             path='/tweedle'
-            element={<Tweedle wordle='IRONY' {...pageState} />}></Route>
+            element={<Tweedle {...pageState} />}></Route>
         </Routes>
       </AnimatePresence>
     </div>

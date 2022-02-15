@@ -7,7 +7,7 @@ import Info from './Info';
 import Keyboard from 'react-simple-keyboard';
 import './Tweedle.css';
 
-export const Tweedle = ({ wordle }) => {
+export const Tweedle = ({ smartFetch }) => {
   const [guesses, setGuesses] = useState();
   const [allowInput, setAllowInput] = useState(false);
   const [allowSubmit, setAllowSubmit] = useState(false);
@@ -57,33 +57,35 @@ export const Tweedle = ({ wordle }) => {
     if (allowInput) {
       setGameState('playing');
       setAllowSubmit(false);
-      const guessSubmission = currentGuess;
-      for (var index = 0; index < currentGuess.length; index++) {
-        const letter = currentGuess[index];
-        await delay(300);
-        setMatchingLetters((prev) => {
-          let currentResult = [...prev];
-          if (letter === wordle.split('')[index]) {
-            currentResult.splice(index, 1, 'match');
-          } else if (wordle.includes(letter)) {
-            currentResult.splice(index, 1, 'close');
-          } else {
-            currentResult.splice(index, 1, 'miss');
-          }
-          return currentResult;
-        });
-      }
-      await delay(800);
       setAllowInput(false);
 
-      if (guessSubmission === wordle) {
-        setGameState('won');
-      } else if (guessCount === 5) {
-        setGameState('lost');
-      } else {
-        setGuessCount((prev) => prev + 1);
+      const guessResult = await smartFetch(
+        '/api/tweedle',
+        'POST',
+        currentGuess
+      );
 
-        await delay(2400);
+      if (guessResult.ok) {
+        const setMatches = (index) => (prev) => {
+          let currentResult = [...prev];
+          currentResult.splice(index, 1, guessResult.result[index]);
+          return currentResult;
+        };
+        for (var index = 0; index < currentGuess.length; index++) {
+          setMatchingLetters(setMatches(index));
+          await delay(300);
+        }
+        await delay(200);
+        if (guessResult.result.every((element) => element === 'match')) {
+          setGameState('won');
+        } else if (guessCount === 5) {
+          setGameState('lost');
+        } else {
+          setGuessCount((prev) => prev + 1);
+          await delay(2400);
+          setAllowInput(true);
+        }
+      } else {
         setAllowInput(true);
       }
     }
