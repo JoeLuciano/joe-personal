@@ -58,7 +58,7 @@ export const Tweedle = ({ wordle }) => {
       setGameState('playing');
       setAllowSubmit(false);
       const guessSubmission = currentGuess;
-      for (let index in currentGuess) {
+      for (var index = 0; index < currentGuess.length; index++) {
         const letter = currentGuess[index];
         await delay(300);
         setMatchingLetters((prev) => {
