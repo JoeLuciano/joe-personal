@@ -1,5 +1,4 @@
 binutils
-ldconfig
 gcc
 objdump
 ld
