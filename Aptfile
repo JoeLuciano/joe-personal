@@ -1,9 +1,7 @@
 binutils
 gcc
-objdump
 ld
 
-enchant2
 enchant-2
 libenchant-2-2
 python3-enchant
