@@ -8,6 +8,7 @@ tweedle = Blueprint('tweedle', __name__)
 
 broker = enchant.Broker()
 broker.describe()
+print(broker.describe())
 broker.list_languages()
 print(broker.list_languages())
 
