@@ -11,6 +11,9 @@ broker.describe()
 print(broker.describe())
 broker.list_languages()
 print(broker.list_languages())
+broker.list_dicts()
+print(broker.list_dicts())
+
 
 spellChecker = enchant.Dict("en_US")
 
