@@ -1,8 +1,2 @@
-binutils
-gcc
 
-enchant-2
-libenchant-2-2
 libenchant-2-dev
-libenchant-2-voikko
-python3-enchant

@@ -6,6 +6,11 @@ from backend.backend import Message
 
 tweedle = Blueprint('tweedle', __name__)
 
+broker = enchant.Broker()
+broker.describe()
+broker.list_languages()
+print(broker.list_languages())
+
 spellChecker = enchant.Dict("en_US")
 
 
