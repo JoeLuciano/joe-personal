@@ -15,7 +15,8 @@ broker.list_dicts()
 print(broker.list_dicts())
 
 
-spellChecker = enchant.Dict("en_US")
+spellChecker = enchant.Dict()
+print(spellChecker.tag)
 
 
 @tweedle.route('/api/tweedle', methods=['POST'])
