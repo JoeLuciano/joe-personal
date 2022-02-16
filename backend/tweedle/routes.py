@@ -11,7 +11,7 @@ broker.describe()
 broker.list_languages()
 print(broker.list_languages())
 
-spellChecker = enchant.Dict("en_US")
+# spellChecker = enchant.Dict("en_US")
 
 
 @tweedle.route('/api/tweedle', methods=['POST'])
@@ -21,16 +21,16 @@ def getTweedleMatches():
         tweedleGuess = request.json
         dailyTweedle = os.getenv('DAILY_WORDLE')
         guessResults = []
-        if spellChecker.check(tweedleGuess):
-            for (guess, actual) in zip(tweedleGuess, dailyTweedle):
-                if guess == actual:
-                    guessResults.append('match')
-                elif guess in dailyTweedle:
-                    guessResults.append('close')
-                else:
-                    guessResults.append('miss')
-            return Message.data(message="", data=guessResults), 200
-        else:
-            return Message.msg('Not a word Tweedle Dum!'), 412
+        # if spellChecker.check(tweedleGuess):
+        #     for (guess, actual) in zip(tweedleGuess, dailyTweedle):
+        #         if guess == actual:
+        #             guessResults.append('match')
+        #         elif guess in dailyTweedle:
+        #             guessResults.append('close')
+        #         else:
+        #             guessResults.append('miss')
+        #     return Message.data(message="", data=guessResults), 200
+        # else:
+        return Message.msg('Not a word Tweedle Dum!'), 412
     except Exception as e:
         return Message.error(e), 400
