@@ -10,7 +10,10 @@ export const PostPage = (props) => {
   const { title } = useParams();
   const { smartFetch } = props;
   const getPost = useCallback(async () => {
-    const postResponse = await smartFetch(`/api/post/${title}`, 'GET');
+    const postResponse = await smartFetch({
+      url: `/api/post/${title}`,
+      type: 'GET',
+    });
     if (postResponse.ok) {
       setPost(postResponse.result);
     } else {

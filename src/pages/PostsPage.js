@@ -7,7 +7,10 @@ export const PostsPage = (props) => {
   const [allPosts, setAllPosts] = useState([]);
   const { smartFetch } = props;
   const getAllPosts = useCallback(async () => {
-    const allPostsResponse = await smartFetch('/api/allposts', 'GET');
+    const allPostsResponse = await smartFetch({
+      url: '/api/allposts',
+      type: 'GET',
+    });
     if (allPostsResponse.ok) {
       setAllPosts(allPostsResponse.result);
     } else {

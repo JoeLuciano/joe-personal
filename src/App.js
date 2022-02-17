@@ -26,15 +26,23 @@ function App() {
   };
 
   const smartFetch = useCallback(
-    async (url, type, payload = null, setLoading = () => {}) => {
-      const requestOptions = {
-        method: type,
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        ...(payload && { body: JSON.stringify(payload) }),
-      };
+    async ({ url, type, payload, setLoading = () => {}, has_files }) => {
+      let requestOptions = {};
+      if (has_files) {
+        requestOptions = {
+          method: type,
+          ...(payload && { body: payload }),
+        };
+      } else {
+        requestOptions = {
+          method: type,
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          ...(payload && { body: JSON.stringify(payload) }),
+        };
+      }
       const response = await fetch(url, requestOptions)
         .then(async (response) => {
           const data = await response.json();
@@ -67,7 +75,7 @@ function App() {
   );
 
   const getUser = useCallback(async () => {
-    const userResponse = await smartFetch('/api/user', 'GET');
+    const userResponse = await smartFetch({ url: '/api/user', type: 'GET' });
     if (userResponse.ok) {
       setUser(userResponse.result);
     }

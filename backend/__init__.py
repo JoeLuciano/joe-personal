@@ -6,6 +6,8 @@ from flask_login import LoginManager
 # from flask_mail import Mail
 from backend.config import Config
 from flask_cors import CORS
+import os
+import boto3
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -14,6 +16,9 @@ login_manager = LoginManager()
 login_manager.login_view = 'users.login'
 login_manager.login_message_category = 'info'
 # mail = Mail()
+
+s3 = boto3.client("s3", aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
+                  aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY"))
 
 
 def create_app(config_class=Config):

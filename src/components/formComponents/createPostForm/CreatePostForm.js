@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
+import { useForm } from 'react-hook-form';
 import styles from './CreatePostForm.module.css';
 
 const buttonHover = {
@@ -11,48 +12,48 @@ const buttonHover = {
 };
 
 export const CreatePostForm = ({ setFlash, smartFetch, getAllPosts }) => {
-  const [postInfo, setPostInfo] = useState();
+  const { register, handleSubmit } = useForm();
 
-  function handleChange(event) {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-    setPostInfo({ ...postInfo, [name]: value });
-  }
-
-  const handleSubmit = useCallback(
-    async (event) => {
-      event.preventDefault();
-      await smartFetch('/api/post/create', 'POST', postInfo);
-      getAllPosts();
-    },
-    [smartFetch, postInfo, getAllPosts]
-  );
+  const onSubmit = async (data) => {
+    var formData = new FormData();
+    formData.append('title', data.title);
+    formData.append('content', data.content);
+    formData.append('picture', data.picture[0]);
+    for (var key of formData.entries()) {
+      console.log(key[0] + ', ' + key[1]);
+    }
+    await smartFetch({
+      url: '/api/post/create',
+      type: 'POST',
+      payload: formData,
+      has_files: true,
+    });
+    getAllPosts();
+  };
 
   return (
-    <motion.form onSubmit={handleSubmit} className={styles.form}>
+    <motion.form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
       <motion.h1 className={styles.header}>Create a post</motion.h1>
       <motion.div className={styles.textInputContainer}>
         <motion.input
+          required
           className={styles.textInput}
           type='text'
           placeholder='Title'
-          name='title'
-          onChange={handleChange}
-          required
+          {...register('title', { required: true })}
         />
       </motion.div>
       <motion.div className={styles.textInputContainer}>
         <motion.textarea
+          required
           className={styles.textInput}
           type='text'
           placeholder="What's on your mind?"
-          name='content'
-          onChange={handleChange}
+          {...register('content', { required: true })}
           rows={5}
-          required
         />
       </motion.div>
+      <motion.input type='file' {...register('picture')} />
       <motion.input
         type='submit'
         value='Post'

@@ -52,8 +52,12 @@ export const PostView = ({ isMobile, data, smartFetch }) => {
   const deletePost = useCallback(
     async (event) => {
       event.preventDefault();
-      const deleteResponse = await smartFetch('/api/post/delete', 'POST', {
-        title: data.title,
+      const deleteResponse = await smartFetch({
+        url: '/api/post/delete',
+        type: 'POST',
+        payload: {
+          title: data.title,
+        },
       });
       if (deleteResponse.ok) {
         navigate('/posts');

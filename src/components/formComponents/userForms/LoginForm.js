@@ -29,7 +29,11 @@ export const LoginForm = ({ setFlash, setUser, smartFetch }) => {
   const handleSubmit = useCallback(
     async (event) => {
       event.preventDefault();
-      const registerResponse = await smartFetch('/api/login', 'POST', userInfo);
+      const registerResponse = await smartFetch({
+        url: '/api/login',
+        type: 'POST',
+        payload: userInfo,
+      });
       if (registerResponse.ok) {
         setUser(registerResponse.result);
         navigate('/home');

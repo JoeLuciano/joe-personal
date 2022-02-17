@@ -26,7 +26,11 @@ export const UpdateAccountForm = ({ setFlash, setUser, smartFetch }) => {
   const handleSubmit = useCallback(
     async (event) => {
       event.preventDefault();
-      await smartFetch('/api/user/update', 'POST', userInfo);
+      await smartFetch({
+        url: '/api/user/update',
+        type: 'POST',
+        payload: userInfo,
+      });
     },
     [smartFetch, userInfo]
   );

@@ -59,11 +59,11 @@ export const Tweedle = ({ smartFetch }) => {
       setAllowSubmit(false);
       setAllowInput(false);
 
-      const guessResult = await smartFetch(
-        '/api/tweedle',
-        'POST',
-        currentGuess
-      );
+      const guessResult = await smartFetch({
+        url: '/api/tweedle',
+        type: 'POST',
+        payload: currentGuess,
+      });
 
       if (guessResult.ok) {
         const setMatches = (index) => (prev) => {
