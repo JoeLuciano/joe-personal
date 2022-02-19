@@ -20,7 +20,6 @@ class Post(db.Model):
 
     @property
     def serialize(self):
-        """Return object data in easily serializable format"""
         return {
             'id': self.id,
             'title': self.title,
@@ -50,7 +49,16 @@ class User(db.Model, UserMixin):
     posts = db.relationship('Post', backref='author', lazy=True)
 
     def __repr__(self):
-        return f"User('{self.username}', '{self.email}', '{self.image_file}')"
+        return str(self.serialize)
+
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email,
+            'image_file': self.image_file
+        }
 
     # def get_reset_password_token(self, expires_sec=1800):
     #     s = Serializer(current_app.config['SECRET_KEY'], expires_sec)

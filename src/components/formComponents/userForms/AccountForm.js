@@ -1,5 +1,6 @@
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import styles from './Form.module.css';
 
@@ -11,29 +12,11 @@ const buttonHover = {
   },
 };
 
-export const UpdateAccountForm = ({ setFlash, setUser, smartFetch }) => {
-  const [userInfo, setUserInfo] = useState();
-
-  function handleChange(event) {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-    setUserInfo({ ...userInfo, [name]: value });
-  }
+export const UpdateAccountForm = ({ setFlash, user, setUser, smartFetch }) => {
+  const [userImage, setUserImage] = useState();
+  const { register, handleSubmit } = useForm();
 
   const navigate = useNavigate();
-
-  const handleSubmit = useCallback(
-    async (event) => {
-      event.preventDefault();
-      await smartFetch({
-        url: '/api/user/update',
-        type: 'POST',
-        payload: userInfo,
-      });
-    },
-    [smartFetch, userInfo]
-  );
 
   const logout = useCallback(
     async (event) => {
@@ -47,20 +30,53 @@ export const UpdateAccountForm = ({ setFlash, setUser, smartFetch }) => {
     [smartFetch, navigate, setUser]
   );
 
-  // TODO: MAKE THIS MORE ROBUST AND ADD FEATURES (don't allow submission with no changes)
+  useEffect(() => {
+    async function getPostImage() {
+      const imageResponse = await smartFetch({
+        url: `/api/image/get/${user.image_file}`,
+        type: 'GET',
+        is_image: true,
+      });
+      if (imageResponse.ok) {
+        setUserImage(imageResponse.result);
+      }
+    }
+    if (user.image_file) {
+      getPostImage();
+    }
+  }, [smartFetch, user.image_file]);
+
+  const onSubmit = async (data) => {
+    var formData = new FormData();
+    formData.append('username', data.username);
+    formData.append('email', data.email);
+    formData.append('image', data.image[0]);
+    await smartFetch({
+      url: '/api/user/update',
+      type: 'POST',
+      payload: formData,
+      has_files: true,
+    });
+  };
+
+  console.log(user);
 
   return (
-    <motion.form onSubmit={handleSubmit} className={styles.form}>
+    <motion.form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
       <motion.h1 className={styles.header}>
         Update Account Information
       </motion.h1>
+      <motion.div className={styles.pfpContainer}>
+        <motion.img className={styles.pfp} src={userImage} alt='No PFP' />
+        <motion.input type='file' {...register('image')} />
+      </motion.div>
       <motion.div className={styles.textInputContainer}>
         <motion.input
           className={styles.textInput}
           placeholder='Username'
           type='username'
           name='username'
-          onChange={handleChange}
+          {...register('username')}
         />
       </motion.div>
       <motion.div className={styles.textInputContainer}>
@@ -69,7 +85,7 @@ export const UpdateAccountForm = ({ setFlash, setUser, smartFetch }) => {
           placeholder='E-mail'
           type='email'
           name='email'
-          onChange={handleChange}
+          {...register('email')}
         />
       </motion.div>
       <motion.input

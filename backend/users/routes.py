@@ -5,6 +5,8 @@ from flask_login import current_user, login_user, logout_user
 from backend import db, bcrypt
 from backend.models import User
 from backend.backend import Message
+from werkzeug.utils import secure_filename
+from backend.files.routes import upload_image, get_image, delete_image
 
 users = Blueprint('users', __name__)
 
@@ -25,7 +27,7 @@ def createUser():
             db.session.commit()
             login_user(user)
             return Message.data("Your account has been created! Set your username under 'Account'",
-                                str(current_user)), 200
+                                current_user.serialize()), 200
         else:
             return Message.msg('ERROR: Incorrect secret code'), 412
     except Exception as e:
@@ -42,7 +44,7 @@ def login():
         user = User.query.filter_by(email=userInfo.get('email')).first()
         if user and bcrypt.check_password_hash(user.password, userInfo.get('password')):
             login_user(user, remember=userInfo.get('remember'))
-            return Message.data('Login Successful!', str(current_user)), 200
+            return Message.data('Login Successful!', current_user.serialize()), 200
         else:
             return Message.error('Login Unsuccessful'), 412
     except Exception as e:
@@ -67,7 +69,7 @@ def logout():
 def getUser():
     try:
         if current_user.is_authenticated:
-            return Message.data('', str(current_user)), 200
+            return Message.data('', current_user.serialize), 200
         else:
             return Message.msg(''), 200
     except Exception as e:
@@ -77,18 +79,39 @@ def getUser():
 @ users.route('/api/user/update', methods=['POST'])
 @ cross_origin()
 def updateUser():
+    if not current_user.is_authenticated:
+        return Message.error('You must be logged in to update an account'), 412
     try:
-        userInfo = request.json
-        if current_user.is_authenticated:
-            username = userInfo.get('username')
-            if username:
-                current_user.username = username
-            email = userInfo.get('email')
-            if email:
-                current_user.email = email
-            db.session.commit()
-            return Message.msg('Your account has been updated!'), 200
-        else:
-            return Message.msg('No current user'), 412
+        formData = request.form
+
+        image = None
+        try:
+            image = request.files.get('image')
+        except Exception as e:
+            return Message.error(f'{e} (Could not get image from form)'), 400
+
+        if image:
+            response = upload_image(image)
+            response_message = response[0].get_json()['message']
+            if 'ERROR' in response_message:
+                return response
+
+            current_user.image_file = secure_filename(image.filename)
+
+            response = delete_image(current_user.image_file)
+            response_message = response[0].get_json()['message']
+            if 'ERROR' in response_message:
+                return response
+
+        username = formData.get('username')
+        if username:
+            current_user.username = username
+
+        email = formData.get('email')
+        if email:
+            current_user.email = email
+
+        db.session.commit()
+        return Message.msg('Your account has been updated!'), 200
     except Exception as e:
         return Message.error(e), 400
