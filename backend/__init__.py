@@ -34,9 +34,12 @@ def create_app(config_class=Config):
 
     from backend.users.routes import users
     from backend.posts.routes import posts
+    from backend.files.routes import files
     from backend.tweedle.routes import tweedle
+
     app.register_blueprint(users)
     app.register_blueprint(posts)
+    app.register_blueprint(files)
     app.register_blueprint(tweedle)
     # from flaskblog.main.routes import main
     # from flaskblog.errors.handlers import errors

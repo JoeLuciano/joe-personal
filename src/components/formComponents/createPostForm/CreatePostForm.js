@@ -1,4 +1,3 @@
-import { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import styles from './CreatePostForm.module.css';
@@ -11,14 +10,14 @@ const buttonHover = {
   },
 };
 
-export const CreatePostForm = ({ setFlash, smartFetch, getAllPosts }) => {
+export const CreatePostForm = ({ smartFetch, getAllPosts }) => {
   const { register, handleSubmit } = useForm();
 
   const onSubmit = async (data) => {
     var formData = new FormData();
     formData.append('title', data.title);
     formData.append('content', data.content);
-    formData.append('picture', data.picture[0]);
+    formData.append('image', data.image[0]);
     for (var key of formData.entries()) {
       console.log(key[0] + ', ' + key[1]);
     }
@@ -53,7 +52,7 @@ export const CreatePostForm = ({ setFlash, smartFetch, getAllPosts }) => {
           rows={5}
         />
       </motion.div>
-      <motion.input type='file' {...register('picture')} />
+      <motion.input type='file' {...register('image')} />
       <motion.input
         type='submit'
         value='Post'

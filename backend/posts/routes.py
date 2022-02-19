@@ -1,13 +1,12 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, request
 from flask_login import current_user
 from flask_cors import cross_origin
-from backend import db, s3
+from backend import db
 from backend.models import Post
 from backend.backend import Message
 from datetime import datetime
-import os
-import boto3
 from werkzeug.utils import secure_filename
+from backend.files.routes import upload_image
 
 
 posts = Blueprint('posts', __name__)
@@ -26,19 +25,6 @@ def getPost(title):
         return Message.error(e), 400
 
 
-@posts.route('/api/post/image/<string:imageName>', methods=['GET'])
-@cross_origin()
-def getPostImage(imageName):
-    try:
-        if imageName:
-            post = Post.query.filter_by(title=title).first()
-            return Message.data('', post.serialize), 200
-        else:
-            return Message.msg('Please specify a image to view'), 200
-    except Exception as e:
-        return Message.error(e), 400
-
-
 @posts.route('/api/allposts', methods=['GET'])
 @cross_origin()
 def getPosts():
@@ -47,10 +33,6 @@ def getPosts():
         return Message.data('', all_posts), 200
     except Exception as e:
         return Message.error(e), 400
-
-
-UPLOAD_FOLDER = "post-images"
-BUCKET = "joe-personal-storage"
 
 
 @posts.route('/api/post/create', methods=['POST'])
@@ -62,23 +44,19 @@ def createPost():
         formData = request.form
 
         image = None
-        image_name = None
         try:
-            image = request.files.get('picture')
-            print(image)
+            image = request.files.get('image')
         except Exception as e:
             return Message.error(f'{e} (Could not get image from form)'), 400
 
         if image:
-            image_name = secure_filename(image.name)
-            bucket_name = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-            try:
-                s3.upload_fileobj(image, bucket_name, image_name)
-            except Exception as e:
-                return Message.error(f'{e} (Could not upload image to AWS)'), 400
+            error = upload_image(image)
+            if error:
+                return error
         else:
             return Message.error(f'No Image'), 400
 
+        image_name = secure_filename(image.name)
         post = Post(title=formData.get('title'), date_posted=datetime.utcnow(),
                     content=formData.get('content'), author=current_user, image_file=image_name)
         db.session.add(post)
