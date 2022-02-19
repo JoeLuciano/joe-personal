@@ -141,7 +141,7 @@ export const Tweedle = ({ smartFetch }) => {
     });
   }, [guessCount]);
 
-  const cameraPosition = new Vector3(0, 0, 5);
+  const cameraPosition = new Vector3(0, 0, 6);
   const lookAtPos = new Vector3(0, 1, 0);
 
   const CameraAdjustment = () => {
@@ -167,14 +167,15 @@ export const Tweedle = ({ smartFetch }) => {
   return (
     <>
       <Info gameState={gameState} />
-      <Canvas camera={{ position: cameraPosition }}>
-        <ambientLight intensity={1} />
-        <pointLight position={[10, 10, 10]} />
-        {guesses && Object.values(guesses)}
-        <OrbitControls />
-        <CameraAdjustment />
-      </Canvas>
+
       <div className='react-container'>
+        <Canvas camera={{ position: cameraPosition }}>
+          <ambientLight intensity={1} />
+          <pointLight position={[10, 10, 10]} />
+          {guesses && Object.values(guesses)}
+          <CameraAdjustment />
+          <OrbitControls />
+        </Canvas>
         <Keyboard
           onKeyPress={handleOnScreenKeyboardChange}
           display={{ '{bksp}': '⌫', '{enter}': '⏏' }}

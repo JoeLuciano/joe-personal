@@ -26,6 +26,19 @@ def getPost(title):
         return Message.error(e), 400
 
 
+@posts.route('/api/post/image/<string:imageName>', methods=['GET'])
+@cross_origin()
+def getPostImage(imageName):
+    try:
+        if imageName:
+            post = Post.query.filter_by(title=title).first()
+            return Message.data('', post.serialize), 200
+        else:
+            return Message.msg('Please specify a image to view'), 200
+    except Exception as e:
+        return Message.error(e), 400
+
+
 @posts.route('/api/allposts', methods=['GET'])
 @cross_origin()
 def getPosts():
@@ -83,6 +96,7 @@ def removePost():
             return Message.error('You must be logged in to delete a post'), 412
         title = request.json.get('title')
         post = Post.query.filter_by(title=title).first()
+        # Delete Image!!!!
         db.session.delete(post)
         db.session.commit()
         return Message.msg('Sucessfully deleted post!'), 200

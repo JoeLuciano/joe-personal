@@ -81,7 +81,7 @@ function App() {
     }
   }, [smartFetch]);
 
-  const headerItems = ['Experience', 'Resume', 'Posts', 'Library'];
+  const headerItems = ['Experience', 'Resume', 'Posts', 'Tweedle'];
 
   useEffect(() => {
     updateDimensions();
@@ -154,10 +154,10 @@ function App() {
             exact
             path='/document/:document'
             element={<DocumentPage {...pageState} />}></Route>
-          {/* <Route
+          <Route
             exact
             path='/tweedle'
-            element={<Tweedle {...pageState} />}></Route> */}
+            element={<Tweedle {...pageState} />}></Route>
         </Routes>
       </AnimatePresence>
     </div>
