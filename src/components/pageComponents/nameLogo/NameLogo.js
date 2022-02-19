@@ -65,7 +65,7 @@ const joeVariant = {
 };
 
 const lucianoVariant = {
-  hidden: { y: '-1.5rem' },
+  hidden: { y: '-2rem' },
   visible: {
     y: 0,
     transition: {
