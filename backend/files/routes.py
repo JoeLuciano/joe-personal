@@ -1,4 +1,5 @@
 from flask import Blueprint, request, send_file
+from flask_login import current_user
 from flask_cors import cross_origin
 from backend import s3
 from backend.backend import Message
@@ -15,6 +16,8 @@ IMAGE_BUCKET = os.environ.get('AWS_IMAGES_BUCKET_NAME')
 @files.route('/api/image/upload', methods=['POST'])
 @cross_origin()
 def upload_image_endpoint():
+    if not current_user.is_authenticated:
+        return Message.error('You must be logged in to do this'), 412
     try:
         image = request.files.get('image')
     except Exception as e:
@@ -43,13 +46,15 @@ def upload_image(image):
 @files.route('/api/image/get/<string:image_name>', methods=['GET'])
 @cross_origin()
 def get_image_endpoint(image_name):
+    if not current_user.is_authenticated:
+        return Message.error('You must be logged in to do this'), 412
     return get_image(image_name)
 
 
 def get_image(image_name):
     image_name = secure_filename(image_name)
     if not does_image_exist(image_name):
-        return Message.error(f'Image does not exist on AWS'), 400
+        return Message.error(f'{image_name} does not exist on AWS'), 400
     try:
         image = s3.get_object(Bucket=IMAGE_BUCKET, Key=image_name)
         return send_file(image['Body'], mimetype=image['ContentType'])
@@ -60,6 +65,8 @@ def get_image(image_name):
 @files.route('/api/image/delete/<string:image_name>', methods=['POST'])
 @cross_origin()
 def delete_image_endpoint(image_name):
+    if not current_user.is_authenticated:
+        return Message.error('You must be logged in to do this'), 412
     return delete_image(image_name)
 
 

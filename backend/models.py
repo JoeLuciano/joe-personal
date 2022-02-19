@@ -26,7 +26,8 @@ class Post(db.Model):
             'title': self.title,
             'date_posted': self.date_posted,
             'content': self.content,
-            'user_id': self.user_id
+            'user_id': self.user_id,
+            'image_file': self.image_file
         }
 
 # class PostTag(db.model):

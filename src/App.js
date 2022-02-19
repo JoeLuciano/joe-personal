@@ -26,7 +26,14 @@ function App() {
   };
 
   const smartFetch = useCallback(
-    async ({ url, type, payload, setLoading = () => {}, has_files }) => {
+    async ({
+      url,
+      type,
+      payload,
+      setLoading = () => {},
+      has_files,
+      is_image,
+    }) => {
       let requestOptions = {};
       if (has_files) {
         requestOptions = {
@@ -45,7 +52,17 @@ function App() {
       }
       const response = await fetch(url, requestOptions)
         .then(async (response) => {
+          if (is_image) {
+            const imageBlob = await response.blob();
+            const imageObjectURL = URL.createObjectURL(imageBlob);
+            console.groupCollapsed(`${type} Request - ${url}`);
+            console.info(imageObjectURL);
+            console.groupEnd(`${type} Request - ${url}`);
+            return { ok: true, result: imageObjectURL };
+          }
+
           const data = await response.json();
+
           console.groupCollapsed(`${type} Request - ${url}`);
           if (!response.ok) {
             const error = data || data.message || response.statusText;
@@ -65,6 +82,9 @@ function App() {
         })
         .catch((error) => {
           console.error('There was an error!\n', error.toString());
+          if (!flash) {
+            setFlash(<Flash message='Action unsuccessful' type='error' />);
+          }
           return { ok: false, result: error };
         });
       setLoading(false);
@@ -122,14 +142,14 @@ function App() {
             exact
             path='/home'
             element={<HomePage {...pageState} />}></Route>
-          {/* <Route
+          <Route
             exact
             path='/posts'
             element={<PostsPage {...pageState} />}></Route>
           <Route
             exact
             path='/post/:title'
-            element={<PostPage {...pageState} />}></Route> */}
+            element={<PostPage {...pageState} />}></Route>
           <Route
             exact
             path='/experience'

@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import styles from './PostView.module.css';
@@ -24,7 +24,7 @@ const PostContentInfo = ({ title, body, image, deletePost }) => {
         </motion.h1>
         <motion.p>{body}</motion.p>
       </motion.div>
-      {/* <img className={styles['post-pic']} src={image} alt='test' /> */}
+      <img className={styles['post-pic']} src={image} alt='test' />
     </motion.div>
   );
 };
@@ -48,6 +48,8 @@ const PostOptions = ({ tags, info }) => {
 };
 
 export const PostView = ({ isMobile, data, smartFetch }) => {
+  const [postImage, setPostImage] = useState();
+
   const navigate = useNavigate();
   const deletePost = useCallback(
     async (event) => {
@@ -66,6 +68,23 @@ export const PostView = ({ isMobile, data, smartFetch }) => {
     [smartFetch, data.title, navigate]
   );
 
+  useEffect(() => {
+    // GET POST IMAGE
+    async function getPostImage() {
+      const imageResponse = await smartFetch({
+        url: `/api/image/get/${data.image_file}`,
+        type: 'GET',
+        is_image: true,
+      });
+      if (imageResponse.ok) {
+        setPostImage(imageResponse.result);
+      }
+    }
+    if (data.image_file) {
+      getPostImage();
+    }
+  }, [smartFetch, data.image_file]);
+
   return (
     <motion.div className={styles['postview']}>
       <PostCreationInfo
@@ -76,7 +95,7 @@ export const PostView = ({ isMobile, data, smartFetch }) => {
       <PostContentInfo
         title={data.title}
         body={data.content}
-        image={data.image}
+        image={postImage}
         deletePost={deletePost}
       />
       <PostOptions tags={data.tags} info={data.info} />

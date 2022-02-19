@@ -6,7 +6,7 @@ from backend.models import Post
 from backend.backend import Message
 from datetime import datetime
 from werkzeug.utils import secure_filename
-from backend.files.routes import upload_image
+from backend.files.routes import upload_image, get_image, delete_image
 
 
 posts = Blueprint('posts', __name__)
@@ -38,9 +38,9 @@ def getPosts():
 @posts.route('/api/post/create', methods=['POST'])
 @cross_origin()
 def createPost():
+    if not current_user.is_authenticated:
+        return Message.error('Please log in before creating a post'), 412
     try:
-        if not current_user.is_authenticated:
-            return Message.error('Please log in before creating a post'), 412
         formData = request.form
 
         image = None
@@ -50,18 +50,18 @@ def createPost():
             return Message.error(f'{e} (Could not get image from form)'), 400
 
         if image:
-            error = upload_image(image)
-            if error:
-                return error
+            response = upload_image(image)
+            response_message = response[0].get_json()['message']
+            if 'ERROR' in response_message:
+                return response
         else:
-            return Message.error(f'No Image'), 400
+            return Message.error(f'No image uplloaded for post'), 400
 
-        image_name = secure_filename(image.name)
         post = Post(title=formData.get('title'), date_posted=datetime.utcnow(),
-                    content=formData.get('content'), author=current_user, image_file=image_name)
+                    content=formData.get('content'), author=current_user, image_file=secure_filename(image.filename))
         db.session.add(post)
         db.session.commit()
-        return Message.msg(f'Sucessfully created {image_name} post!'), 200
+        return Message.msg(f'Sucessfully created post!'), 200
     except Exception as e:
         return Message.error(f'{e}'), 400
 
@@ -69,12 +69,17 @@ def createPost():
 @posts.route('/api/post/delete', methods=['POST'])
 @cross_origin()
 def removePost():
+    if not current_user.is_authenticated:
+        return Message.error('You must be logged in to delete a post'), 412
     try:
-        if not current_user.is_authenticated:
-            return Message.error('You must be logged in to delete a post'), 412
         title = request.json.get('title')
         post = Post.query.filter_by(title=title).first()
-        # Delete Image!!!!
+        print(post.image_file)
+        response = delete_image(post.image_file)
+        response_message = response[0].get_json()['message']
+        if 'ERROR' in response_message:
+            return response
+
         db.session.delete(post)
         db.session.commit()
         return Message.msg('Sucessfully deleted post!'), 200
