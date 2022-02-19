@@ -69,7 +69,6 @@ export const PostView = ({ isMobile, data, smartFetch }) => {
   );
 
   useEffect(() => {
-    // GET POST IMAGE
     async function getPostImage() {
       const imageResponse = await smartFetch({
         url: `/api/image/get/${data.image_file}`,

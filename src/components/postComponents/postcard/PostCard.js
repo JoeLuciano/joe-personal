@@ -1,6 +1,7 @@
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import styles from './PostCard.module.css';
-import { Link } from 'react-router-dom';
 
 const PostCreationInfo = ({ image, author, date }) => {
   return (
@@ -22,7 +23,7 @@ const PostContentInfo = ({ title, body, image }) => {
         </Link>
         <motion.p>{body}</motion.p>
       </motion.div>
-      {/* <img className={styles['post-pic']} src={image} alt='test' /> */}
+      <img className={styles['post-pic']} src={image} alt='test' />
     </motion.div>
   );
 };
@@ -45,7 +46,25 @@ const PostOptions = ({ tags, info }) => {
   );
 };
 
-export const PostCard = ({ isMobile, data }) => {
+export const PostCard = ({ isMobile, data, smartFetch }) => {
+  const [postImage, setPostImage] = useState();
+
+  useEffect(() => {
+    async function getPostImage() {
+      const imageResponse = await smartFetch({
+        url: `/api/image/get/${data.image_file}`,
+        type: 'GET',
+        is_image: true,
+      });
+      if (imageResponse.ok) {
+        setPostImage(imageResponse.result);
+      }
+    }
+    if (data.image_file) {
+      getPostImage();
+    }
+  }, [smartFetch, data.image_file]);
+
   return (
     <motion.div
       className={styles['postcard']}
@@ -58,7 +77,7 @@ export const PostCard = ({ isMobile, data }) => {
       <PostContentInfo
         title={data.title}
         body={data.content}
-        image={data.image_file}
+        image={postImage}
       />
       <PostOptions tags={data.tags} info={data.info} />
     </motion.div>
