@@ -91,7 +91,7 @@ function App() {
       console.groupEnd(`${type} Request - ${url}`);
       return response;
     },
-    []
+    [flash]
   );
 
   const getUser = useCallback(async () => {
@@ -142,14 +142,14 @@ function App() {
             exact
             path='/home'
             element={<HomePage {...pageState} />}></Route>
-          {/* <Route
+          <Route
             exact
             path='/posts'
             element={<PostsPage {...pageState} />}></Route>
           <Route
             exact
             path='/post/:title'
-            element={<PostPage {...pageState} />}></Route> */}
+            element={<PostPage {...pageState} />}></Route>
           <Route
             exact
             path='/experience'

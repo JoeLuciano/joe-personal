@@ -1,3 +1,7 @@
+:root {
+  --border-color: #aaaaaa;
+}
+
 html,
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Open Sans', 'Roboto',

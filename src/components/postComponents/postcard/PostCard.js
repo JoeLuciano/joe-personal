@@ -6,7 +6,7 @@ import styles from './PostCard.module.css';
 const PostCreationInfo = ({ image, author, date }) => {
   return (
     <motion.div className={styles['post-creation-info']}>
-      {/* <img className={styles['pfp']} src={image} alt='test' /> */}
+      <img className={styles['pfp']} src={image} alt='test' />
       <motion.h3>
         {author} · {date}
       </motion.h3>
@@ -46,8 +46,9 @@ const PostOptions = ({ tags, info }) => {
   );
 };
 
-export const PostCard = ({ isMobile, data, smartFetch }) => {
+export const PostCard = ({ isMobile, data, user, smartFetch }) => {
   const [postImage, setPostImage] = useState();
+  const [userPfp, setUserPfp] = useState();
 
   useEffect(() => {
     async function getPostImage() {
@@ -65,12 +66,28 @@ export const PostCard = ({ isMobile, data, smartFetch }) => {
     }
   }, [smartFetch, data.image_file]);
 
+  useEffect(() => {
+    async function getUserPfp() {
+      const imageResponse = await smartFetch({
+        url: `/api/image/get/${user.image_file}`,
+        type: 'GET',
+        is_image: true,
+      });
+      if (imageResponse.ok) {
+        setUserPfp(imageResponse.result);
+      }
+    }
+    if (user.image_file) {
+      getUserPfp();
+    }
+  }, [smartFetch, user.image_file]);
+
   return (
     <motion.div
       className={styles['postcard']}
       whileHover={{ boxShadow: '1px 4px 20px rgba(50, 50, 0, 0.5)' }}>
       <PostCreationInfo
-        image='get user pfp'
+        image={userPfp}
         author={data.author}
         date={data.date_posted}
       />
