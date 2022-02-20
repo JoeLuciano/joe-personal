@@ -14,7 +14,7 @@ const pythonWheel = {
     x: '35vw',
     y: '0rem',
     rotate: 1080,
-    transition: { duration: 5 },
+    transition: { duration: 4 },
   },
   exit: { x: 0, y: 0, opacity: 0, scale: 3, transition: { duration: 2 } },
 };
@@ -67,6 +67,7 @@ const PythonListItem = (props) => {
 };
 
 const PythonList = ({ isMobile }) => {
+  console.log(isMobile);
   return (
     <motion.ul
       className={
@@ -133,7 +134,7 @@ const PythonBlurb = ({ setSelectedView }) => {
 export const Python = (props) => {
   const [showWheel, setShowWheel] = useState(true);
   useEffect(() => {
-    const timer = setTimeout(() => setShowWheel(false), 5500);
+    const timer = setTimeout(() => setShowWheel(false), 4200);
     return () => clearTimeout(timer);
   }, []);
   const { isMobile, setSelectedView } = props;

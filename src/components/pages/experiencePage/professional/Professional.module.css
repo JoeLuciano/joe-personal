@@ -5,3 +5,32 @@
 .intel {
   color: var(--intel-blue);
 }
+
+.professionalWrapper > div > h1 {
+  margin: 0.5rem;
+  font-size: 2.5rem;
+}
+
+.professionalWrapper > div > p {
+  margin: 1rem;
+  font-size: 1.2rem;
+}
+
+.gradList > li {
+  padding: 1rem;
+  margin: 1rem;
+  font-size: 1.3rem;
+  border-top: solid rgb(0, 0, 0, 0.3) 2px;
+}
+
+.gradList > li > h3 {
+  text-align: left;
+  margin: 0.5rem;
+  font-size: 1.5rem;
+  color: rgb(37, 37, 37);
+}
+
+.gradList > li > a {
+  color: #005070;
+  text-decoration: none;
+}

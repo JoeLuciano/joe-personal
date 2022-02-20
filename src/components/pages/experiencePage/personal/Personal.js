@@ -1,41 +1,15 @@
-import PythonWheel from 'customImages/PythonWheel.svg';
+import { Python } from 'components/pages/experiencePage/coreskills/Python';
+import { Cpp } from 'components/pages/experiencePage/coreskills/Cpp';
+import { Web } from 'components/pages/experiencePage/coreskills/Web';
 import { motion } from 'framer-motion';
 import { styles } from './Personal.module.css';
 
-const pythonWheel = {
-  start: { x: '-120vw', y: 0, rotate: 0 },
-  end: {
-    x: '30vw',
-    y: 0,
-    rotate: 1080,
-    transition: { duration: 6 },
-  },
-};
-
-const pythonText = {
-  hidden: { y: '-10rem', opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: { delay: 6 },
-  },
-};
-
-export const PythonExperience = (props) => {
+export const Personal = (props) => {
   return (
     <>
-      {' '}
-      <motion.p variants={pythonText}>
-        I've been using Python for a few years now
-      </motion.p>
-      <motion.img
-        src={PythonWheel}
-        alt='PythonWheel'
-        width='200'
-        variants={pythonWheel}
-        initial='start'
-        animate='end'
-      />
+      <Python setSelectedView={props.setSelectedView} {...props} />
+      <Cpp />
+      <Web />
     </>
   );
 };

@@ -18,7 +18,11 @@ const profText = {
 const ProfessionalSectionWrapper = ({ children }) => {
   return (
     children && (
-      <motion.div variants={profSection} initial='hidden' animate='visible'>
+      <motion.div
+        className={styles.professionalWrapper}
+        variants={profSection}
+        initial='hidden'
+        animate='visible'>
         {React.Children.map(children, (child) =>
           React.cloneElement(child, { variants: profText })
         )}
@@ -63,28 +67,22 @@ export const Professional = (props) => {
           Debugged customer issues with a Voice Communication Control System
           alongside a supplier's software engineer
         </motion.p>
-        <motion.h2>Summary</motion.h2>
-        <motion.p>
-          Began learning the absurd complexity of solving real world problems as
-          a Systems Engineer. Triaging failures in airport monitoring systems
-          exposed me to absurd complexity as well as time (and life) sensitive
-          issues.
-        </motion.p>
       </motion.div>
       <motion.div>
         <motion.h1>Tutoring</motion.h1>
         <motion.p>
-          Began tutoring the Math and Sciences in High School. I continued
-          tutoring SAT/ACT students in College. My first experience with the
-          beauty and horrors of remote work.
+          Tutored students in Math and Science during High School. Continued
+          tutoring SAT/ACT students while going to College. First experience
+          with the beauty and horrors of remote work was at Arbor Tutoring.
         </motion.p>
       </motion.div>
       <motion.div>
         <motion.h1>Construction {'&'} Landscaping</motion.h1>
         <motion.p>
-          Always worked in construction as a kid until I went off for college.
-          Got to learn EVERYTHING that goes into building a residential home.
-          Continued working summers before internships and starting my career.
+          Always worked in construction and landscaping until I went off for
+          college. Got to learn everything that goes into building a residential
+          home. Continued working summers before I was able to intern and
+          starting my career.
         </motion.p>
       </motion.div>
     </ProfessionalSectionWrapper>

@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Education.module.css';
 import { FaRegSadTear } from 'react-icons/fa';
@@ -9,9 +10,38 @@ import {
   ShimmerLink,
 } from 'components/pageComponents/textComponents/shimmer/ShimmerText';
 
+const eduSection = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.3 },
+  },
+};
+
+const eduText = {
+  hidden: { y: '-2rem', opacity: 0 },
+  visible: { y: 0, opacity: 1 },
+};
+
+const EducationSectionWrapper = ({ children }) => {
+  return (
+    children && (
+      <motion.div
+        className={styles.professionalWrapper}
+        variants={eduSection}
+        initial='hidden'
+        animate='visible'>
+        {React.Children.map(children, (child) =>
+          React.cloneElement(child, { variants: eduText })
+        )}
+      </motion.div>
+    )
+  );
+};
+
 export const Education = ({ isMobile, ...props }) => {
   return (
-    <>
+    <EducationSectionWrapper>
       <motion.div
         className={
           isMobile ? styles.headerDescriptionMobile : styles.headerDescription
@@ -38,18 +68,17 @@ export const Education = ({ isMobile, ...props }) => {
         </motion.li>
         <motion.li>
           <motion.h3>Masters Project</motion.h3>
+          Created a cocotb template for verifying the design for an
+          undergraduate final project (constructing a Multi-Cycle ARM processor
+          in VHDL). Displayed the benefits of doing hardware verification in
+          Python.{' '}
           <ShimmerLink
             link='/document/msProjectReport'
             text='ARM Processor Hardware Verification in cocotb'
           />
-          Created a cocotb template for verifying the design for an
-          undergraduate final project (constructing a Multi-Cycle ARM processor
-          in VHDL). Displayed the benefits of doing hardware verification in
-          Python.
         </motion.li>
         <motion.li>
           <motion.h3>Microfabrication</motion.h3>
-          <ShimmerLink link='/document/' text='ADD PROJECT' />
           Investigated modern semiconductor manufacturing techniques and
           computed the steps required to construct real-world devices.
         </motion.li>
@@ -118,6 +147,6 @@ export const Education = ({ isMobile, ...props }) => {
           </Link> or <Link to='/posts'>Posts</Link> to hear more about this.
         </motion.li>
       </motion.ul>
-    </>
+    </EducationSectionWrapper>
   );
 };
