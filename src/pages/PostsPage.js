@@ -1,5 +1,5 @@
 import { BasePage } from './BasePage';
-import { PostView } from 'components/postComponents/postView/PostView';
+import { PostView } from 'components/postComponents/postview/PostView';
 
 export const PostsPage = (props) => {
   return (
