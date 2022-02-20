@@ -6,7 +6,7 @@ import { Personal } from 'components/pages/experiencePage/personal/Personal';
 import { Selector } from 'components/pages/experiencePage/selector/Selector';
 
 export const ExperiencePage = (props) => {
-  const [selectedView, setSelectedView] = useState('PERSONAL');
+  const [selectedView, setSelectedView] = useState('EDUCATION');
   const views = ['PERSONAL', 'PROFESSIONAL', 'EDUCATION'];
 
   return (

@@ -27,7 +27,7 @@ const EducationSectionWrapper = ({ children }) => {
   return (
     children && (
       <motion.div
-        className={styles.professionalWrapper}
+        className={styles.educationWrapper}
         variants={eduSection}
         initial='hidden'
         animate='visible'>
