@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import { BasePage } from 'pages/BasePage';
 import { PdfViewer } from 'components/pageComponents/pdfViewer/PdfViewer';
 import MsProject from 'files/MS Project Report.pdf';
-import Resume from 'files/Resume_02-13-22.pdf';
+import Resume from 'files/Resume_02-17-22.pdf';
 import VPPs from 'files/Virtual Power Plants.pdf';
 
 export const DocumentPage = (props) => {

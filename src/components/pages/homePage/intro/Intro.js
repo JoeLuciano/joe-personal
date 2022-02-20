@@ -64,9 +64,9 @@ export const Intro = ({ isMobile }) => {
       <br />
       <motion.h2 variants={introText}>
         Feel free to{' '}
-        <Link className={styles.link} to='/contact'>
+        <motion.a className={styles.link} href='mailto:joeluciano@outlook.com'>
           reach out
-        </Link>{' '}
+        </motion.a>{' '}
         too!
       </motion.h2>
     </motion.div>
