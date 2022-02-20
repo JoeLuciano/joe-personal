@@ -1,20 +1,19 @@
 import { useCallback, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import styles from './PostCard.module.css';
 
 const postCardVariants = {
-  small: { opacity: 0.5 },
-  big: { opacity: 1 },
-  hidden: { opacity: 0 },
+  small: { opacity: 0.5, height: '13rem' },
+  big: { opacity: 1, height: 'auto' },
 };
 
 const PostCreationInfo = ({ image, author, date }) => {
+  const relevantDate = new Date(date).toLocaleDateString();
   return (
     <motion.div className={styles['post-creation-info']}>
-      <img className={styles['pfp']} src={image} alt='test' />
+      <motion.img className={styles['pfp']} src={image} alt='test' />
       <motion.h3>
-        {author} · {date}
+        Created by {author} on {relevantDate}
       </motion.h3>
     </motion.div>
   );
@@ -24,12 +23,10 @@ const PostContentInfo = ({ title, body, image, togglePost }) => {
   return (
     <motion.div className={styles['post-content-info']}>
       <motion.div className={styles['post-content-info-text']}>
-        <motion.button onClick={() => togglePost()}>
-          <motion.h1>{title}</motion.h1>
-        </motion.button>
+        <motion.h1>{title}</motion.h1>
         <motion.p>{body}</motion.p>
       </motion.div>
-      <img className={styles['post-pic']} src={image} alt='test' />
+      <motion.img className={styles['post-pic']} src={image} alt='test' />
     </motion.div>
   );
 };
@@ -40,29 +37,24 @@ export const PostCard = ({
   user,
   smartFetch,
   bigView,
+  removePost,
   togglePost,
 }) => {
   const [postImage, setPostImage] = useState();
   const [userPfp, setUserPfp] = useState();
 
-  const navigate = useNavigate();
-
-  const deletePost = useCallback(
-    async (event) => {
-      event.preventDefault();
-      const deleteResponse = await smartFetch({
-        url: '/api/post/delete',
-        type: 'POST',
-        payload: {
-          title: data.title,
-        },
-      });
-      if (deleteResponse.ok) {
-        navigate('/posts');
-      }
-    },
-    [smartFetch, data.title, navigate]
-  );
+  const deletePost = useCallback(async () => {
+    const deleteResponse = await smartFetch({
+      url: '/api/post/delete',
+      type: 'POST',
+      payload: {
+        title: data.title,
+      },
+    });
+    if (deleteResponse.ok) {
+      removePost();
+    }
+  }, [smartFetch, data.title, removePost]);
 
   useEffect(() => {
     async function getPostImage() {
@@ -98,22 +90,27 @@ export const PostCard = ({
 
   return (
     <motion.div
-      className={bigView ? styles.bigViewPostcard : styles['postcard']}
-      animate={bigView ? 'big' : 'small'}
-      exit='hidden'
-      variants={postCardVariants}
+      className={styles['postcard-wrapper']}
       whileHover={{ boxShadow: '1px 4px 20px rgba(50, 50, 0, 0.5)' }}>
-      <PostCreationInfo
-        image={userPfp}
-        author={data.author}
-        date={data.date_posted}
-      />
-      <PostContentInfo
-        title={data.title}
-        body={data.content}
-        image={postImage}
-        togglePost={() => togglePost()}
-      />
+      <motion.div
+        className={styles['postcard']}
+        animate={bigView ? 'big' : 'small'}
+        variants={postCardVariants}>
+        <PostCreationInfo
+          image={userPfp}
+          author={data.author}
+          date={data.date_posted}
+        />
+        <PostContentInfo
+          title={data.title}
+          body={data.content}
+          image={postImage}
+        />
+      </motion.div>
+      <motion.button onClick={() => togglePost()}>Expand</motion.button>
+      {user.username === data.author && (
+        <motion.button onClick={() => deletePost()}>Delete</motion.button>
+      )}
     </motion.div>
   );
 };

@@ -18,9 +18,6 @@ export const CreatePostForm = ({ smartFetch, getAllPosts }) => {
     formData.append('title', data.title);
     formData.append('content', data.content);
     formData.append('image', data.image[0]);
-    for (var key of formData.entries()) {
-      console.log(key[0] + ', ' + key[1]);
-    }
     await smartFetch({
       url: '/api/post/create',
       type: 'POST',

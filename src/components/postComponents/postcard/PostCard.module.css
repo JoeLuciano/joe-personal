@@ -1,22 +1,32 @@
-.postcard {
+.postcard-wrapper {
   padding: 1rem;
-  margin: 1rem;
+  margin: 0.5rem;
   border: solid 0.15rem var(--border-color);
   border-radius: 1rem;
+  display: relative;
 }
 
-.bigViewPostcard {
-  display: absolute;
-  height: 100vh;
+.postcard {
+  overflow: hidden;
 }
 
 .post-creation-info {
   display: flex;
   width: 100%;
+  align-items: center;
+  justify-content: left;
+}
+
+.post-creation-info > h3 {
+  font-size: 1rem;
+  margin: 0.5rem;
 }
 
 .pfp {
-  width: 2rem;
+  object-fit: cover;
+  border-radius: 100%;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .post-content-info {
@@ -30,7 +40,12 @@
 }
 
 .post-pic {
-  width: 10rem;
+  object-fit: cover;
+  border-radius: 10%;
+  max-width: 10rem;
+  max-height: 10rem;
+  width: 100%;
+  height: 100%;
 }
 
 .post-options {

@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.fef410bd.css",
-    "main.js": "/static/js/main.fde7ad72.js",
+    "main.css": "/static/css/main.8dbc3acc.css",
+    "main.js": "/static/js/main.e5a4d823.js",
     "static/js/787.5809834d.chunk.js": "/static/js/787.5809834d.chunk.js",
     "static/media/MS Project Report.pdf": "/static/media/MS Project Report.be433cd763f9868e9e9e.pdf",
     "static/media/Virtual Power Plants.pdf": "/static/media/Virtual Power Plants.f3e4c04ab582090d489f.pdf",
     "static/media/Resume_02-13-22.pdf": "/static/media/Resume_02-13-22.9a04b19cad583ff25b54.pdf",
     "static/media/PythonWheel.svg": "/static/media/PythonWheel.83e50671bf8b1268bd0a72eaee2f6551.svg",
     "index.html": "/index.html",
-    "main.fef410bd.css.map": "/static/css/main.fef410bd.css.map",
-    "main.fde7ad72.js.map": "/static/js/main.fde7ad72.js.map",
+    "main.8dbc3acc.css.map": "/static/css/main.8dbc3acc.css.map",
+    "main.e5a4d823.js.map": "/static/js/main.e5a4d823.js.map",
     "787.5809834d.chunk.js.map": "/static/js/787.5809834d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.fef410bd.css",
-    "static/js/main.fde7ad72.js"
+    "static/css/main.8dbc3acc.css",
+    "static/js/main.e5a4d823.js"
   ]
 }

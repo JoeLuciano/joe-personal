@@ -49,21 +49,23 @@ def createPost():
         except Exception as e:
             return Message.error(f'{e} (Could not get image from form)'), 400
 
+        post = Post(title=formData.get('title'), date_posted=datetime.utcnow(),
+                    content=formData.get('content'), author=current_user, image_file=secure_filename(image.filename))
+
+        db.session.add(post)
+        db.session.commit()
+
         if image:
             response = upload_image(image)
             response_message = response[0].get_json()['message']
             if 'ERROR' in response_message:
                 return response
         else:
-            return Message.error(f'No image uplloaded for post'), 400
+            return Message.error(f'No image uploaded for post'), 400
 
-        post = Post(title=formData.get('title'), date_posted=datetime.utcnow(),
-                    content=formData.get('content'), author=current_user, image_file=secure_filename(image.filename))
-        db.session.add(post)
-        db.session.commit()
         return Message.msg(f'Sucessfully created post!'), 200
     except Exception as e:
-        return Message.error(f'{e}'), 400
+        return Message.error(f'Unexpected {e}'), 400
 
 
 @posts.route('/api/post/delete', methods=['POST'])

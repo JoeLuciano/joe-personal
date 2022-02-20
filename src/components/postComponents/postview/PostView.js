@@ -22,6 +22,10 @@ export const PostView = (props) => {
     }
   }, [smartFetch]);
 
+  const removePost = (title) => {
+    setAllPosts((prev) => prev.filter((post) => post.title !== title));
+  };
+
   useEffect(() => {
     getAllPosts();
   }, [getAllPosts]);
@@ -36,6 +40,7 @@ export const PostView = (props) => {
               key: index,
               data: post,
               ...props,
+              removePost: () => removePost(post.title),
               togglePost:
                 currentPost === post
                   ? () => setCurrentPost(undefined)

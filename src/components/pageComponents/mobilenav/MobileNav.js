@@ -98,9 +98,25 @@ export const MobileNav = ({ isMobile, headerItems, userItems }) => {
     return () => clearTimeout(timeout);
   }, []);
 
+  let leftConstraint = 0;
+  let topConstraint = 0;
+  const mobileNavObject = document.getElementById('mobileNav');
+  if (mobileNavObject) {
+    leftConstraint = -window.innerWidth + mobileNavObject.offsetWidth * 1.2;
+    topConstraint = -window.innerHeight + mobileNavObject.offsetHeight * 1.5;
+  }
+
   return (
     isMobile && (
       <motion.div
+        id='mobileNav'
+        drag
+        dragConstraints={{
+          left: leftConstraint,
+          top: topConstraint,
+          right: 10,
+          bottom: 10,
+        }}
         className={styles.mobileNav}
         variants={mobileNavVariant}
         initial='offScreen'

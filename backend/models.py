@@ -8,7 +8,7 @@ from flask_login import UserMixin
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True)
     title = db.Column(db.String(100), nullable=False, unique=True)
-    image_file = db.Column(db.String(20), nullable=True,
+    image_file = db.Column(db.String(50), nullable=True,
                            default='default.jpg')
     date_posted = db.Column(db.DateTime, nullable=False,
                             default=datetime.utcnow)
@@ -44,7 +44,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    image_file = db.Column(db.String(20), nullable=False,
+    image_file = db.Column(db.String(50), nullable=False,
                            default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True)
