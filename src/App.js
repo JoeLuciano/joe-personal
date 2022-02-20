@@ -5,7 +5,6 @@ import { Flash } from 'components/pageComponents/flash/Flash';
 import {
   HomePage,
   PostsPage,
-  PostPage,
   NotFound,
   ExperiencePage,
   UserPage,
@@ -145,11 +144,7 @@ function App() {
           {/* <Route
             exact
             path='/posts'
-            element={<PostsPage {...pageState} />}></Route>
-          <Route
-            exact
-            path='/post/:title'
-            element={<PostPage {...pageState} />}></Route> */}
+            element={<PostsPage {...pageState} />}></Route> */}
           <Route
             exact
             path='/experience'

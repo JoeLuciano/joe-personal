@@ -59,8 +59,6 @@ export const UpdateAccountForm = ({ setFlash, user, setUser, smartFetch }) => {
     });
   };
 
-  console.log(user);
-
   return (
     <motion.form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
       <motion.h1 className={styles.header}>

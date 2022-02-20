@@ -1,7 +1,13 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useCallback, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import styles from './PostCard.module.css';
+
+const postCardVariants = {
+  small: { opacity: 0.5 },
+  big: { opacity: 1 },
+  hidden: { opacity: 0 },
+};
 
 const PostCreationInfo = ({ image, author, date }) => {
   return (
@@ -14,13 +20,13 @@ const PostCreationInfo = ({ image, author, date }) => {
   );
 };
 
-const PostContentInfo = ({ title, body, image }) => {
+const PostContentInfo = ({ title, body, image, togglePost }) => {
   return (
     <motion.div className={styles['post-content-info']}>
       <motion.div className={styles['post-content-info-text']}>
-        <Link to={`/post/${title}`}>
+        <motion.button onClick={() => togglePost()}>
           <motion.h1>{title}</motion.h1>
-        </Link>
+        </motion.button>
         <motion.p>{body}</motion.p>
       </motion.div>
       <img className={styles['post-pic']} src={image} alt='test' />
@@ -28,27 +34,35 @@ const PostContentInfo = ({ title, body, image }) => {
   );
 };
 
-const PostOptions = ({ tags, info }) => {
-  return (
-    <motion.div className={styles['post-options']}>
-      <Link
-        to={{
-          pathname: '/courses',
-          search: '?sort=name',
-          hash: '#the-hash',
-          state: { fromDashboard: true },
-        }}>
-        {tags}
-      </Link>
-      <motion.div>{info}</motion.div>
-      <motion.div>some fancy options</motion.div>
-    </motion.div>
-  );
-};
-
-export const PostCard = ({ isMobile, data, user, smartFetch }) => {
+export const PostCard = ({
+  isMobile,
+  data,
+  user,
+  smartFetch,
+  bigView,
+  togglePost,
+}) => {
   const [postImage, setPostImage] = useState();
   const [userPfp, setUserPfp] = useState();
+
+  const navigate = useNavigate();
+
+  const deletePost = useCallback(
+    async (event) => {
+      event.preventDefault();
+      const deleteResponse = await smartFetch({
+        url: '/api/post/delete',
+        type: 'POST',
+        payload: {
+          title: data.title,
+        },
+      });
+      if (deleteResponse.ok) {
+        navigate('/posts');
+      }
+    },
+    [smartFetch, data.title, navigate]
+  );
 
   useEffect(() => {
     async function getPostImage() {
@@ -84,7 +98,10 @@ export const PostCard = ({ isMobile, data, user, smartFetch }) => {
 
   return (
     <motion.div
-      className={styles['postcard']}
+      className={bigView ? styles.bigViewPostcard : styles['postcard']}
+      animate={bigView ? 'big' : 'small'}
+      exit='hidden'
+      variants={postCardVariants}
       whileHover={{ boxShadow: '1px 4px 20px rgba(50, 50, 0, 0.5)' }}>
       <PostCreationInfo
         image={userPfp}
@@ -95,8 +112,8 @@ export const PostCard = ({ isMobile, data, user, smartFetch }) => {
         title={data.title}
         body={data.content}
         image={postImage}
+        togglePost={() => togglePost()}
       />
-      <PostOptions tags={data.tags} info={data.info} />
     </motion.div>
   );
 };
