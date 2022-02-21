@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import PythonWheelImage from 'customImages/PythonWheel.svg';
 import { AnimatePresence, motion } from 'framer-motion';
-import styles from './Python.module.css';
+import styles from './Experience.module.css';
 import { SiFlask } from 'react-icons/si';
 import { SiKeras } from 'react-icons/si';
 import { SiTensorflow } from 'react-icons/si';
@@ -41,7 +41,7 @@ const PythonWheel = ({ showWheel }) => {
   );
 };
 
-const pythonSection = {
+const section = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -49,7 +49,7 @@ const pythonSection = {
   },
 };
 
-const pythonText = {
+const text = {
   hidden: { y: '-2rem', opacity: 0 },
   visible: { y: 0, opacity: 1 },
 };
@@ -72,10 +72,8 @@ const PythonListItem = (props) => {
 const PythonList = ({ isMobile }) => {
   return (
     <motion.ul
-      className={
-        isMobile ? styles.pythonUnorderedListMobile : styles.pythonUnorderedList
-      }
-      variants={pythonText}>
+      className={isMobile ? styles.unorderedListMobile : styles.unorderedList}
+      variants={text}>
       <PythonListItem
         main='Tools/Scripts'
         sub='Protocol Implementation and Automation'
@@ -112,7 +110,7 @@ const PythonList = ({ isMobile }) => {
 
 const PythonBlurb = ({ setSelectedView }) => {
   return (
-    <motion.div variants={pythonText} className={styles.pythonText}>
+    <motion.div variants={text} className={styles.text}>
       Bare metal programming to such a high level program as Python has been an
       eye-opening experience. I began scripting with Python while interning at
       Intel and I continued using it in my{' '}
@@ -141,10 +139,8 @@ export const Python = (props) => {
   const { isMobile, setSelectedView } = props;
   return (
     <>
-      <motion.div
-        className={styles.pythonTextContainer}
-        variants={pythonSection}>
-        <motion.h2 className={styles.pythonHeader} variants={pythonText}>
+      <motion.div className={styles.textContainer} variants={section}>
+        <motion.h2 className={styles.header} variants={text}>
           Python - Automation Tools and Data Processing
         </motion.h2>
         <PythonList isMobile={isMobile} />

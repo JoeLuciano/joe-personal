@@ -7,9 +7,9 @@ import { styles } from './Personal.module.css';
 export const Personal = (props) => {
   return (
     <>
-      <Python setSelectedView={props.setSelectedView} {...props} />
-      <Cpp />
-      <Web />
+      <Python {...props} />
+      <Cpp {...props} />
+      <Web {...props} />
     </>
   );
 };

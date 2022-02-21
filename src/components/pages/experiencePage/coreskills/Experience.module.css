@@ -1,0 +1,68 @@
+span > a {
+  color: #003863;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.textContainer {
+  width: calc(100% - 5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header {
+  color: #003863;
+  font-size: 2rem;
+  margin-top: 2rem;
+}
+
+.text {
+  font-size: 1.3rem;
+  margin-top: 1rem;
+}
+
+.unorderedList {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: row;
+  grid-gap: 2rem;
+  list-style-type: none;
+}
+
+.unorderedListMobile {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  grid-gap: 2rem;
+  list-style-type: none;
+}
+
+.unorderedListMobile > li,
+.unorderedList > li {
+  font-size: 1rem;
+  color: #6e4b00;
+  width: 10rem;
+}
+
+.unorderedListMobile > li > h3,
+.unorderedListMobile > li > a > h3,
+.unorderedList > li > h3,
+.unorderedList > li > a > h3 {
+  font-size: 2rem;
+}
+.unorderedListMobile > li > a,
+.unorderedList > li > a {
+  font-size: inherit;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+}
+
+.pythonWheel {
+  position: fixed;
+  top: 20vh;
+  left: 10vw;
+}

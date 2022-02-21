@@ -1,4 +1,4 @@
-import styles from './Cpp.module.css';
+import styles from './Experience.module.css';
 import { motion } from 'framer-motion';
 
 export const Cpp = (props) => {
