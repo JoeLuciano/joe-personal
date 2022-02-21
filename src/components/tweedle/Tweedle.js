@@ -169,13 +169,16 @@ export const Tweedle = ({ smartFetch }) => {
       <Info gameState={gameState} />
 
       <div className='react-container'>
-        <Canvas camera={{ position: cameraPosition }}>
-          <ambientLight intensity={1} />
-          <pointLight position={[10, 10, 10]} />
-          {guesses && Object.values(guesses)}
-          <CameraAdjustment />
-          <OrbitControls />
-        </Canvas>
+        <React.Suspense fallback={<Canvas>Loading profile...</Canvas>}>
+          <Canvas camera={{ position: cameraPosition }}>
+            <ambientLight intensity={1} />
+            <pointLight position={[10, 10, 10]} />
+            {guesses && Object.values(guesses)}
+            <CameraAdjustment />
+            <OrbitControls />
+          </Canvas>
+        </React.Suspense>
+
         <Keyboard
           onKeyPress={handleOnScreenKeyboardChange}
           display={{ '{bksp}': '⌫', '{enter}': '⏏' }}

@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Text } from '@react-three/drei';
 import { useSpring, a } from '@react-spring/three';
 
@@ -97,7 +97,7 @@ export default function WordleBox({ posX, letter, match, fontSize }) {
         </Text>
         <Text ref={topFaceRef} color={fontColor} fontSize={fontSize}>
           {topFaceText}
-        </Text>
+        </Text>{' '}
       </a.mesh>
     </>
   );

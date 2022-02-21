@@ -3,22 +3,33 @@ import { BasePage } from './BasePage';
 import { Education } from 'components/pages/experiencePage/education/Education';
 import { Professional } from 'components/pages/experiencePage/professional/Professional';
 import { Personal } from 'components/pages/experiencePage/personal/Personal';
-import { Selector } from 'components/pages/experiencePage/selector/Selector';
+import { ContentSelector } from 'components/pageComponents/contentSelector/ContentSelector';
 
 export const ExperiencePage = (props) => {
   const [selectedView, setSelectedView] = useState('EDUCATION');
   const views = ['PERSONAL', 'PROFESSIONAL', 'EDUCATION'];
 
+  const selectorObject = document.getElementById(
+    'experienceContentSelectorWrapper'
+  );
+  let selectorHeight = 0;
+  if (selectorObject) {
+    selectorHeight = selectorObject.offsetHeight;
+  }
+
+  console.log(selectorHeight);
   return (
     <BasePage
       {...props}
       pageContent={
         <>
-          <Selector
+          <ContentSelector
             views={views}
             selectedView={selectedView}
             setSelectedView={setSelectedView}
+            {...props}
           />
+          <div style={{ height: selectorHeight }} />
           {selectedView === 'PERSONAL' && (
             <Personal setSelectedView={setSelectedView} {...props} />
           )}
