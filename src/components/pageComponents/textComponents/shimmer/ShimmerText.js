@@ -55,6 +55,7 @@ export const ShimmerLink = ({ text, link }) => {
   return (
     <Link to={link} target='_blank'>
       <motion.div
+        className={styles.shimmerAnchor}
         variants={letterContainer}
         initial='hidden'
         animate='visible'

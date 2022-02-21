@@ -6,7 +6,10 @@ import { SiFlask } from 'react-icons/si';
 import { SiKeras } from 'react-icons/si';
 import { SiTensorflow } from 'react-icons/si';
 import { VscCircuitBoard } from 'react-icons/vsc';
-import { ShimmerAnchor } from 'components/pageComponents/textComponents/shimmer/ShimmerText';
+import {
+  ShimmerAnchor,
+  ShimmerLink,
+} from 'components/pageComponents/textComponents/shimmer/ShimmerText';
 
 const pythonWheel = {
   start: { x: '-120vw', y: '-14rem', rotate: 0 },
@@ -67,7 +70,6 @@ const PythonListItem = (props) => {
 };
 
 const PythonList = ({ isMobile }) => {
-  console.log(isMobile);
   return (
     <motion.ul
       className={
@@ -110,10 +112,10 @@ const PythonList = ({ isMobile }) => {
 
 const PythonBlurb = ({ setSelectedView }) => {
   return (
-    <motion.p variants={pythonText} className={styles.pythonText}>
-      Working in bare metal and exploring pure software has taught me what can
-      be accomplished. I began scripting with Python while intering at Intel and
-      I continued using it in my{' '}
+    <motion.div variants={pythonText} className={styles.pythonText}>
+      Bare metal programming to such a high level program as Python has been an
+      eye-opening experience. I began scripting with Python while interning at
+      Intel and I continued using it in my{' '}
       <motion.span onClick={() => setSelectedView('EDUCATION')}>
         <ShimmerAnchor text='grad courses' />
       </motion.span>
@@ -123,11 +125,10 @@ const PythonBlurb = ({ setSelectedView }) => {
       </motion.span>
       . I've written Python code on a daily basis since and have used it in some
       cool{' '}
-      <motion.a href='link to personal projects' target='blank'>
-        projects
-      </motion.a>
-      .
-    </motion.p>
+      <motion.span>
+        <ShimmerLink text='projects.' link='/tweedle' />
+      </motion.span>
+    </motion.div>
   );
 };
 

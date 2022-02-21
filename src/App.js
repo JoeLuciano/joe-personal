@@ -141,10 +141,10 @@ function App() {
             exact
             path='/home'
             element={<HomePage {...pageState} />}></Route>
-          {/* <Route
+          <Route
             exact
             path='/posts'
-            element={<PostsPage {...pageState} />}></Route> */}
+            element={<PostsPage {...pageState} />}></Route>
           <Route
             exact
             path='/experience'

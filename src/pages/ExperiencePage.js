@@ -12,12 +12,11 @@ export const ExperiencePage = (props) => {
   const selectorObject = document.getElementById(
     'experienceContentSelectorWrapper'
   );
-  let selectorHeight = 0;
+  let selectorHeight = 160;
   if (selectorObject) {
     selectorHeight = selectorObject.offsetHeight;
   }
 
-  console.log(selectorHeight);
   return (
     <BasePage
       {...props}
