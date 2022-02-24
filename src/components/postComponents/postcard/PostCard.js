@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import styles from './PostCard.module.css';
 
 const postCardVariants = {
-  small: { opacity: 0.5, height: '13rem' },
+  small: { opacity: 1, height: '5.5rem' },
   big: { opacity: 1, height: 'auto' },
 };
 
@@ -19,14 +19,13 @@ const PostCreationInfo = ({ image, author, date }) => {
   );
 };
 
-const PostContentInfo = ({ title, body, image, togglePost }) => {
+const PostContentInfo = ({ title, body }) => {
   return (
     <motion.div className={styles['post-content-info']}>
       <motion.div className={styles['post-content-info-text']}>
         <motion.h1>{title}</motion.h1>
         <motion.p>{body}</motion.p>
       </motion.div>
-      <motion.img className={styles['post-pic']} src={image} alt='test' />
     </motion.div>
   );
 };
@@ -90,10 +89,11 @@ export const PostCard = ({
 
   return (
     <motion.div
-      className={styles['postcard-wrapper']}
+      className={styles.postcardWrapper}
       whileHover={{ boxShadow: '1px 4px 20px rgba(50, 50, 0, 0.5)' }}>
+      <motion.img className={styles.postImage} src={postImage} alt='' />
       <motion.div
-        className={styles['postcard']}
+        className={styles.postcard}
         animate={bigView ? 'big' : 'small'}
         variants={postCardVariants}>
         <PostCreationInfo
@@ -101,11 +101,7 @@ export const PostCard = ({
           author={data.author}
           date={data.date_posted}
         />
-        <PostContentInfo
-          title={data.title}
-          body={data.content}
-          image={postImage}
-        />
+        <PostContentInfo title={data.title} body={data.content} />
       </motion.div>
       <motion.button onClick={() => togglePost()}>Expand</motion.button>
       {user.username === data.author && (
