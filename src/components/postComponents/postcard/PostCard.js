@@ -1,17 +1,36 @@
 import { useCallback, useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimateSharedLayout } from 'framer-motion';
 import styles from './PostCard.module.css';
 
+const postCardTransitionLength = 0.5;
+
 const postCardVariants = {
-  small: { opacity: 1, height: '5.5rem' },
-  big: { opacity: 1, height: 'auto' },
+  small: {
+    opacity: 1,
+    height: '5.5rem',
+    transition: { duration: postCardTransitionLength },
+  },
+  big: {
+    opacity: 1,
+    height: 'auto',
+    transition: { duration: postCardTransitionLength },
+  },
+};
+
+const postImageVariants = {
+  small: { width: '100%', transition: { duration: postCardTransitionLength } },
+  big: {
+    opacity: 1,
+    width: '20%',
+    transition: { duration: postCardTransitionLength },
+  },
 };
 
 const PostCreationInfo = ({ image, author, date }) => {
   const relevantDate = new Date(date).toLocaleDateString();
   return (
-    <motion.div className={styles['post-creation-info']}>
-      <motion.img className={styles['pfp']} src={image} alt='test' />
+    <motion.div className={styles.postCreationInfo}>
+      <motion.img className={styles.pfp} src={image} alt='test' />
       <motion.h3>
         Created by {author} on {relevantDate}
       </motion.h3>
@@ -21,8 +40,8 @@ const PostCreationInfo = ({ image, author, date }) => {
 
 const PostContentInfo = ({ title, body }) => {
   return (
-    <motion.div className={styles['post-content-info']}>
-      <motion.div className={styles['post-content-info-text']}>
+    <motion.div className={styles.postContentInfo}>
+      <motion.div className={styles.postContentInfoText}>
         <motion.h1>{title}</motion.h1>
         <motion.p>{body}</motion.p>
       </motion.div>
@@ -91,22 +110,33 @@ export const PostCard = ({
     <motion.div
       className={styles.postcardWrapper}
       whileHover={{ boxShadow: '1px 4px 20px rgba(50, 50, 0, 0.5)' }}>
-      <motion.img className={styles.postImage} src={postImage} alt='' />
-      <motion.div
-        className={styles.postcard}
-        animate={bigView ? 'big' : 'small'}
-        variants={postCardVariants}>
-        <PostCreationInfo
-          image={userPfp}
-          author={data.author}
-          date={data.date_posted}
+      <AnimateSharedLayout>
+        <motion.img
+          layout
+          variants={postImageVariants}
+          className={styles.postImage}
+          animate={bigView ? 'big' : 'small'}
+          src={postImage}
+          alt=''
         />
-        <PostContentInfo title={data.title} body={data.content} />
-      </motion.div>
-      <motion.button onClick={() => togglePost()}>Expand</motion.button>
-      {user.username === data.author && (
-        <motion.button onClick={() => deletePost()}>Delete</motion.button>
-      )}
+        <motion.div
+          layout
+          className={styles.postcard}
+          animate={bigView ? 'big' : 'small'}
+          variants={postCardVariants}>
+          <PostCreationInfo
+            image={userPfp}
+            author={data.author}
+            date={data.date_posted}
+          />
+          <PostContentInfo title={data.title} body={data.content} />
+        </motion.div>
+
+        <motion.button onClick={() => togglePost()}>Expand</motion.button>
+        {user.username === data.author && (
+          <motion.button onClick={() => deletePost()}>Delete</motion.button>
+        )}
+      </AnimateSharedLayout>
     </motion.div>
   );
 };

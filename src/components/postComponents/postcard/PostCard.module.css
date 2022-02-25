@@ -12,10 +12,9 @@
   z-index: -1;
   opacity: 0.3;
   position: absolute;
-  left: 0;
+  right: 0;
   top: 0;
   object-fit: cover;
-  width: 100%;
   height: auto;
 }
 
@@ -24,14 +23,15 @@
   overflow: hidden;
 }
 
-.post-creation-info {
+.postCreationInfo {
   display: flex;
   width: 100%;
   align-items: center;
   justify-content: left;
 }
 
-.post-creation-info > h3 {
+.postCreationInfo > h3 {
+  text-align: left;
   font-size: 1rem;
   margin: 0.5rem;
 }
@@ -43,16 +43,21 @@
   height: 1.5rem;
 }
 
-.post-content-info {
+.postContentInfo {
   display: flex;
   width: 100%;
 }
 
-.post-content-info-text {
+.postContentInfoText {
+  text-align: left;
+  margin-right: 20%;
   width: 100%;
-  padding: 1rem 0;
+  padding: 1rem;
 }
 
+.postContentInfoText > p {
+  margin: 0.5rem 0;
+}
 .post-options {
   width: 100%;
   display: flex;
