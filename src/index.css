@@ -1,5 +1,22 @@
 :root {
+  --success: #009944;
+  --error: #cf000f;
+  --warning: #f0541e;
+  --info: #63c0df;
+  --text: #000a61;
+  --darkendGreen: #064600;
+  --darkendYellow: #836b00;
+  --darkendRed: #7e0000;
+  --lightGray: #d8d8d8;
+  --gray: #86888a;
+  --darkGray: #939598;
+  --black: #212121;
+  --orange: #f5793a;
+  --blue: #85c0f9;
   --border-color: #aaaaaa;
+  --white: #faf0e6;
+  --bing-green: #00704f;
+  --intel-blue: #0071c5;
 }
 
 html,

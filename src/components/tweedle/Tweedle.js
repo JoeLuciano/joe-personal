@@ -5,6 +5,7 @@ import { Vector3 } from 'three';
 import WordleRow from './WordleRow';
 import Info from './Info';
 import Keyboard from 'react-simple-keyboard';
+import * as THREE from 'three';
 import './Tweedle.css';
 
 export const Tweedle = ({ smartFetch }) => {
@@ -170,7 +171,12 @@ export const Tweedle = ({ smartFetch }) => {
 
       <div className='react-container'>
         <React.Suspense fallback={<Canvas>Loading profile...</Canvas>}>
-          <Canvas camera={{ position: cameraPosition }}>
+          <Canvas
+            camera={{ position: cameraPosition }}
+            onCreated={({ gl }) => {
+              /* BETTER COLORS */
+              gl.toneMapping = THREE.NoToneMapping;
+            }}>
             <ambientLight intensity={1} />
             <pointLight position={[10, 10, 10]} />
             {guesses && Object.values(guesses)}

@@ -1,7 +1,3 @@
-:root {
-  --intel-blue: #0071c5;
-}
-
 .intel {
   color: var(--intel-blue);
 }

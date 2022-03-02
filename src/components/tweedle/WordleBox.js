@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Text } from '@react-three/drei';
 import { useSpring, a } from '@react-spring/three';
+import * as THREE from 'three';
 
 export default function WordleBox({ posX, letter, match, fontSize }) {
   const leftFaceRef = useRef();
@@ -31,11 +32,24 @@ export default function WordleBox({ posX, letter, match, fontSize }) {
     }
   }, [letter]);
 
-  const fontColor = '#EC2D2D';
-  const boxColor = '#2F2F2F';
+  const fontColor = '#FFFFFF';
+  const boxColor = '#1F1F1F';
+
   const [topFaceColor, setTopFaceColor] = useState(boxColor);
 
   useEffect(() => {
+    const style = getComputedStyle(document.body);
+
+    const matchColor = new THREE.Color(
+      parseInt(style.getPropertyValue('--darkendGreen').replace('#', '0x'), 16)
+    );
+    const closeColor = new THREE.Color(
+      parseInt(style.getPropertyValue('--darkendYellow').replace('#', '0x'), 16)
+    );
+    const missColor = new THREE.Color(
+      parseInt(style.getPropertyValue('--darkendRed').replace('#', '0x'), 16)
+    );
+
     const updateTopFace = () => {
       setAngleX((current) => current + Math.PI / 2);
       topFaceRef.current.rotation.z = -Math.PI / 2;
@@ -44,15 +58,15 @@ export default function WordleBox({ posX, letter, match, fontSize }) {
     switch (match) {
       case 'match':
         updateTopFace();
-        setTopFaceColor('green');
+        setTopFaceColor(matchColor);
         break;
       case 'close':
         updateTopFace();
-        setTopFaceColor('yellow');
+        setTopFaceColor(closeColor);
         break;
       case 'miss':
         updateTopFace();
-        setTopFaceColor('red');
+        setTopFaceColor(missColor);
         break;
       default:
     }

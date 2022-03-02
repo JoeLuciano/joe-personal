@@ -100,7 +100,7 @@ export const MobileNav = ({ isMobile, headerItems, userItems }) => {
 
   let leftConstraint = 0;
   let topConstraint = 0;
-  const mobileNavObject = document.getElementById('mobileNav');
+  const mobileNavObject = document.getElementById('mobilenav');
   if (mobileNavObject) {
     leftConstraint = -window.innerWidth + mobileNavObject.offsetWidth * 1.2;
     topConstraint = -window.innerHeight + mobileNavObject.offsetHeight * 1.5;
@@ -109,7 +109,7 @@ export const MobileNav = ({ isMobile, headerItems, userItems }) => {
   return (
     isMobile && (
       <motion.div
-        id='mobileNav'
+        id='mobilenav'
         drag
         dragConstraints={{
           left: leftConstraint,
