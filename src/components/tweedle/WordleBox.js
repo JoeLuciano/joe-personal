@@ -1,14 +1,19 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Text } from '@react-three/drei';
 import { useSpring, a } from '@react-spring/three';
 import * as THREE from 'three';
+import { Text as TextMeshImpl } from 'troika-three-text';
+import { useThree } from '@react-three/fiber';
 
 export default function WordleBox({ posX, letter, match, fontSize }) {
+  const fontColor = '#FFFFFF';
+  const boxColor = '#1F1F1F';
+
   const leftFaceRef = useRef();
   const topFaceRef = useRef();
 
-  const [leftFaceText, setLeftFaceText] = useState();
-  const [topFaceText, setTopFaceText] = useState();
+  const [currentLetter, setCurrentLetter] = useState();
+  const [topFaceOpacity, setTopFaceOpacity] = useState(0);
+  const [topFaceColor, setTopFaceColor] = useState(boxColor);
 
   const [delayedPosX, setDelayedPosX] = useState(0);
   const [angleX, setAngleX] = useState(0);
@@ -23,15 +28,11 @@ export default function WordleBox({ posX, letter, match, fontSize }) {
   }, [fontSize]);
   console.log(letter);
 
+  // Handle keyboard input
   useEffect(() => {
-    setLeftFaceText(letter);
+    setCurrentLetter(letter);
     setAngleY((current) => current - Math.PI / 2 + (letter ? Math.PI : 0));
   }, [letter]);
-
-  const fontColor = '#FFFFFF';
-  const boxColor = '#1F1F1F';
-
-  const [topFaceColor, setTopFaceColor] = useState(boxColor);
 
   useEffect(() => {
     const style = getComputedStyle(document.body);
@@ -49,7 +50,7 @@ export default function WordleBox({ posX, letter, match, fontSize }) {
     const updateTopFace = () => {
       setAngleX((current) => current + Math.PI / 2);
       topFaceRef.current.rotation.z = -Math.PI / 2;
-      setTopFaceText(letter);
+      setTopFaceOpacity(1);
     };
     switch (match) {
       case 'match':
@@ -66,7 +67,7 @@ export default function WordleBox({ posX, letter, match, fontSize }) {
         break;
       default:
     }
-  }, [match, letter]);
+  }, [match]);
 
   useEffect(() => {
     setDelayedPosX(posX);
@@ -102,13 +103,75 @@ export default function WordleBox({ posX, letter, match, fontSize }) {
         <meshStandardMaterial attachArray='material' color={boxColor} />
         <meshStandardMaterial attachArray='material' color={boxColor} />
         <meshStandardMaterial attachArray='material' color={boxColor} />
-        <Text ref={leftFaceRef} color={fontColor} fontSize={fontSize}>
-          {leftFaceText}
-        </Text>
-        <Text ref={topFaceRef} color={fontColor} fontSize={fontSize}>
-          {topFaceText}
-        </Text>
+        <Text
+          ref={leftFaceRef}
+          color={fontColor}
+          fontSize={fontSize}
+          children={currentLetter}
+        />
+        <Text
+          ref={topFaceRef}
+          color={fontColor}
+          fontSize={fontSize}
+          fillOpacity={topFaceOpacity}
+          children={currentLetter}
+        />
       </a.mesh>
     </>
   );
 }
+
+const Text = React.forwardRef(
+  (
+    {
+      anchorX = 'center',
+      anchorY = 'middle',
+      font,
+      children,
+      onSync,
+      ...props
+    },
+    ref
+  ) => {
+    const invalidate = useThree(({ invalidate }) => invalidate);
+    const [troikaMesh] = React.useState(() => new TextMeshImpl());
+
+    const [nodes, text] = React.useMemo(() => {
+      const n = [];
+      let t = '';
+      React.Children.forEach(children, (child) => {
+        if (typeof child === 'string' || typeof child === 'number') {
+          t += child;
+        } else {
+          n.push(child);
+        }
+      });
+      return [n, t];
+    }, [children]);
+
+    React.useLayoutEffect(
+      () =>
+        void troikaMesh.sync(() => {
+          invalidate();
+          if (onSync) onSync(troikaMesh);
+        })
+    );
+
+    React.useEffect(() => {
+      return () => troikaMesh.dispose();
+    }, [troikaMesh]);
+
+    return (
+      <primitive
+        object={troikaMesh}
+        ref={ref}
+        font={font}
+        text={text}
+        anchorX={anchorX}
+        anchorY={anchorY}
+        {...props}>
+        {nodes}
+      </primitive>
+    );
+  }
+);

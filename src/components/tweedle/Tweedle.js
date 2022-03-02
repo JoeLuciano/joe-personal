@@ -19,8 +19,6 @@ export const Tweedle = ({ smartFetch }) => {
 
   const fontSize = 0.5;
 
-  document.onkeydown = handleKeyboardChange;
-
   function delay(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
   }
@@ -32,19 +30,6 @@ export const Tweedle = ({ smartFetch }) => {
     }
     delayStart();
   }, []);
-
-  async function handleKeyboardChange(event) {
-    if (allowInput) {
-      if (currentGuess.length < 5 && String(event.key).length === 1) {
-        const alpha_chars_only = event.key.replace(/[^a-zA-Z]/gi, '');
-        setCurrentGuess((prev) => prev.concat(alpha_chars_only.toUpperCase()));
-      } else if (event.key === 'Backspace') {
-        setCurrentGuess((prev) => prev.slice(0, -1));
-      } else if (event.key === 'Enter') {
-        allowSubmit && handleSubmit();
-      }
-    }
-  }
 
   async function handleSubmit() {
     if (allowInput) {
@@ -91,6 +76,7 @@ export const Tweedle = ({ smartFetch }) => {
         ...prev,
         [guessCount]: (
           <WordleRow
+            id={`GUESSCOUNT${guessCount}`}
             key={guessCount}
             positionY={0}
             currentGuess={currentGuess}
@@ -150,14 +136,16 @@ export const Tweedle = ({ smartFetch }) => {
     return <></>;
   };
 
+  document.onkeydown = (event) => handleOnScreenKeyboardChange(event.key);
+
   async function handleOnScreenKeyboardChange(key) {
     if (allowInput) {
       if (currentGuess.length < 5 && String(key).length === 1) {
         const alpha_chars_only = key.replace(/[^a-zA-Z]/gi, '');
         setCurrentGuess((prev) => prev.concat(alpha_chars_only.toUpperCase()));
-      } else if (key === '{bksp}') {
+      } else if (key === '{bksp}' || key === 'Backspace') {
         setCurrentGuess((prev) => prev.slice(0, -1));
-      } else if (key === '{enter}') {
+      } else if (key === '{enter}' || key === 'Enter') {
         allowSubmit && handleSubmit();
       }
     }
