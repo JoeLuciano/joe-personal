@@ -1,6 +1,7 @@
 import WordleBox from './WordleBox';
 import { useEffect, useState } from 'react';
 import { useSpring, a } from '@react-spring/three';
+import { Text } from '@react-three/drei';
 
 export default function WordleRow({
   positionY,

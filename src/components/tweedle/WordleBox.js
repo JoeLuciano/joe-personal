@@ -21,15 +21,11 @@ export default function WordleBox({ posX, letter, match, fontSize }) {
     topFaceRef.current.rotation.x = -Math.PI / 2;
     topFaceRef.current.position.y = fontSize / 2 + 0.01;
   }, [fontSize]);
+  console.log(letter);
 
   useEffect(() => {
     setLeftFaceText(letter);
-
-    if (letter) {
-      setAngleY((current) => current + Math.PI / 2);
-    } else {
-      setAngleY((current) => current - Math.PI / 2);
-    }
+    setAngleY((current) => current - Math.PI / 2 + (letter ? Math.PI : 0));
   }, [letter]);
 
   const fontColor = '#FFFFFF';
@@ -111,7 +107,7 @@ export default function WordleBox({ posX, letter, match, fontSize }) {
         </Text>
         <Text ref={topFaceRef} color={fontColor} fontSize={fontSize}>
           {topFaceText}
-        </Text>{' '}
+        </Text>
       </a.mesh>
     </>
   );

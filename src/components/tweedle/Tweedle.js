@@ -33,14 +33,6 @@ export const Tweedle = ({ smartFetch }) => {
     delayStart();
   }, []);
 
-  useEffect(() => {
-    if (currentGuess.length === 5) {
-      setAllowSubmit(true);
-    } else {
-      setAllowSubmit(false);
-    }
-  }, [currentGuess]);
-
   async function handleKeyboardChange(event) {
     if (allowInput) {
       if (currentGuess.length < 5 && String(event.key).length === 1) {
@@ -108,6 +100,12 @@ export const Tweedle = ({ smartFetch }) => {
         ),
       };
     });
+
+    if (currentGuess.length === 5) {
+      setAllowSubmit(true);
+    } else {
+      setAllowSubmit(false);
+    }
   }, [currentGuess, guessCount, matchingLetters]);
 
   // ADD NEW ROW
@@ -170,7 +168,7 @@ export const Tweedle = ({ smartFetch }) => {
       <Info gameState={gameState} />
 
       <div className='react-container'>
-        <React.Suspense fallback={<Canvas>Loading profile...</Canvas>}>
+        <React.Suspense fallback={null}>
           <Canvas
             camera={{ position: cameraPosition }}
             onCreated={({ gl }) => {
