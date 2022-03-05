@@ -187,7 +187,9 @@ export const Tweedle = ({ smartFetch }) => {
         {searchParams.get('embed') && (
           <button
             className='exit-fullscreen'
-            onClick={() => document.exitFullscreen()}>
+            onClick={() => {
+              document.parent.exitFullscreen();
+            }}>
             X
           </button>
         )}
