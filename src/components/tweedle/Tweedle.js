@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { Vector3 } from 'three';
@@ -17,8 +16,6 @@ export const Tweedle = ({ smartFetch }) => {
   const [matchingLetters, setMatchingLetters] = useState(Array(5).fill('none'));
   const [guessCount, setGuessCount] = useState(0);
   const [gameState, setGameState] = useState('starting');
-
-  const [searchParams, setSearchParams] = useSearchParams();
 
   const fontSize = 0.5;
 
@@ -157,6 +154,7 @@ export const Tweedle = ({ smartFetch }) => {
   return (
     <>
       <Info gameState={gameState} />
+
       <div className='react-container'>
         <React.Suspense fallback={null}>
           <Canvas
@@ -184,15 +182,6 @@ export const Tweedle = ({ smartFetch }) => {
             ],
           }}
         />
-        {searchParams.get('embed') && (
-          <button
-            className='exit-fullscreen'
-            onClick={() => {
-              document.parent.exitFullscreen();
-            }}>
-            X
-          </button>
-        )}
       </div>
     </>
   );
