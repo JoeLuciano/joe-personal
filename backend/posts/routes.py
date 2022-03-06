@@ -3,10 +3,10 @@ from flask_login import current_user
 from flask_cors import cross_origin
 from backend import db
 from backend.models import Post
-from backend.backend import Message
+from backend.backend import Message, get_aws_and_sql_compatible_file_name
 from datetime import datetime
 from werkzeug.utils import secure_filename
-from backend.files.routes import upload_image, get_image, delete_image
+from backend.files.routes import upload_image, delete_image
 
 
 posts = Blueprint('posts', __name__)
@@ -50,7 +50,8 @@ def createPost():
             return Message.error(f'{e} (Could not get image from form)'), 400
 
         post = Post(title=formData.get('title'), date_posted=datetime.utcnow(),
-                    content=formData.get('content'), author=current_user, image_file=secure_filename(image.filename))
+                    content=formData.get('content'), author=current_user,
+                    image_file=get_aws_and_sql_compatible_file_name(image.filename))
 
         db.session.add(post)
         db.session.commit()

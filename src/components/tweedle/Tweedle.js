@@ -163,6 +163,7 @@ export const Tweedle = ({ smartFetch }) => {
               /* BETTER COLORS */
               gl.toneMapping = THREE.NoToneMapping;
             }}>
+            {/* <color attach='background' args={['silver']} /> */}
             <ambientLight intensity={1} />
             <pointLight position={[10, 10, 10]} />
             {guesses && Object.values(guesses)}
@@ -170,7 +171,6 @@ export const Tweedle = ({ smartFetch }) => {
             <OrbitControls />
           </Canvas>
         </React.Suspense>
-
         <Keyboard
           onKeyPress={handleOnScreenKeyboardChange}
           display={{ '{bksp}': '⌫', '{enter}': '⏏' }}

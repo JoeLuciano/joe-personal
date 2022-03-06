@@ -12,7 +12,7 @@ const buttonHover = {
   },
 };
 
-export const UpdateAccountForm = ({ setFlash, user, setUser, smartFetch }) => {
+export const UpdateAccountForm = ({ user, setUser, smartFetch }) => {
   const [userImage, setUserImage] = useState();
   const { register, handleSubmit } = useForm();
 
@@ -21,7 +21,10 @@ export const UpdateAccountForm = ({ setFlash, user, setUser, smartFetch }) => {
   const logout = useCallback(
     async (event) => {
       event.preventDefault();
-      const logoutResponse = await smartFetch('/api/logout', 'POST');
+      const logoutResponse = await smartFetch({
+        url: '/api/logout',
+        type: 'POST',
+      });
       if (logoutResponse.ok) {
         setUser(undefined);
         navigate('/home');

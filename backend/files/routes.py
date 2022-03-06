@@ -2,7 +2,7 @@ from flask import Blueprint, request, send_file
 from flask_login import current_user
 from flask_cors import cross_origin
 from backend import s3
-from backend.backend import Message
+from backend.backend import Message, get_aws_and_sql_compatible_file_name
 import os
 from werkzeug.utils import secure_filename
 
@@ -28,7 +28,8 @@ def upload_image_endpoint():
 
 def upload_image(image):
     if image:
-        image_name = secure_filename(image.filename)
+        image_name = get_aws_and_sql_compatible_file_name(image.filename)
+
         if does_image_exist(image_name):
             return Message.error(f'Image already exists on AWS'), 400
         try:

@@ -6,7 +6,7 @@ from backend import db, bcrypt
 from backend.models import User
 from backend.backend import Message
 from werkzeug.utils import secure_filename
-from backend.files.routes import upload_image, get_image, delete_image
+from backend.files.routes import upload_image, delete_image
 
 users = Blueprint('users', __name__)
 
@@ -27,7 +27,7 @@ def createUser():
             db.session.commit()
             login_user(user)
             return Message.data("Your account has been created! Set your username under 'Account'",
-                                current_user.serialize()), 200
+                                current_user.serialize), 200
         else:
             return Message.msg('ERROR: Incorrect secret code'), 412
     except Exception as e:
@@ -44,7 +44,7 @@ def login():
         user = User.query.filter_by(email=userInfo.get('email')).first()
         if user and bcrypt.check_password_hash(user.password, userInfo.get('password')):
             login_user(user, remember=userInfo.get('remember'))
-            return Message.data('Login Successful!', current_user.serialize()), 200
+            return Message.data('Login Successful!', current_user.serialize), 200
         else:
             return Message.error('Login Unsuccessful'), 412
     except Exception as e:

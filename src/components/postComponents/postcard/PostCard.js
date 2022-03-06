@@ -132,7 +132,9 @@ export const PostCard = ({
           <PostContentInfo title={data.title} body={data.content} />
         </motion.div>
 
-        <motion.button onClick={() => togglePost()}>Expand</motion.button>
+        <motion.button onClick={() => togglePost()}>
+          {bigView ? 'Contract' : 'Expand'}
+        </motion.button>
         {user.username === data.author && (
           <motion.button onClick={() => deletePost()}>Delete</motion.button>
         )}
