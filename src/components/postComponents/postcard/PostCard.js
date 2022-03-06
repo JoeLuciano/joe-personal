@@ -50,7 +50,6 @@ const PostContentInfo = ({ title, body }) => {
 };
 
 export const PostCard = ({
-  isMobile,
   data,
   user,
   smartFetch,
@@ -91,9 +90,10 @@ export const PostCard = ({
   }, [smartFetch, data.image_file]);
 
   useEffect(() => {
+    console.log(data.author.image_file);
     async function getUserPfp() {
       const imageResponse = await smartFetch({
-        url: `/api/image/get/${user.image_file}`,
+        url: `/api/image/get/${data.author.image_file}`,
         type: 'GET',
         is_image: true,
       });
@@ -101,10 +101,10 @@ export const PostCard = ({
         setUserPfp(imageResponse.result);
       }
     }
-    if (user.image_file) {
+    if (data.author.image_file) {
       getUserPfp();
     }
-  }, [smartFetch, user.image_file]);
+  }, [smartFetch, data.author.image_file]);
 
   return (
     <motion.div
@@ -126,7 +126,7 @@ export const PostCard = ({
           variants={postCardVariants}>
           <PostCreationInfo
             image={userPfp}
-            author={data.author}
+            author={data.author.username}
             date={data.date_posted}
           />
           <PostContentInfo title={data.title} body={data.content} />
@@ -135,7 +135,7 @@ export const PostCard = ({
         <motion.button onClick={() => togglePost()}>
           {bigView ? 'Contract' : 'Expand'}
         </motion.button>
-        {user.username === data.author && (
+        {user.username === data.author.username && (
           <motion.button onClick={() => deletePost()}>Delete</motion.button>
         )}
       </AnimateSharedLayout>

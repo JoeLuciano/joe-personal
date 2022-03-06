@@ -27,7 +27,7 @@ class Post(db.Model):
             'content': self.content,
             'user_id': self.user_id,
             'image_file': self.image_file,
-            'author': User.query.filter_by(id=self.user_id).first().username
+            'author': User.query.filter_by(id=self.user_id).first().serialize
         }
 
 # class PostTag(db.model):
