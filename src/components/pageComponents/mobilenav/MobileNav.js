@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import styles from './MobileNav.module.css';
 
@@ -8,8 +8,7 @@ const navItemsVariant = {
   visible: {
     opacity: 1,
     transition: {
-      delay: 0.4,
-      staggerChildren: 0.2,
+      staggerChildren: 0.1,
     },
   },
 };
@@ -18,19 +17,25 @@ const navItem = {
   hidden: {
     opacity: 0,
     x: '-1rem',
+    y: '-1rem',
   },
   visible: {
     opacity: 1,
     x: 0,
+    y: 0,
     transition: {
-      duration: 1,
+      duration: 0.2,
     },
   },
 };
 
 const MobileHeaderLinks = ({ navItems }) => {
   return (
-    <motion.div className={styles.mobileHeaderItems} variants={navItemsVariant}>
+    <motion.div
+      className={styles.mobileHeaderItems}
+      variants={navItemsVariant}
+      initial='hidden'
+      animate='visible'>
       {navItems.map((item) => (
         <Link
           key={item}
@@ -49,13 +54,8 @@ const MobileHeaderLinks = ({ navItems }) => {
   );
 };
 
-const mobileNavVariant = {
-  offScreen: { x: '10rem' },
-  onScreen: { x: 0 },
-};
-
-const posX = `calc(var(--nav-width) - var(--button-position-right) - var(--button-width)/2)`;
-const posY = `calc(var(--nav-height) - var(--button-position-bottom) - var(--button-height)/2)`;
+const posX = `calc( - var(--button-width)/2)`;
+const posY = `calc( - var(--button-height)/2)`;
 
 const mobileNavViewVariant = {
   open: {
@@ -67,7 +67,7 @@ const mobileNavViewVariant = {
     },
   },
   closed: {
-    clipPath: `circle(1.5rem at ${posX} ${posY})`,
+    clipPath: `circle(2rem at ${posX} ${posY})`,
     transition: {
       type: 'spring',
       stiffness: 400,
@@ -105,6 +105,22 @@ export const MobileNav = ({ isMobile, headerItems, userItems }) => {
     leftConstraint = -window.innerWidth + mobileNavObject.offsetWidth * 1.2;
     topConstraint = -window.innerHeight + mobileNavObject.offsetHeight * 1.5;
   }
+
+  const mobileNavVariant = {
+    offScreen: {
+      width: isOpen ? 'var(--nav-width)' : 'var(--button-width)',
+      height: isOpen ? 'var(--nav-height)' : 'var(--button-height)',
+      x: '10rem',
+      transition: { duration: 1, delayChildren: 5 },
+    },
+    onScreen: {
+      width: isOpen ? 'var(--nav-width)' : 'calc(var(--button-width) + 1rem)',
+      height: isOpen
+        ? 'var(--nav-height)'
+        : 'calc(var(--button-height) + 1rem)',
+      x: 0,
+    },
+  };
 
   return (
     isMobile && (
@@ -151,9 +167,11 @@ export const MobileNav = ({ isMobile, headerItems, userItems }) => {
               />
             </motion.svg>
           </motion.button>
-          {isOpen && (
-            <MobileHeaderLinks navItems={headerItems.concat(userItems)} />
-          )}
+          <AnimatePresence>
+            {isOpen && (
+              <MobileHeaderLinks navItems={headerItems.concat(userItems)} />
+            )}
+          </AnimatePresence>
         </motion.div>
       </motion.div>
     )

@@ -90,7 +90,6 @@ export const PostCard = ({
   }, [smartFetch, data.image_file]);
 
   useEffect(() => {
-    console.log(data.author.image_file);
     async function getUserPfp() {
       const imageResponse = await smartFetch({
         url: `/api/image/get/${data.author.image_file}`,
@@ -136,7 +135,11 @@ export const PostCard = ({
           {bigView ? 'Contract' : 'Expand'}
         </motion.button>
         {user.username === data.author.username && (
-          <motion.button onClick={() => deletePost()}>Delete</motion.button>
+          <motion.button
+            className={styles.deleteButton}
+            onClick={() => deletePost()}>
+            Delete Post
+          </motion.button>
         )}
       </AnimateSharedLayout>
     </motion.div>

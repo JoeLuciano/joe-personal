@@ -58,7 +58,19 @@
 .postContentInfoText > p {
   margin: 0.5rem 0;
 }
-.post-options {
-  width: 100%;
-  display: flex;
+
+.deleteButton {
+  position: absolute;
+  font-size: 0.8rem;
+  bottom: 1rem;
+  right: 1rem;
+  padding: 0.3rem;
+  border-radius: 1rem;
+  color: white;
+  background: rgb(255, 0, 0);
+}
+
+.deleteButton:hover {
+  background: rgb(200, 0, 0);
+  cursor: pointer;
 }

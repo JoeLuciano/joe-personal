@@ -3,14 +3,13 @@
   --nav-height: 12rem;
   --button-width: 2rem;
   --button-height: 2rem;
-  --button-position-bottom: 0.5rem;
+  --button-position-bottom: 0.4rem;
   --button-position-right: 0.5rem;
 }
 
 .mobileNav {
   position: fixed;
-  width: var(--nav-width);
-  height: var(--nav-height);
+  border-radius: 50%;
   bottom: 1rem;
   right: 1rem;
   filter: drop-shadow(-1px 6px 3px rgba(50, 50, 0, 0.5));
