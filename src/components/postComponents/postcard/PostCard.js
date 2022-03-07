@@ -131,8 +131,45 @@ export const PostCard = ({
           <PostContentInfo title={data.title} body={data.content} />
         </motion.div>
 
-        <motion.button onClick={() => togglePost()}>
-          {bigView ? 'Contract' : 'Expand'}
+        <motion.button
+          onClick={() => togglePost()}
+          animate={bigView ? 'open' : 'closed'}
+          className={styles.expandButton}>
+          <motion.svg
+            width={EXPAND_WIDTH}
+            height={EXPAND_HEIGHT}
+            viewBox={`0 0 ${EXPAND_WIDTH} ${EXPAND_HEIGHT}`}>
+            <Path
+              variants={{
+                closed: {
+                  d: `M ${EXPAND_WIDTH * 0.1} ${EXPAND_HEIGHT / 2}
+                  L ${EXPAND_WIDTH / 2} ${EXPAND_HEIGHT * 0.9}`,
+                  transition: { duration: 0.5 },
+                },
+                open: {
+                  d: `M ${EXPAND_WIDTH * 0.1} ${EXPAND_HEIGHT / 2} L ${
+                    EXPAND_WIDTH / 2
+                  } ${EXPAND_HEIGHT * 0.1}`,
+                  transition: { duration: 0.5 },
+                },
+              }}
+            />
+            <Path
+              variants={{
+                closed: {
+                  d: `M ${EXPAND_WIDTH * 0.9} ${EXPAND_HEIGHT / 2}
+                  L ${EXPAND_WIDTH / 2} ${EXPAND_HEIGHT * 0.9}`,
+                  transition: { duration: 0.5 },
+                },
+                open: {
+                  d: `M ${EXPAND_WIDTH * 0.9} ${EXPAND_HEIGHT / 2} L ${
+                    EXPAND_WIDTH / 2
+                  } ${EXPAND_HEIGHT * 0.1}`,
+                  transition: { duration: 0.5 },
+                },
+              }}
+            />
+          </motion.svg>
         </motion.button>
         {user.username === data.author.username && (
           <motion.button
@@ -145,3 +182,16 @@ export const PostCard = ({
     </motion.div>
   );
 };
+
+const EXPAND_WIDTH = 20;
+const EXPAND_HEIGHT = 20;
+
+const Path = (props) => (
+  <motion.path
+    fill='transparent'
+    strokeWidth='3'
+    stroke='hsl(0, 0%, 18%)'
+    strokeLinecap='round'
+    {...props}
+  />
+);
