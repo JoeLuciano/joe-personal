@@ -1,8 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import styles from './Form.module.css';
+import { UserContext, SmartFetchContext } from 'contexts/GlobalContexts';
 
 const buttonHover = {
   color: 'rgba(0, 0, 0)',
@@ -12,9 +13,12 @@ const buttonHover = {
   },
 };
 
-export const UpdateAccountForm = ({ user, setUser, smartFetch }) => {
+export const UpdateAccountForm = () => {
   const [userImage, setUserImage] = useState();
   const { register, handleSubmit } = useForm();
+
+  const { user, setUser } = useContext(UserContext);
+  const smartFetch = useContext(SmartFetchContext);
 
   const navigate = useNavigate();
 

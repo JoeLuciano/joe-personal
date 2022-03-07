@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from 'react-hook-form';
 import styles from './CreatePostForm.module.css';
+import { SmartFetchContext } from 'contexts/GlobalContexts';
 
 const buttonHover = {
   color: 'rgba(0, 0, 0)',
@@ -11,9 +12,11 @@ const buttonHover = {
   },
 };
 
-export const CreatePostForm = ({ smartFetch, getAllPosts }) => {
+export const CreatePostForm = ({ getAllPosts }) => {
   const [formLoading, setFormLoading] = useState(false);
   const { register, handleSubmit } = useForm();
+
+  const smartFetch = useContext(SmartFetchContext);
 
   const onSubmit = async (data) => {
     var formData = new FormData();

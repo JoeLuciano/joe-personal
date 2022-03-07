@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { Vector3 } from 'three';
@@ -7,8 +7,9 @@ import Info from './Info';
 import Keyboard from 'react-simple-keyboard';
 import * as THREE from 'three';
 import './Tweedle.css';
+import { SmartFetchContext } from 'contexts/GlobalContexts';
 
-export const Tweedle = ({ smartFetch }) => {
+export const Tweedle = () => {
   const [guesses, setGuesses] = useState();
   const [allowInput, setAllowInput] = useState(false);
   const [allowSubmit, setAllowSubmit] = useState(false);
@@ -16,6 +17,8 @@ export const Tweedle = ({ smartFetch }) => {
   const [matchingLetters, setMatchingLetters] = useState(Array(5).fill('none'));
   const [guessCount, setGuessCount] = useState(0);
   const [gameState, setGameState] = useState('starting');
+
+  const smartFetch = useContext(SmartFetchContext);
 
   const fontSize = 0.5;
 
@@ -163,7 +166,6 @@ export const Tweedle = ({ smartFetch }) => {
               /* BETTER COLORS */
               gl.toneMapping = THREE.NoToneMapping;
             }}>
-            {/* <color attach='background' args={['silver']} /> */}
             <ambientLight intensity={1} />
             <pointLight position={[10, 10, 10]} />
             {guesses && Object.values(guesses)}

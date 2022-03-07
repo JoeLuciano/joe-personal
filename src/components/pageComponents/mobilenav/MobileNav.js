@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import styles from './MobileNav.module.css';
+import { UserContext, PageContext } from 'contexts/GlobalContexts';
 
 const navItemsVariant = {
   hidden: { opacity: 0 },
@@ -29,7 +30,11 @@ const navItem = {
   },
 };
 
-const MobileHeaderLinks = ({ navItems }) => {
+const MobileHeaderLinks = () => {
+  const { userItems } = useContext(UserContext);
+  const { headerItems } = useContext(PageContext);
+
+  const navItems = userItems.concat(headerItems);
   return (
     <motion.div
       className={styles.mobileHeaderItems}
@@ -86,7 +91,38 @@ const Path = (props) => (
   />
 );
 
-export const MobileNav = ({ isMobile, headerItems, userItems }) => {
+const MobileNavButton = ({ setIsOpen }) => {
+  return (
+    <motion.button
+      className={styles.mobileNavButton}
+      onClick={() => setIsOpen((prev) => !prev)}>
+      <motion.svg width='23' height='23' viewBox='0 0 23 23'>
+        <Path
+          variants={{
+            closed: { d: 'M 2 2.5 L 20 2.5' },
+            open: { d: 'M 3 16.5 L 17 2.5' },
+          }}
+        />
+        <Path
+          d='M 2 9.423 L 20 9.423'
+          variants={{
+            closed: { opacity: 1 },
+            open: { opacity: 0 },
+          }}
+          transition={{ duration: 0.1 }}
+        />
+        <Path
+          variants={{
+            closed: { d: 'M 2 16.346 L 20 16.346' },
+            open: { d: 'M 3 2.5 L 17 16.346' },
+          }}
+        />
+      </motion.svg>
+    </motion.button>
+  );
+};
+
+export const MobileNav = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [show, setShow] = useState(true);
 
@@ -123,57 +159,26 @@ export const MobileNav = ({ isMobile, headerItems, userItems }) => {
   };
 
   return (
-    isMobile && (
+    <motion.div
+      id='mobilenav'
+      drag
+      dragConstraints={{
+        left: leftConstraint,
+        top: topConstraint,
+        right: 10,
+        bottom: 10,
+      }}
+      className={styles.mobileNav}
+      variants={mobileNavVariant}
+      initial='offScreen'
+      animate={show && 'onScreen'}>
       <motion.div
-        id='mobilenav'
-        drag
-        dragConstraints={{
-          left: leftConstraint,
-          top: topConstraint,
-          right: 10,
-          bottom: 10,
-        }}
-        className={styles.mobileNav}
-        variants={mobileNavVariant}
-        initial='offScreen'
-        animate={show && 'onScreen'}>
-        <motion.div
-          className={styles.mobileNavContents}
-          variants={mobileNavViewVariant}
-          animate={isOpen ? 'open' : 'closed'}>
-          <motion.button
-            className={styles.mobileNavButton}
-            onClick={() => setIsOpen((prev) => !prev)}>
-            <motion.svg width='23' height='23' viewBox='0 0 23 23'>
-              <Path
-                variants={{
-                  closed: { d: 'M 2 2.5 L 20 2.5' },
-                  open: { d: 'M 3 16.5 L 17 2.5' },
-                }}
-              />
-              <Path
-                d='M 2 9.423 L 20 9.423'
-                variants={{
-                  closed: { opacity: 1 },
-                  open: { opacity: 0 },
-                }}
-                transition={{ duration: 0.1 }}
-              />
-              <Path
-                variants={{
-                  closed: { d: 'M 2 16.346 L 20 16.346' },
-                  open: { d: 'M 3 2.5 L 17 16.346' },
-                }}
-              />
-            </motion.svg>
-          </motion.button>
-          <AnimatePresence>
-            {isOpen && (
-              <MobileHeaderLinks navItems={headerItems.concat(userItems)} />
-            )}
-          </AnimatePresence>
-        </motion.div>
+        className={styles.mobileNavContents}
+        variants={mobileNavViewVariant}
+        animate={isOpen ? 'open' : 'closed'}>
+        <MobileNavButton setIsOpen={setIsOpen} />
+        <AnimatePresence>{isOpen && <MobileHeaderLinks />}</AnimatePresence>
       </motion.div>
-    )
+    </motion.div>
   );
 };

@@ -1,14 +1,15 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
 import { PostCard } from 'components/postComponents/postcard/PostCard';
 import { CreatePostForm } from 'components/formComponents/createPostForm/CreatePostForm';
 import { AnimatePresence, motion } from 'framer-motion';
 import styles from './PostView.module.css';
+import { SmartFetchContext } from 'contexts/GlobalContexts';
 
 export const PostView = (props) => {
   const [allPosts, setAllPosts] = useState([]);
   const [currentPost, setCurrentPost] = useState();
 
-  const { smartFetch } = props;
+  const smartFetch = useContext(SmartFetchContext);
 
   const getAllPosts = useCallback(async () => {
     const allPostsResponse = await smartFetch({

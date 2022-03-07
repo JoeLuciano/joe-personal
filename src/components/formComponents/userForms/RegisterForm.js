@@ -1,8 +1,9 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import styles from './Form.module.css';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
+import { UserContext, SmartFetchContext } from 'contexts/GlobalContexts';
 
 const buttonHover = {
   color: 'rgba(0, 0, 0)',
@@ -12,10 +13,13 @@ const buttonHover = {
   },
 };
 
-export const RegisterForm = ({ setUser, setFlash, smartFetch }) => {
+export const RegisterForm = () => {
   const [userInfo, setUserInfo] = useState();
   const [showPassword, setShowPassword] = useState(false);
   const [showSecretCode, setShowSecretCode] = useState(false);
+
+  const { setUser } = useContext(UserContext);
+  const smartFetch = useContext(SmartFetchContext);
 
   function handleChange(event) {
     const target = event.target;

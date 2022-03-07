@@ -5,7 +5,7 @@ import { Professional } from 'components/pages/experiencePage/professional/Profe
 import { Personal } from 'components/pages/experiencePage/personal/Personal';
 import { ContentSelector } from 'components/pageComponents/contentSelector/ContentSelector';
 
-export const ExperiencePage = (props) => {
+export const ExperiencePage = () => {
   const [selectedView, setSelectedView] = useState('EDUCATION');
   const views = ['PERSONAL', 'PROFESSIONAL', 'EDUCATION'];
 
@@ -19,21 +19,19 @@ export const ExperiencePage = (props) => {
 
   return (
     <BasePage
-      {...props}
       pageContent={
         <>
           <ContentSelector
             views={views}
             selectedView={selectedView}
             setSelectedView={setSelectedView}
-            {...props}
           />
           <div style={{ height: selectorHeight }} />
           {selectedView === 'PERSONAL' && (
-            <Personal setSelectedView={setSelectedView} {...props} />
+            <Personal setSelectedView={setSelectedView} />
           )}
-          {selectedView === 'PROFESSIONAL' && <Professional {...props} />}
-          {selectedView === 'EDUCATION' && <Education {...props} />}
+          {selectedView === 'PROFESSIONAL' && <Professional />}
+          {selectedView === 'EDUCATION' && <Education />}
         </>
       }
     />

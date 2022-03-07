@@ -1,6 +1,7 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect, useContext } from 'react';
 import { motion, AnimateSharedLayout } from 'framer-motion';
 import styles from './PostCard.module.css';
+import { UserContext, SmartFetchContext } from 'contexts/GlobalContexts';
 
 const postCardTransitionLength = 0.5;
 
@@ -49,16 +50,12 @@ const PostContentInfo = ({ title, body }) => {
   );
 };
 
-export const PostCard = ({
-  data,
-  user,
-  smartFetch,
-  bigView,
-  removePost,
-  togglePost,
-}) => {
+export const PostCard = ({ data, bigView, removePost, togglePost }) => {
   const [postImage, setPostImage] = useState();
   const [userPfp, setUserPfp] = useState();
+
+  const { user } = useContext(UserContext);
+  const smartFetch = useContext(SmartFetchContext);
 
   const deletePost = useCallback(async () => {
     const deleteResponse = await smartFetch({

@@ -1,9 +1,9 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Flash } from 'components/pageComponents/flash/Flash';
 import styles from './Form.module.css';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
+import { UserContext, SmartFetchContext } from 'contexts/GlobalContexts';
 
 const buttonHover = {
   color: 'rgba(0, 0, 0)',
@@ -13,9 +13,12 @@ const buttonHover = {
   },
 };
 
-export const LoginForm = ({ setFlash, setUser, smartFetch }) => {
+export const LoginForm = () => {
   const [userInfo, setUserInfo] = useState();
   const [showPassword, setShowPassword] = useState(false);
+
+  const { setUser } = useContext(UserContext);
+  const smartFetch = useContext(SmartFetchContext);
 
   function handleChange(event) {
     const target = event.target;
@@ -90,9 +93,8 @@ export const LoginForm = ({ setFlash, setUser, smartFetch }) => {
         whileHover={buttonHover}
       />
       <motion.button // TODO: CHANGE TO A LINK
-        type='button'
-        onClick={() => setFlash(<Flash message='Come back to this' />)}>
-        Forgot password?
+        type='button'>
+        Forgot password? (Unimplemented)
       </motion.button>
     </motion.form>
   );

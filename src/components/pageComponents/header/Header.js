@@ -1,7 +1,9 @@
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Header.module.css';
 import { NameLogo } from '../nameLogo/NameLogo';
 import { motion } from 'framer-motion';
+import { UserContext, PageContext } from 'contexts/GlobalContexts';
 
 const headerVariant = {
   hidden: { opacity: 0 },
@@ -33,7 +35,8 @@ const headerItem = {
   },
 };
 
-const HeaderLinks = ({ headerItems }) => {
+const HeaderLinks = () => {
+  const { headerItems } = useContext(PageContext);
   return (
     <motion.div className={styles.headerItems} variants={headerItemsVariant}>
       {headerItems.map((item) => (
@@ -54,7 +57,9 @@ const HeaderLinks = ({ headerItems }) => {
   );
 };
 
-const UserLinks = ({ userItems }) => {
+const UserLinks = () => {
+  const { userItems } = useContext(UserContext);
+
   return (
     <motion.div className={styles.userItems} variants={headerItemsVariant}>
       {userItems.map((item) => (
@@ -75,17 +80,14 @@ const UserLinks = ({ userItems }) => {
   );
 };
 
-export const Header = ({
-  isMobile = false,
-  setFlash,
-  headerItems,
-  userItems,
-}) => {
+export const Header = () => {
+  const { isMobile } = useContext(PageContext);
+
   return (
     <motion.div className={styles.header} variants={headerVariant}>
       <NameLogo />
-      {!isMobile && <HeaderLinks headerItems={headerItems} />}
-      {!isMobile && <UserLinks userItems={userItems} />}
+      {!isMobile && <HeaderLinks />}
+      {!isMobile && <UserLinks />}
     </motion.div>
   );
 };

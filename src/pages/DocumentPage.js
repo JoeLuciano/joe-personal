@@ -5,11 +5,10 @@ import MsProject from 'files/MS Project Report.pdf';
 import Resume from 'files/Resume_02-17-22.pdf';
 import VPPs from 'files/Virtual Power Plants.pdf';
 
-export const DocumentPage = (props) => {
-  let file;
+export const DocumentPage = ({ file }) => {
   let { document } = useParams();
-  if (props.file) {
-    document = props.file;
+  if (file) {
+    document = file;
   }
   if (document === 'resume') {
     file = Resume;
@@ -19,10 +18,5 @@ export const DocumentPage = (props) => {
     file = VPPs;
   }
 
-  return (
-    <BasePage
-      {...props}
-      pageContent={<PdfViewer file={file} isMobile={props.isMobile} />}
-    />
-  );
+  return <BasePage pageContent={<PdfViewer file={file} />} />;
 };

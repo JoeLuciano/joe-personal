@@ -2,6 +2,8 @@ import { ArrowText } from 'components/pageComponents/textComponents/arrowtext/Ar
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import styles from './Intro.module.css';
+import { useContext } from 'react';
+import { PageContext } from 'contexts/GlobalContexts';
 
 const introText = {
   hidden: {
@@ -33,7 +35,9 @@ const intro = {
   },
 };
 
-export const Intro = ({ isMobile }) => {
+export const Intro = () => {
+  const { isMobile } = useContext(PageContext);
+
   return (
     <motion.div
       className={isMobile ? styles.mobileIntro : styles.intro}

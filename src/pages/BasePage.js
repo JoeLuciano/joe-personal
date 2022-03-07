@@ -2,6 +2,8 @@ import { Header } from 'components/pageComponents/header/Header';
 import { MobileNav } from 'components/pageComponents/mobilenav/MobileNav.js';
 import { motion } from 'framer-motion';
 import styles from './styles.module.css';
+import { useContext } from 'react';
+import { PageContext } from 'contexts/GlobalContexts';
 
 const page = {
   hidden: { opacity: 0, x: 0 },
@@ -14,22 +16,23 @@ const pageAppear = {
   visible: { opacity: 1, y: 0, transition: { duration: 1, delay: 1 } },
 };
 
-export const BasePage = (props) => {
-  const { isMobile } = props;
+export const BasePage = ({ pageContent }) => {
+  const { isMobile } = useContext(PageContext);
+
   return (
     <motion.div
       className={styles.page}
       variants={page}
-      initial={props.doAnimate && 'hidden'}
+      initial='hidden'
       animate='visible'
       exit='exit'>
-      <Header {...props} />
+      <Header />
       <motion.div
         className={isMobile ? styles.mobileContent : styles.desktopContent}
         variants={pageAppear}>
-        {props.pageContent}
+        {pageContent}
       </motion.div>
-      <MobileNav {...props} key='mobile-nav' />
+      {isMobile && <MobileNav key='mobile-nav' />}
     </motion.div>
   );
 };

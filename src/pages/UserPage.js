@@ -1,10 +1,13 @@
+import { useContext } from 'react';
 import { LoginForm } from 'components/formComponents/userForms/LoginForm';
 import { RegisterForm } from 'components/formComponents/userForms/RegisterForm';
 import { UpdateAccountForm } from 'components/formComponents/userForms/AccountForm';
 import { BasePage } from './BasePage';
+import { UserContext } from 'contexts/GlobalContexts';
 
 export const UserPage = (props) => {
-  const { user, account, login, register } = props;
+  const { account, login, register } = props;
+  const { user } = useContext(UserContext);
 
   return (
     <BasePage

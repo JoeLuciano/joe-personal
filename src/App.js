@@ -1,28 +1,19 @@
 import './App.css';
 import { useState, useEffect, useCallback } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
 import { Flash } from 'components/pageComponents/flash/Flash';
 import {
-  HomePage,
-  PostsPage,
-  NotFound,
-  ExperiencePage,
-  UserPage,
-  DocumentPage,
-} from './pages/pageIndex';
-import { Tweedle } from 'components/tweedle/Tweedle';
+  UserContext,
+  SmartFetchContext,
+  PageContext,
+} from 'contexts/GlobalContexts';
+import { PageRoutes } from './pages/PageRoutes';
 import { AnimatePresence } from 'framer-motion';
 
 function App() {
-  const [width, setWindowWidth] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const [user, setUser] = useState('not logged in');
   const [flash, setFlash] = useState();
   const [userItems, setUserItems] = useState([]);
-
-  const updateDimensions = () => {
-    const width = window.innerWidth;
-    setWindowWidth(width);
-  };
 
   const smartFetch = useCallback(
     async ({
@@ -93,22 +84,24 @@ function App() {
     [flash]
   );
 
-  const getUser = useCallback(async () => {
-    const userResponse = await smartFetch({ url: '/api/user', type: 'GET' });
-    if (userResponse.ok) {
-      setUser(userResponse.result);
-    }
-  }, [smartFetch]);
-
-  const headerItems = ['Experience', 'Resume', 'Posts', 'Tweedle'];
-
   useEffect(() => {
+    const updateDimensions = () => {
+      const width = window.innerWidth;
+      setIsMobile(width < 1000);
+    };
     updateDimensions();
-    getUser();
     window.addEventListener('resize', updateDimensions);
 
+    const getUser = async () => {
+      const userResponse = await smartFetch({ url: '/api/user', type: 'GET' });
+      if (userResponse.ok) {
+        setUser(userResponse.result);
+      }
+    };
+    getUser();
+
     return () => window.removeEventListener('resize', updateDimensions);
-  }, [getUser]);
+  }, [smartFetch]);
 
   useEffect(() => {
     if (user === undefined) {
@@ -118,64 +111,21 @@ function App() {
     }
   }, [user]);
 
-  const isMobile = width < 1000;
-  const pageState = {
-    user: user,
-    setUser: setUser,
-    headerItems: headerItems,
-    userItems: userItems,
-    isMobile: isMobile,
-    setFlash: setFlash,
-    smartFetch: smartFetch,
-    doAnimate: true,
-  };
-  const location = useLocation();
+  const headerItems = ['Experience', 'Resume', 'Posts', 'Tweedle'];
+
   return (
-    <div className='App'>
-      {flash}
-      <AnimatePresence exitBeforeEnter>
-        <Routes location={location} key={location.key}>
-          <Route path='*' element={<NotFound {...pageState} />} />
-          <Route exact path='/' element={<HomePage {...pageState} />}></Route>
-          <Route
-            exact
-            path='/home'
-            element={<HomePage {...pageState} />}></Route>
-          <Route
-            exact
-            path='/posts'
-            element={<PostsPage {...pageState} />}></Route>
-          <Route
-            exact
-            path='/experience'
-            element={<ExperiencePage {...pageState} />}></Route>
-          <Route
-            exact
-            path='/register'
-            element={<UserPage register {...pageState} />}></Route>
-          <Route
-            exact
-            path='/login'
-            element={<UserPage login {...pageState} />}></Route>
-          <Route
-            exact
-            path='/account'
-            element={<UserPage account {...pageState} />}></Route>
-          <Route
-            exact
-            path='/resume'
-            element={<DocumentPage file='resume' {...pageState} />}></Route>
-          <Route
-            exact
-            path='/document/:document'
-            element={<DocumentPage {...pageState} />}></Route>
-          <Route
-            exact
-            path='/tweedle'
-            element={<Tweedle {...pageState} />}></Route>
-        </Routes>
-      </AnimatePresence>
-    </div>
+    <UserContext.Provider value={{ user, setUser, userItems }}>
+      <SmartFetchContext.Provider value={smartFetch}>
+        <PageContext.Provider value={{ headerItems, isMobile }}>
+          <div className='App'>
+            {flash}
+            <AnimatePresence exitBeforeEnter>
+              <PageRoutes />
+            </AnimatePresence>
+          </div>
+        </PageContext.Provider>
+      </SmartFetchContext.Provider>
+    </UserContext.Provider>
   );
 }
 

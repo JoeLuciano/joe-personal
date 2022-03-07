@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import PythonWheelImage from 'customImages/PythonWheel.svg';
 import { AnimatePresence, motion } from 'framer-motion';
 import styles from './Experience.module.css';
@@ -10,6 +10,7 @@ import {
   ShimmerAnchor,
   ShimmerLink,
 } from 'components/pageComponents/textComponents/shimmer/ShimmerText';
+import { PageContext } from 'contexts/GlobalContexts';
 
 const pythonWheel = {
   start: { x: '-120vw', y: '-14rem', rotate: 0 },
@@ -69,7 +70,9 @@ const PythonListItem = (props) => {
   );
 };
 
-const PythonList = ({ isMobile }) => {
+const PythonList = () => {
+  const { isMobile } = useContext(PageContext);
+
   return (
     <motion.ul
       className={isMobile ? styles.unorderedListMobile : styles.unorderedList}
