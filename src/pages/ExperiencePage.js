@@ -3,7 +3,7 @@ import { BasePage } from './BasePage';
 import { Education } from 'components/pages/experiencePage/education/Education';
 import { Professional } from 'components/pages/experiencePage/professional/Professional';
 import { Personal } from 'components/pages/experiencePage/personal/Personal';
-import { ContentSelector } from 'components/pageComponents/contentSelector/ContentSelector';
+import { ContentSelector } from 'components/pageComponents/buttonComponents/contentSelector/ContentSelector';
 
 export const ExperiencePage = () => {
   const [selectedView, setSelectedView] = useState('EDUCATION');

@@ -74,9 +74,3 @@
   background: rgb(200, 0, 0);
   cursor: pointer;
 }
-
-.expandButton {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-}

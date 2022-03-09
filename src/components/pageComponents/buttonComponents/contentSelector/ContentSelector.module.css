@@ -1,0 +1,40 @@
+.contentSelectorWarpper {
+  position: absolute;
+  top: 0;
+}
+
+.selectorList {
+  position: relative;
+  margin: auto;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.selector {
+  width: 12rem;
+  height: 2rem;
+  margin: 0.6rem 1rem;
+  border-radius: 2rem;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.selector > h2 {
+  font-size: 1.4rem;
+}
+
+.outline {
+  position: absolute;
+  top: -0.5rem;
+  left: -0.5rem;
+  right: -0.5rem;
+  bottom: -0.5rem;
+  border: 0.3rem solid white;
+  border-radius: 2rem;
+}
