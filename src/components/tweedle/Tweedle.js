@@ -4,10 +4,14 @@ import { OrbitControls } from '@react-three/drei';
 import { Vector3 } from 'three';
 import WordleRow from './WordleRow';
 import Info from './Info';
-import Keyboard from 'react-simple-keyboard';
 import * as THREE from 'three';
 import './Tweedle.css';
 import { SmartFetchContext } from 'contexts/GlobalContexts';
+import { OnScreenKeyboard } from './onScreenKeyboard/OnScreenKeyboard';
+import {
+  GuessesContext,
+  HandleOnScreenKeyboardChangeContext,
+} from 'contexts/TweedleContexts';
 
 export const Tweedle = () => {
   const [guesses, setGuesses] = useState();
@@ -143,13 +147,13 @@ export const Tweedle = () => {
 
   async function handleOnScreenKeyboardChange(key) {
     if (allowInput) {
-      if (currentGuess.length < 5 && String(key).length === 1) {
+      if (key === '⌫' || key === 'Backspace') {
+        setCurrentGuess((prev) => prev.slice(0, -1));
+      } else if (key === '⏏' || key === 'Enter') {
+        allowSubmit && handleSubmit();
+      } else if (currentGuess.length < 5 && key.length === 1) {
         const alpha_chars_only = key.replace(/[^a-zA-Z]/gi, '');
         setCurrentGuess((prev) => prev.concat(alpha_chars_only.toUpperCase()));
-      } else if (key === '{bksp}' || key === 'Backspace') {
-        setCurrentGuess((prev) => prev.slice(0, -1));
-      } else if (key === '{enter}' || key === 'Enter') {
-        allowSubmit && handleSubmit();
       }
     }
   }
@@ -173,17 +177,14 @@ export const Tweedle = () => {
             <OrbitControls />
           </Canvas>
         </React.Suspense>
-        <Keyboard
-          onKeyPress={handleOnScreenKeyboardChange}
-          display={{ '{bksp}': '⌫', '{enter}': '⏏' }}
-          layout={{
-            default: [
-              'Q W E R T Y U I O P',
-              'A S D F G H J K L',
-              '{enter} Z X C V B N M {bksp}',
-            ],
-          }}
-        />
+
+        <HandleOnScreenKeyboardChangeContext.Provider
+          value={handleOnScreenKeyboardChange}>
+          <GuessesContext.Provider
+            value={{ guesses, matchingLetters, currentGuess }}>
+            <OnScreenKeyboard />
+          </GuessesContext.Provider>
+        </HandleOnScreenKeyboardChangeContext.Provider>
       </div>
     </>
   );

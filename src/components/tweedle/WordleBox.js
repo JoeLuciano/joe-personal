@@ -26,7 +26,6 @@ export default function WordleBox({ posX, letter, match, fontSize }) {
     topFaceRef.current.rotation.x = -Math.PI / 2;
     topFaceRef.current.position.y = fontSize / 2 + 0.01;
   }, [fontSize]);
-  console.log(letter);
 
   // Handle keyboard input
   useEffect(() => {
