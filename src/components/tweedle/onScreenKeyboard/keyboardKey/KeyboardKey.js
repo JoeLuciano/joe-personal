@@ -6,11 +6,11 @@ import { HandleOnScreenKeyboardChangeContext } from 'contexts/TweedleContexts';
 const guessVariants = {
   match: {
     backgroundColor: 'green',
-    scale: 1,
+    scale: 1.1,
   },
   close: {
     backgroundColor: 'yellow',
-    scale: 0.9,
+    scale: 1,
   },
   miss: { backgroundColor: 'red', scale: 0.7 },
   notInGuess: {
@@ -43,6 +43,8 @@ export const KeyboardKey = ({ keySymbol, isInCurrentGuess, matchState }) => {
       setKeyState(matchState);
     } else if (keyState === 'notInGuess' && isInCurrentGuess) {
       setKeyState('inGuess');
+    } else if (keyState === 'inGuess' && !isInCurrentGuess) {
+      setKeyState('notInGuess');
     }
   }, [isInCurrentGuess, matchState, keyState]);
 
