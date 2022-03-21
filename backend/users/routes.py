@@ -2,16 +2,18 @@ import os
 from flask import Blueprint, request
 from flask_cors import cross_origin
 from flask_login import current_user, login_user, logout_user
-from backend import db, bcrypt
+from backend import db, bcrypt, limiter
 from backend.models import User
 from backend.backend import Message
 from werkzeug.utils import secure_filename
 from backend.files.routes import upload_image, delete_image
 
+
 users = Blueprint('users', __name__)
 
 
 @users.route('/api/register', methods=['POST'])
+@limiter.limit("1 per day")
 @cross_origin()
 def createUser():
     try:
@@ -35,6 +37,7 @@ def createUser():
 
 
 @users.route("/api/login", methods=['POST'])
+@limiter.limit("3 per minute")
 @cross_origin()
 def login():
     try:
@@ -52,6 +55,7 @@ def login():
 
 
 @users.route("/api/logout", methods=['POST'])
+@limiter.limit("3 per minute")
 @cross_origin()
 def logout():
     try:
@@ -65,6 +69,7 @@ def logout():
 
 
 @users.route('/api/user', methods=['GET'])
+@limiter.limit("10 per minute")
 @cross_origin()
 def getUser():
     try:
@@ -77,6 +82,7 @@ def getUser():
 
 
 @ users.route('/api/user/update', methods=['POST'])
+@limiter.limit("3 per minute")
 @ cross_origin()
 def updateUser():
     if not current_user.is_authenticated:

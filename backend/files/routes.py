@@ -1,7 +1,7 @@
 from flask import Blueprint, request, send_file
 from flask_login import current_user
 from flask_cors import cross_origin
-from backend import s3
+from backend import s3, limiter
 from backend.backend import Message, get_aws_and_sql_compatible_file_name
 import os
 from werkzeug.utils import secure_filename
@@ -14,6 +14,7 @@ IMAGE_BUCKET = os.environ.get('AWS_IMAGES_BUCKET_NAME')
 
 
 @files.route('/api/image/upload', methods=['POST'])
+@limiter.limit("30 per hour")
 @cross_origin()
 def upload_image_endpoint():
     if not current_user.is_authenticated:
@@ -45,6 +46,7 @@ def upload_image(image):
 
 
 @files.route('/api/image/get/<string:image_name>', methods=['GET'])
+@limiter.limit("2 per second")
 @cross_origin()
 def get_image_endpoint(image_name):
     if not current_user.is_authenticated:
@@ -64,6 +66,7 @@ def get_image(image_name):
 
 
 @files.route('/api/image/delete/<string:image_name>', methods=['POST'])
+@limiter.limit("120 per hour")
 @cross_origin()
 def delete_image_endpoint(image_name):
     if not current_user.is_authenticated:

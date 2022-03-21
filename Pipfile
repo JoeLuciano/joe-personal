@@ -18,6 +18,8 @@ boto3 = "*"
 awscli = "*"
 werkzeug = "*"
 s3 = "*"
+flask-limiter = "*"
+itsdangerous = "<2.1.0"
 
 [dev-packages]
 autopep8 = "*"

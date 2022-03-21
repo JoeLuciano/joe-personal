@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from flask_login import current_user
 from flask_cors import cross_origin
-from backend import db
+from backend import db, limiter
 from backend.models import Post
 from backend.backend import Message, get_aws_and_sql_compatible_file_name
 from datetime import datetime
@@ -13,6 +13,7 @@ posts = Blueprint('posts', __name__)
 
 
 @posts.route('/api/post/<string:title>', methods=['GET'])
+@limiter.limit("5 per minute")
 @cross_origin()
 def getPost(title):
     try:
@@ -26,6 +27,7 @@ def getPost(title):
 
 
 @posts.route('/api/allposts', methods=['GET'])
+@limiter.limit("5 per minute")
 @cross_origin()
 def getPosts():
     try:
@@ -36,6 +38,7 @@ def getPosts():
 
 
 @posts.route('/api/post/create', methods=['POST'])
+@limiter.limit("10 per hour")
 @cross_origin()
 def createPost():
     if not current_user.is_authenticated:
@@ -70,6 +73,7 @@ def createPost():
 
 
 @posts.route('/api/post/delete', methods=['POST'])
+@limiter.limit("20 per hour")
 @cross_origin()
 def removePost():
     if not current_user.is_authenticated:

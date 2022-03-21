@@ -2,6 +2,7 @@ import os
 import csv
 from flask import Blueprint, request
 from flask_cors import cross_origin
+from backend import limiter
 from backend.backend import Message
 from datetime import date
 import pathlib
@@ -26,6 +27,7 @@ daily_tweedle = daily_tweedle.split("'")[1]
 
 
 @tweedle.route('/api/tweedle', methods=['POST'])
+@limiter.limit("6 per minute")
 @cross_origin()
 def getTweedleMatches():
     try:

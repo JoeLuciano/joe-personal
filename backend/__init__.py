@@ -8,6 +8,8 @@ from backend.config import Config
 from flask_cors import CORS
 import os
 import boto3
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -16,6 +18,7 @@ login_manager = LoginManager()
 login_manager.login_view = 'users.login'
 login_manager.login_message_category = 'info'
 # mail = Mail()
+limiter = Limiter(key_func=get_remote_address)
 
 s3 = boto3.client("s3", aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
                   aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY"))
@@ -31,6 +34,7 @@ def create_app(config_class=Config):
     bcrypt.init_app(app)
     login_manager.init_app(app)
     # mail.init_app(app)
+    limiter.init_app(app)
 
     from backend.users.routes import users
     from backend.posts.routes import posts
