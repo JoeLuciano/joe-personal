@@ -69,7 +69,7 @@ def logout():
 
 
 @users.route('/api/user', methods=['GET'])
-@limiter.limit("10 per minute")
+@limiter.limit("10 per second")
 @cross_origin()
 def getUser():
     try:

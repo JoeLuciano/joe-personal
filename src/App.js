@@ -1,5 +1,6 @@
 import './App.css';
 import { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Flash } from 'components/pageComponents/flash/Flash';
 import {
   UserContext,
@@ -14,6 +15,16 @@ function App() {
   const [user, setUser] = useState('not logged in');
   const [flash, setFlash] = useState();
   const [userItems, setUserItems] = useState([]);
+
+  const handleFetchError = (url, data, response) => {
+    const error = data || response.statusText;
+    console.error(`Error from ${url}: ${error}`);
+    setFlash(<></>);
+    setFlash(<Flash message={error.message || error} type='error' />);
+    return { ok: false, result: error };
+  };
+
+  const navigate = useNavigate();
 
   const smartFetch = useCallback(
     async ({
@@ -42,6 +53,12 @@ function App() {
       }
       const response = await fetch(url, requestOptions)
         .then(async (response) => {
+          // HANDLE RATE LIMITS
+          if (response.status === 429) {
+            handleFetchError(url, undefined, response);
+            navigate('home');
+          }
+
           if (is_image) {
             const imageBlob = await response.blob();
             const imageObjectURL = URL.createObjectURL(imageBlob);
@@ -55,11 +72,7 @@ function App() {
 
           console.groupCollapsed(`${type} Request - ${url}`);
           if (!response.ok) {
-            const error = data || data.message || response.statusText;
-            console.error(`Error from ${url}: ${error}`);
-            setFlash(<></>);
-            setFlash(<Flash message={error.message} type='error' />);
-            return { ok: false, result: data };
+            return handleFetchError(url, data, response);
           } else {
             console.info(`Data from ${url}: ${JSON.stringify(data, null, 4)}`);
             if (data.message) {

@@ -1,4 +1,5 @@
 from backend import create_app
+from backend.backend import Message
 from flask import send_from_directory
 
 app = create_app()
