@@ -1,7 +1,6 @@
 from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from backend import db, login_manager
-from flask import current_app
 from flask_login import UserMixin
 
 
@@ -30,10 +29,6 @@ class Post(db.Model):
             'author': User.query.filter_by(id=self.user_id).first().serialize
         }
 
-# class PostTag(db.model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     tag = db.Column(db.String, nullable=False)
-
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -42,11 +37,12 @@ def load_user(user_id):
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=True, nullable=True)
-    email = db.Column(db.String(120), unique=True, nullable=False)
+    username = db.Column(db.String(50), unique=True, nullable=True)
+    phone = db.Column(db.String(20), unique=True, nullable=True)
+    email = db.Column(db.String(120), unique=True, nullable=True)
     image_file = db.Column(db.String(50), nullable=False,
                            default='default.jpg')
-    password = db.Column(db.String(60), nullable=False)
+    password = db.Column(db.String(60), nullable=True)
     posts = db.relationship('Post', backref='author', lazy=True)
 
     def __repr__(self):
@@ -56,20 +52,8 @@ class User(db.Model, UserMixin):
     def serialize(self):
         return {
             'id': self.id,
+            'phone': self.phone,
             'username': self.username,
             'email': self.email,
             'image_file': self.image_file
         }
-
-    # def get_reset_password_token(self, expires_sec=1800):
-    #     s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
-    #     return s.dumps({'user_id': self.id}).decode('utf-8')
-
-    # @staticmethod
-    # def verify_reset_password_token(token):
-    #     s = Serializer(current_app.config['SECRET_KEY'])
-    #     try:
-    #         user_id = s.loads(token)['user_id']
-    #     except:
-    #         return None
-    #     return User.query.get(user_id)

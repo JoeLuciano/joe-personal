@@ -10,6 +10,7 @@ import os
 import boto3
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from twilio.rest import Client
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -22,6 +23,11 @@ limiter = Limiter(key_func=get_remote_address)
 
 s3 = boto3.client("s3", aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
                   aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY"))
+
+account_sid = os.environ['TWILIO_ACCOUNT_SID']
+auth_token = os.environ['TWILIO_AUTH_TOKEN']
+verify_sid = os.environ['TWILIO_VERIFY_SERVICE_SID']
+verify_service = Client(account_sid, auth_token).services(verify_sid)
 
 
 def create_app(config_class=Config):
