@@ -32,6 +32,7 @@ def createUser():
 
 
 def login_with_phone(phone):
+    print(phone)
     verify_service.verifications.create(to=phone, channel='sms')
     return Message.msg("A verification code has been sent")
 
@@ -95,7 +96,7 @@ def login():
         userInfo = request.json
 
         if userInfo.get('phone') is not None:
-            return login_with_phone(userInfo)
+            return login_with_phone(userInfo.get('phone'))
         elif userInfo.get('email') is not None and userInfo.get('password') is not None:
             return login_with_email_and_password(userInfo)
         else:
