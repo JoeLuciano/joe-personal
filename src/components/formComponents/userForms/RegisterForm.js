@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import styles from './Form.module.css';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 import { UserContext, SmartFetchContext } from 'contexts/GlobalContexts';
+import { PhoneLoginForm } from './PhoneLoginForm';
 
 const buttonHover = {
   color: 'rgba(0, 0, 0)',
@@ -49,73 +50,66 @@ export const RegisterForm = () => {
   );
 
   return (
-    <motion.form onSubmit={handleSubmit} className={styles.form}>
-      <motion.h1 className={styles.header}>Register</motion.h1>
-      <motion.div className={styles.textInputContainer}>
-        <motion.input
-          className={styles.textInput}
-          type='email'
-          placeholder='E-mail'
-          name='email'
-          onChange={handleChange}
-        />
-      </motion.div>
-      <motion.div className={styles.textInputContainer}>
-        <motion.input
-          className={styles.textInput}
-          type={showPassword ? 'text' : 'password'}
-          placeholder='Password'
-          name='password'
-          onChange={handleChange}
-        />
-        <motion.button
-          className={styles.passwordButton}
-          type='button'
-          onClick={() => setShowPassword((previous) => !previous)}
-          whileHover={buttonHover}>
-          {showPassword ? <BsEye /> : <BsEyeSlash />}
-        </motion.button>
-      </motion.div>
-      <motion.div className={styles.textInputContainer}>
-        <motion.input
-          className={styles.textInput}
-          type={showSecretCode ? 'text' : 'password'}
-          placeholder='Secret Code'
-          name='secretCode'
-          onChange={handleChange}
-        />
-        <motion.button
-          className={styles.passwordButton}
-          type='button'
-          onClick={() => setShowSecretCode((previous) => !previous)}
-          whileHover={buttonHover}>
-          {showPassword ? <BsEye /> : <BsEyeSlash />}
-        </motion.button>
-      </motion.div>
+    <>
+      <motion.form onSubmit={handleSubmit} className={styles.form}>
+        <motion.h1 className={styles.header}>Register</motion.h1>
+        <motion.div className={styles.textInputContainer}>
+          <motion.input
+            className={styles.textInput}
+            type='email'
+            placeholder='E-mail'
+            name='email'
+            onChange={handleChange}
+          />
+        </motion.div>
+        <motion.div className={styles.textInputContainer}>
+          <motion.input
+            className={styles.textInput}
+            type={showPassword ? 'text' : 'password'}
+            placeholder='Password'
+            name='password'
+            onChange={handleChange}
+          />
+          <motion.button
+            className={styles.passwordButton}
+            type='button'
+            onClick={() => setShowPassword((previous) => !previous)}
+            whileHover={buttonHover}>
+            {showPassword ? <BsEye /> : <BsEyeSlash />}
+          </motion.button>
+        </motion.div>
+        <motion.div className={styles.textInputContainer}>
+          <motion.input
+            className={styles.textInput}
+            type={showSecretCode ? 'text' : 'password'}
+            placeholder='Secret Code'
+            name='secretCode'
+            onChange={handleChange}
+          />
+          <motion.button
+            className={styles.passwordButton}
+            type='button'
+            onClick={() => setShowSecretCode((previous) => !previous)}
+            whileHover={buttonHover}>
+            {showPassword ? <BsEye /> : <BsEyeSlash />}
+          </motion.button>
+        </motion.div>
 
+        <motion.button // TODO: CHANGE TO A LINK
+          type='button'
+          onClick={() => navigate('/login')}>
+          Already have an account?
+        </motion.button>
+        <motion.input
+          type='submit'
+          value='Register'
+          className={styles.submitButton}
+          whileHover={buttonHover}
+        />
+      </motion.form>
       <motion.h1>OR</motion.h1>
 
-      <motion.div className={styles.textInputContainer}>
-        <motion.input
-          className={styles.textInput}
-          type='phone'
-          placeholder='Phone #'
-          name='phone'
-          onChange={handleChange}
-        />
-      </motion.div>
-
-      <motion.button // TODO: CHANGE TO A LINK
-        type='button'
-        onClick={() => navigate('/login')}>
-        Already have an account?
-      </motion.button>
-      <motion.input
-        type='submit'
-        value='Register'
-        className={styles.submitButton}
-        whileHover={buttonHover}
-      />
-    </motion.form>
+      <PhoneLoginForm />
+    </>
   );
 };

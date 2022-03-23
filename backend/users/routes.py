@@ -21,7 +21,7 @@ def createUser():
             return Message.msg(f'{current_user.username} is currently authenticated'), 200
         userInfo = request.json
         if userInfo.get('phone') is not None:
-            return login_with_phone(userInfo)
+            return login_with_phone(userInfo.get('phone'))
         elif userInfo.get('email') is not None and userInfo.get('password') is not None:
             return register_with_email_and_password(userInfo)
         else:
