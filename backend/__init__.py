@@ -27,7 +27,7 @@ s3 = boto3.client("s3", aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID"),
 account_sid = os.environ['TWILIO_ACCOUNT_SID']
 auth_token = os.environ['TWILIO_AUTH_TOKEN']
 verify_sid = os.environ['TWILIO_VERIFY_SERVICE_SID']
-verify_service = Client(account_sid, auth_token).services(verify_sid)
+verify_service = Client(account_sid, auth_token).verify.services(verify_sid)
 
 
 def create_app(config_class=Config):
