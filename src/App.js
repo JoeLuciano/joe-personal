@@ -35,6 +35,8 @@ function App() {
       has_files,
       is_image,
     }) => {
+      console.groupCollapsed(`${type} Request - ${url}`);
+
       let requestOptions = {};
       if (has_files) {
         requestOptions = {
@@ -51,6 +53,7 @@ function App() {
           ...(payload && { body: JSON.stringify(payload) }),
         };
       }
+      console.info(requestOptions);
       const response = await fetch(url, requestOptions)
         .then(async (response) => {
           // HANDLE RATE LIMITS
@@ -62,7 +65,6 @@ function App() {
           if (is_image) {
             const imageBlob = await response.blob();
             const imageObjectURL = URL.createObjectURL(imageBlob);
-            console.groupCollapsed(`${type} Request - ${url}`);
             console.info(imageObjectURL);
             console.groupEnd(`${type} Request - ${url}`);
             return { ok: true, result: imageObjectURL };
@@ -70,7 +72,6 @@ function App() {
 
           const data = await response.json();
 
-          console.groupCollapsed(`${type} Request - ${url}`);
           if (!response.ok) {
             return handleFetchError(url, data, response);
           } else {

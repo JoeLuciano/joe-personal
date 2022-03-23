@@ -58,7 +58,6 @@ export const RegisterForm = () => {
           placeholder='E-mail'
           name='email'
           onChange={handleChange}
-          required
         />
       </motion.div>
       <motion.div className={styles.textInputContainer}>
@@ -68,7 +67,6 @@ export const RegisterForm = () => {
           placeholder='Password'
           name='password'
           onChange={handleChange}
-          required
         />
         <motion.button
           className={styles.passwordButton}
@@ -85,7 +83,6 @@ export const RegisterForm = () => {
           placeholder='Secret Code'
           name='secretCode'
           onChange={handleChange}
-          required
         />
         <motion.button
           className={styles.passwordButton}
@@ -95,6 +92,19 @@ export const RegisterForm = () => {
           {showPassword ? <BsEye /> : <BsEyeSlash />}
         </motion.button>
       </motion.div>
+
+      <motion.h1>OR</motion.h1>
+
+      <motion.div className={styles.textInputContainer}>
+        <motion.input
+          className={styles.textInput}
+          type='phone'
+          placeholder='Phone #'
+          name='phone'
+          onChange={handleChange}
+        />
+      </motion.div>
+
       <motion.button // TODO: CHANGE TO A LINK
         type='button'
         onClick={() => navigate('/login')}>
