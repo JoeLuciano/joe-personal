@@ -32,7 +32,6 @@ def createUser():
 
 
 def login_with_phone(phone):
-    print(phone)
     verify_service.verifications.create(to=phone, channel='sms')
     return Message.msg("A verification code has been sent")
 

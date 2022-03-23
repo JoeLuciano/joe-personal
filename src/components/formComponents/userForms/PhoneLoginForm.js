@@ -37,12 +37,7 @@ export const PhoneLoginForm = () => {
         payload: userInfo,
       });
       if (response.ok) {
-        console.log(response.result);
-        if (response.result === 'A verification code has been sent') {
-          setDisplayCodeEntry(true);
-        } else {
-          console.log('VERIFICATION CODE WAS NOT SENT');
-        }
+        setDisplayCodeEntry(true);
       } else {
         setUser(undefined);
       }
@@ -85,33 +80,35 @@ export const PhoneLoginForm = () => {
 
         <motion.input
           type='submit'
-          value='Log in'
+          value='Get Code'
           className={styles.submitButton}
           whileHover={buttonHover}
         />
       </motion.form>
 
       {displayCodeEntry && (
-        <motion.form onSubmit={handleCodeSubmit} className={styles.form}>
-          <motion.h1 className={styles.header}>Login with Phone #</motion.h1>
+        <motion.div className={styles.codeModal}>
+          <motion.form onSubmit={handleCodeSubmit} className={styles.form}>
+            <motion.h1 className={styles.header}>Enter Code</motion.h1>
 
-          <motion.div className={styles.textInputContainer}>
+            <motion.div className={styles.textInputContainer}>
+              <motion.input
+                className={styles.textInput}
+                type='code'
+                placeholder='6-Digit Code'
+                name='code'
+                onChange={handleChange}
+              />
+            </motion.div>
+
             <motion.input
-              className={styles.textInput}
-              type='phone'
-              placeholder='Phone #'
-              name='phone'
-              onChange={handleChange}
+              type='submit'
+              value='Login'
+              className={styles.submitButton}
+              whileHover={buttonHover}
             />
-          </motion.div>
-
-          <motion.input
-            type='submit'
-            value='Log in'
-            className={styles.submitButton}
-            whileHover={buttonHover}
-          />
-        </motion.form>
+          </motion.form>
+        </motion.div>
       )}
     </>
   );
