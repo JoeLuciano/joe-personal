@@ -13,14 +13,14 @@ users = Blueprint('users', __name__)
 
 
 @users.route('/api/register', methods=['POST'])
-@limiter.limit("1 per day")
+@limiter.limit("10 per day")
 @cross_origin()
 def createUser():
     try:
         if current_user.is_authenticated:
             return Message.msg(f'{current_user.username} is currently authenticated'), 200
         userInfo = request.json
-        if userInfo.get('phone') is not None:
+        if hasattr(userInfo, 'phone') and userInfo.get('phone') is not None:
             return login_with_phone(userInfo)
         elif userInfo.get('email') is not None and userInfo.get('password') is not None:
             return register_with_email_and_password(userInfo)
@@ -129,7 +129,7 @@ def logout():
 
 
 @users.route('/api/user', methods=['GET'])
-@limiter.limit("10 per second")
+@limiter.exempt
 @cross_origin()
 def getUser():
     try:
