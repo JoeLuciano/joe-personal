@@ -57,3 +57,15 @@ class User(db.Model, UserMixin):
             'email': self.email,
             'image_file': self.image_file
         }
+
+
+class TweedleScores(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    phone = db.Column(db.String(20), unique=True, nullable=True)
+    wins = db.Column(db.Integer, default=0)
+    one_attempt_wins = db.Column(db.Integer, default=0)
+    two_attempt_wins = db.Column(db.Integer, default=0)
+    three_attempt_wins = db.Column(db.Integer, default=0)
+    four_attempt_wins = db.Column(db.Integer, default=0)
+    five_attempt_wins = db.Column(db.Integer, default=0)
+    six_attempt_wins = db.Column(db.Integer, default=0)
