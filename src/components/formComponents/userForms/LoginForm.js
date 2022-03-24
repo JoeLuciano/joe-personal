@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import styles from './Form.module.css';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 import { UserContext, SmartFetchContext } from 'contexts/GlobalContexts';
+import { PhoneLoginForm } from './PhoneLoginForm';
 
 const buttonHover = {
   color: 'rgba(0, 0, 0)',
@@ -48,54 +49,59 @@ export const LoginForm = () => {
   );
 
   return (
-    <motion.form onSubmit={handleSubmit} className={styles.form}>
-      <motion.h1 className={styles.header}>Log in</motion.h1>
-      <motion.div className={styles.textInputContainer}>
+    <>
+      <motion.form onSubmit={handleSubmit} className={styles.form}>
+        <motion.h1 className={styles.header}>Log in</motion.h1>
+        <motion.div className={styles.textInputContainer}>
+          <motion.input
+            className={styles.textInput}
+            placeholder='E-mail'
+            type='email'
+            name='email'
+            onChange={handleChange}
+            required
+          />
+        </motion.div>
+        <motion.div className={styles.textInputContainer}>
+          <motion.input
+            className={styles.textInput}
+            placeholder='Password'
+            type={showPassword ? 'text' : 'password'}
+            name='password'
+            onChange={handleChange}
+            required
+          />
+          <motion.button
+            className={styles.passwordButton}
+            type='button'
+            onClick={() => setShowPassword((previous) => !previous)}
+            whileHover={buttonHover}>
+            {showPassword ? <BsEye /> : <BsEyeSlash />}
+          </motion.button>
+        </motion.div>
+        <motion.label className={styles.checkboxLabel}>
+          Stay logged in?
+          <motion.input
+            name='remember'
+            type='checkbox'
+            onChange={handleChange}
+            className={styles.checkbox}
+          />
+        </motion.label>
         <motion.input
-          className={styles.textInput}
-          placeholder='E-mail'
-          type='email'
-          name='email'
-          onChange={handleChange}
-          required
+          type='submit'
+          value='Log in'
+          className={styles.submitButton}
+          whileHover={buttonHover}
         />
-      </motion.div>
-      <motion.div className={styles.textInputContainer}>
-        <motion.input
-          className={styles.textInput}
-          placeholder='Password'
-          type={showPassword ? 'text' : 'password'}
-          name='password'
-          onChange={handleChange}
-          required
-        />
-        <motion.button
-          className={styles.passwordButton}
-          type='button'
-          onClick={() => setShowPassword((previous) => !previous)}
-          whileHover={buttonHover}>
-          {showPassword ? <BsEye /> : <BsEyeSlash />}
+        <motion.button // TODO: CHANGE TO A LINK
+          type='button'>
+          Forgot password? (Unimplemented)
         </motion.button>
-      </motion.div>
-      <motion.label className={styles.checkboxLabel}>
-        Stay logged in?
-        <motion.input
-          name='remember'
-          type='checkbox'
-          onChange={handleChange}
-          className={styles.checkbox}
-        />
-      </motion.label>
-      <motion.input
-        type='submit'
-        value='Log in'
-        className={styles.submitButton}
-        whileHover={buttonHover}
-      />
-      <motion.button // TODO: CHANGE TO A LINK
-        type='button'>
-        Forgot password? (Unimplemented)
-      </motion.button>
-    </motion.form>
+      </motion.form>
+      <motion.h1>OR</motion.h1>
+
+      <PhoneLoginForm />
+    </>
   );
 };

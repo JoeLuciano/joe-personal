@@ -4,6 +4,7 @@ import { OrbitControls } from '@react-three/drei';
 import { Vector3 } from 'three';
 import WordleRow from './WordleRow';
 import Info from './Info';
+import AccountStats from './AccountStats';
 import * as THREE from 'three';
 import './Tweedle.css';
 import { SmartFetchContext } from 'contexts/GlobalContexts';
@@ -161,7 +162,7 @@ export const Tweedle = () => {
   return (
     <>
       <Info gameState={gameState} />
-
+      {gameState === 'won' && <AccountStats />}
       <div className='react-container'>
         <React.Suspense fallback={null}>
           <Canvas

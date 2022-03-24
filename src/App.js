@@ -95,7 +95,7 @@ function App() {
       console.groupEnd(`${type} Request - ${url}`);
       return response;
     },
-    [flash]
+    [flash, navigate]
   );
 
   useEffect(() => {

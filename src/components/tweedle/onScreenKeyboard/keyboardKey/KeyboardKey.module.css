@@ -1,3 +1,11 @@
+:root {
+  --key-white: rgb(240, 240, 240);
+  --key-gray: rgb(110, 110, 110);
+  --key-green: rgb(14, 165, 0);
+  --key-yellow: rgb(255, 238, 0);
+  --key-red: rgb(255, 24, 24);
+}
+
 .keyboardButton {
   margin: 0.2rem;
   height: 3rem;

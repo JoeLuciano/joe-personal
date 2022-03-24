@@ -5,20 +5,20 @@ import { HandleOnScreenKeyboardChangeContext } from 'contexts/TweedleContexts';
 
 const guessVariants = {
   match: {
-    backgroundColor: 'green',
+    backgroundColor: 'var(--key-green)',
     scale: 1.1,
   },
   close: {
-    backgroundColor: 'yellow',
+    backgroundColor: 'var(--key-yellow)',
     scale: 1,
   },
-  miss: { backgroundColor: 'red', scale: 0.7 },
+  miss: { backgroundColor: 'var(--key-red)', scale: 0.7 },
   notInGuess: {
-    backgroundColor: 'white',
+    backgroundColor: 'var(--key-white)',
     scale: 1,
   },
   inGuess: {
-    backgroundColor: 'grey',
+    backgroundColor: 'var(--key-gray)',
     scale: 0.9,
   },
 };
