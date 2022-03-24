@@ -5,7 +5,7 @@ import { GuessesContext } from 'contexts/TweedleContexts';
 import { KeyboardKey } from './keyboardKey/KeyboardKey';
 
 const KeyboardRow = ({ keys }) => {
-  const { guesses, currentGuess, matchingLetters } = useContext(GuessesContext);
+  const { currentGuess, matchingLetters } = useContext(GuessesContext);
 
   return (
     <motion.div className={styles.keyboardRow}>
