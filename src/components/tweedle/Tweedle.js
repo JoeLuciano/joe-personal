@@ -36,8 +36,8 @@ export const Tweedle = () => {
   const [guessCount, setGuessCount] = useState(0);
   const [gameState, setGameState] = useState('playing');
   const [showAccountStats, setShowAccountStats] = useState(true);
-  const [updatingFromPreviousSession, setUpdatingFromPreviousSession] =
-    useState(true);
+  const [updatingGuess, setUpdatingGuess] = useState(true);
+  const [animatingBlocks, setAnimatingBlocks] = useState(true);
 
   const smartFetch = useContext(SmartFetchContext);
 
@@ -66,9 +66,6 @@ export const Tweedle = () => {
     } else {
       setGuessCount((prev) => prev + 1);
       await delay(2200);
-      if (!updatingFromPreviousSession) {
-        setAllowInput(true);
-      }
     }
   }, []);
 
@@ -108,35 +105,44 @@ export const Tweedle = () => {
     [allowInput, submitGuess]
   );
 
-  const updateCurrentGuess = useCallback(() => {
-    if (guessCount < 6) {
-      setGuessObjects((prev) => {
-        return {
-          ...prev,
-          [guessCount]: (
-            <WordleRow
-              id={`GUESSCOUNT${guessCount}`}
-              key={guessCount}
-              positionY={0}
-              currentGuess={currentGuess}
-              matchingLetters={matchingLetters}
-              fontSize={fontSize}
-            />
-          ),
-        };
-      });
-
-      if (currentGuess.length === 5 && !updatingFromPreviousSession) {
-        setAllowSubmit(true);
-      } else {
-        setAllowSubmit(false);
-      }
-    }
-  }, [currentGuess, guessCount, matchingLetters, updatingFromPreviousSession]);
-
   useEffect(() => {
+    const updateCurrentGuess = () => {
+      if (guessCount < 6) {
+        setGuessObjects((prev) => {
+          return {
+            ...prev,
+            [guessCount]: (
+              <WordleRow
+                id={`GUESSCOUNT${guessCount}`}
+                key={guessCount}
+                positionY={0}
+                currentGuess={currentGuess}
+                matchingLetters={matchingLetters}
+                fontSize={fontSize}
+              />
+            ),
+          };
+        });
+
+        if (currentGuess.length === 5 && !updatingGuess && !animatingBlocks) {
+          setAllowSubmit(true);
+        } else {
+          if (!updatingGuess && !animatingBlocks) {
+            setAllowInput(true);
+          }
+          setAllowSubmit(false);
+        }
+      }
+    };
+
     updateCurrentGuess();
-  }, [updateCurrentGuess]);
+  }, [
+    currentGuess,
+    guessCount,
+    matchingLetters,
+    updatingGuess,
+    animatingBlocks,
+  ]);
 
   const updateGameFromPreviousSession = useCallback(
     async (words) => {
@@ -166,7 +172,7 @@ export const Tweedle = () => {
         setGuesses(sessionGuesses);
       }
       await delay(400);
-      setUpdatingFromPreviousSession(false);
+      setUpdatingGuess(false);
       setAllowInput(true);
     }
     loadPreviousSession();
@@ -208,12 +214,18 @@ export const Tweedle = () => {
       });
     }
 
-    if (guessCount === 6) {
-      setAllowInput(false);
-      setGameState('lost');
-    } else {
-      addNewRow();
+    async function handleGuessCountChange() {
+      if (guessCount === 6) {
+        setAllowInput(false);
+        setGameState('lost');
+      } else {
+        setAnimatingBlocks(true);
+        addNewRow();
+        await delay(2200);
+        setAnimatingBlocks(false);
+      }
     }
+    handleGuessCountChange();
   }, [guessCount]);
 
   const cameraPosition = new Vector3(0, 0, 6);
