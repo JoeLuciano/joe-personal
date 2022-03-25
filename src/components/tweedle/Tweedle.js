@@ -13,14 +13,9 @@ import {
   GuessesContext,
   HandleOnScreenKeyboardChangeContext,
 } from 'contexts/TweedleContexts';
+import { AnimatePresence } from 'framer-motion';
 
-function delay(delayInms) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(2);
-    }, delayInms);
-  });
-}
+const fontSize = 0.5;
 
 const getTodayDate = () => {
   var today = new Date();
@@ -32,161 +27,194 @@ const getTodayDate = () => {
 };
 
 export const Tweedle = () => {
+  const [guesses, setGuesses] = useState(Array);
   const [guessObjects, setGuessObjects] = useState(null);
-
-  // useEffect(() => {
-  //   const todaysGuess = JSON.parse(window.localStorage.getItem(getTodayDate()));
-  //   if (guesses !== todaysGuess) {
-  //     setGuesses(todaysGuess);
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   const todaysGuess = JSON.parse(window.localStorage.getItem(getTodayDate()));
-  //   if (guesses !== todaysGuess) {
-  //     window.localStorage.setItem(getTodayDate(), JSON.stringify(guesses));
-  //   }
-  // }, [guesses]);
-
   const [allowInput, setAllowInput] = useState(false);
   const [allowSubmit, setAllowSubmit] = useState(false);
   const [currentGuess, setCurrentGuess] = useState('');
   const [matchingLetters, setMatchingLetters] = useState(Array(5).fill('none'));
   const [guessCount, setGuessCount] = useState(0);
-  const [gameState, setGameState] = useState('starting');
+  const [gameState, setGameState] = useState('playing');
+  const [showAccountStats, setShowAccountStats] = useState(true);
+  const [updatingFromPreviousSession, setUpdatingFromPreviousSession] =
+    useState(true);
 
   const smartFetch = useContext(SmartFetchContext);
-
-  const fontSize = 0.5;
 
   function delay(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
   }
 
-  useEffect(() => {
-    async function delayStart() {
-      await delay(2400);
-      setAllowInput(true);
+  const updateMatches = useCallback(async (guess, result) => {
+    const setMatches = (index) => (prev) => {
+      let currentResult = [...prev];
+      currentResult.splice(index, 1, result[index]);
+      return currentResult;
+    };
+    for (var index = 0; index < guess.length; index++) {
+      setMatchingLetters(setMatches(index));
+      await delay(300);
     }
-    delayStart();
+
+    await delay(200);
   }, []);
+
+  const updateGameState = useCallback(async (result) => {
+    if (result.every((element) => element === 'match')) {
+      setGameState('won');
+      setAllowInput(false);
+    } else {
+      setGuessCount((prev) => prev + 1);
+      await delay(2200);
+      if (!updatingFromPreviousSession) {
+        setAllowInput(true);
+      }
+    }
+  }, []);
+
+  const getGuessResult = useCallback(
+    async (guess) => {
+      return smartFetch({
+        url: '/api/tweedle',
+        type: 'POST',
+        payload: guess,
+      });
+    },
+    [smartFetch]
+  );
+
+  const submitGuess = useCallback(
+    async (guess) => {
+      const guessResult = await getGuessResult(guess);
+      if (guessResult.ok) {
+        await updateMatches(guess, guessResult.result);
+        await updateGameState(guessResult.result);
+      } else {
+        setAllowInput(true);
+      }
+    },
+    [updateMatches, getGuessResult, updateGameState]
+  );
 
   const handleSubmit = useCallback(
     async (guess) => {
       if (allowInput) {
-        setGameState('playing');
-        setAllowSubmit(false);
+        setGuesses((prev) => [...prev, guess]);
         setAllowInput(false);
-
-        const guessResult = await smartFetch({
-          url: '/api/tweedle',
-          type: 'POST',
-          payload: guess,
-        });
-
-        if (guessResult.ok) {
-          const setMatches = (index) => (prev) => {
-            let currentResult = [...prev];
-            currentResult.splice(index, 1, guessResult.result[index]);
-            return currentResult;
-          };
-          for (var index = 0; index < guess.length; index++) {
-            setMatchingLetters(setMatches(index));
-            await delay(300);
-          }
-          await delay(200);
-          if (guessResult.result.every((element) => element === 'match')) {
-            setGameState('won');
-          } else if (guessCount === 5) {
-            setGameState('lost');
-          } else {
-            setGuessCount((prev) => prev + 1);
-            await delay(2400);
-            setAllowInput(true);
-          }
-        } else {
-          setAllowInput(true);
-        }
+        setAllowSubmit(false);
+        await submitGuess(guess);
       }
     },
-    [smartFetch, allowInput, guessCount]
+    [allowInput, submitGuess]
   );
 
   const updateCurrentGuess = useCallback(() => {
-    setGuessObjects((prev) => {
-      return {
-        ...prev,
-        [guessCount]: (
-          <WordleRow
-            id={`GUESSCOUNT${guessCount}`}
-            key={guessCount}
-            positionY={0}
-            currentGuess={currentGuess}
-            matchingLetters={matchingLetters}
-            fontSize={fontSize}
-          />
-        ),
-      };
-    });
+    if (guessCount < 6) {
+      setGuessObjects((prev) => {
+        return {
+          ...prev,
+          [guessCount]: (
+            <WordleRow
+              id={`GUESSCOUNT${guessCount}`}
+              key={guessCount}
+              positionY={0}
+              currentGuess={currentGuess}
+              matchingLetters={matchingLetters}
+              fontSize={fontSize}
+            />
+          ),
+        };
+      });
 
-    if (currentGuess.length === 5) {
-      setAllowSubmit(true);
-    } else {
-      setAllowSubmit(false);
+      if (currentGuess.length === 5 && !updatingFromPreviousSession) {
+        setAllowSubmit(true);
+      } else {
+        setAllowSubmit(false);
+      }
     }
-  }, [currentGuess, guessCount, matchingLetters]);
+  }, [currentGuess, guessCount, matchingLetters, updatingFromPreviousSession]);
 
   useEffect(() => {
     updateCurrentGuess();
   }, [updateCurrentGuess]);
 
-  const addNewRow = useCallback(() => {
-    setGuessObjects((prev) => {
-      setCurrentGuess('');
-      setMatchingLetters(Array(5).fill('none'));
-
-      let shiftedRows = [];
-      if (prev) {
-        for (const rowNum in prev) {
-          const row = prev[rowNum];
-          const shiftedRow = React.cloneElement(row, {
-            positionY: row.props.positionY + fontSize * 1.2,
-          });
-          shiftedRows.push(shiftedRow);
+  const updateGameFromPreviousSession = useCallback(
+    async (words) => {
+      for (var wordIndex = 0; wordIndex < words.length; wordIndex++) {
+        const word = words[wordIndex];
+        for (var i = 0; i < word.length; i++) {
+          addLetterToGuess(word.charAt(i));
         }
-      }
 
-      return {
-        ...shiftedRows,
-        [guessCount]: (
-          <WordleRow
-            key={guessCount}
-            positionY={0}
-            currentGuess={[]}
-            matchingLetters={[]}
-            fontSize={fontSize}
-          />
-        ),
-      };
-    });
-  }, [guessCount]);
+        const guessResult = await getGuessResult(word);
+        await delay(100);
+        await updateMatches(word, guessResult.result);
+        await updateGameState(guessResult.result);
+      }
+    },
+    [updateMatches, getGuessResult, updateGameState]
+  );
 
   useEffect(() => {
-    addNewRow();
-  }, [addNewRow]);
+    async function loadPreviousSession() {
+      const sessionGuesses = JSON.parse(
+        window.localStorage.getItem(getTodayDate())
+      );
+      await delay(1800);
+      if (sessionGuesses && sessionGuesses.length !== 0) {
+        await updateGameFromPreviousSession(sessionGuesses);
+        setGuesses(sessionGuesses);
+      }
+      await delay(400);
+      setUpdatingFromPreviousSession(false);
+      setAllowInput(true);
+    }
+    loadPreviousSession();
+  }, [updateGameFromPreviousSession]);
 
-  // const updateGameFromPreviousSession = useCallback(
-  //   async (word) => {
-  //     setCurrentGuess(word);
-  //     await delay(300);
-  //     handleSubmit(word);
-  //   },
-  //   [handleSubmit]
-  // );
+  useEffect(() => {
+    window.localStorage.setItem(getTodayDate(), JSON.stringify(guesses));
+  }, [guesses]);
 
-  // useEffect(() => {
-  //   updateGameFromPreviousSession('PANTS');
-  // }, [updateGameFromPreviousSession]);
+  useEffect(() => {
+    function addNewRow() {
+      setGuessObjects((prev) => {
+        setCurrentGuess('');
+        setMatchingLetters(Array(5).fill('none'));
+
+        let shiftedRows = [];
+        if (prev) {
+          for (const rowNum in prev) {
+            const row = prev[rowNum];
+            const shiftedRow = React.cloneElement(row, {
+              positionY: row.props.positionY + fontSize * 1.2,
+            });
+            shiftedRows.push(shiftedRow);
+          }
+        }
+
+        return {
+          ...shiftedRows,
+          [guessCount]: (
+            <WordleRow
+              key={guessCount}
+              positionY={0}
+              currentGuess={[]}
+              matchingLetters={[]}
+              fontSize={fontSize}
+            />
+          ),
+        };
+      });
+    }
+
+    if (guessCount === 6) {
+      setAllowInput(false);
+      setGameState('lost');
+    } else {
+      addNewRow();
+    }
+  }, [guessCount]);
 
   const cameraPosition = new Vector3(0, 0, 6);
   const lookAtPos = new Vector3(0, 1, 0);
@@ -208,15 +236,23 @@ export const Tweedle = () => {
         allowSubmit && handleSubmit(currentGuess);
       } else if (currentGuess.length < 5 && key.length === 1) {
         const alpha_chars_only = key.replace(/[^a-zA-Z]/gi, '');
-        setCurrentGuess((prev) => prev.concat(alpha_chars_only.toUpperCase()));
+        addLetterToGuess(alpha_chars_only);
       }
     }
+  }
+
+  function addLetterToGuess(letter) {
+    setCurrentGuess((prev) => prev.concat(letter.toUpperCase()));
   }
 
   return (
     <>
       <Info gameState={gameState} />
-      {gameState === 'won' && <AccountStats />}
+      <AnimatePresence>
+        {gameState === 'won' && showAccountStats && (
+          <AccountStats setShowAccountStats={setShowAccountStats} />
+        )}
+      </AnimatePresence>
       <div className='react-container'>
         <React.Suspense fallback={null}>
           <Canvas
