@@ -30,14 +30,11 @@ export const Tweedle = () => {
   const [guesses, setGuesses] = useState(Array);
   const [guessObjects, setGuessObjects] = useState(null);
   const [allowInput, setAllowInput] = useState(false);
-  const [allowSubmit, setAllowSubmit] = useState(false);
   const [currentGuess, setCurrentGuess] = useState('');
   const [matchingLetters, setMatchingLetters] = useState(Array(5).fill('none'));
   const [guessCount, setGuessCount] = useState(0);
   const [gameState, setGameState] = useState('playing');
   const [showAccountStats, setShowAccountStats] = useState(true);
-  const [updatingGuess, setUpdatingGuess] = useState(true);
-  const [animatingBlocks, setAnimatingBlocks] = useState(true);
 
   const smartFetch = useContext(SmartFetchContext);
 
@@ -46,28 +43,31 @@ export const Tweedle = () => {
   }
 
   const updateMatches = useCallback(async (guess, result) => {
-    const setMatches = (index) => (prev) => {
+    const getMatchForLetter = (index) => (prev) => {
       let currentResult = [...prev];
       currentResult.splice(index, 1, result[index]);
       return currentResult;
     };
     for (var index = 0; index < guess.length; index++) {
-      setMatchingLetters(setMatches(index));
+      setMatchingLetters(getMatchForLetter(index));
       await delay(300);
     }
 
     await delay(200);
   }, []);
 
-  const updateGameState = useCallback(async (result) => {
-    if (result.every((element) => element === 'match')) {
-      setGameState('won');
-      setAllowInput(false);
-    } else {
-      setGuessCount((prev) => prev + 1);
-      await delay(2200);
-    }
-  }, []);
+  const updateGame = useCallback(
+    async (guess, result) => {
+      await updateMatches(guess, result);
+      if (result.every((element) => element === 'match')) {
+        setGameState('won');
+      } else {
+        setGuessCount((prev) => prev + 1);
+        await delay(2200);
+      }
+    },
+    [updateMatches]
+  );
 
   const getGuessResult = useCallback(
     async (guess) => {
@@ -84,25 +84,19 @@ export const Tweedle = () => {
     async (guess) => {
       const guessResult = await getGuessResult(guess);
       if (guessResult.ok) {
-        await updateMatches(guess, guessResult.result);
-        await updateGameState(guessResult.result);
-      } else {
-        setAllowInput(true);
+        setGuesses((prev) => [...prev, guess]);
+        await updateGame(guess, guessResult.result);
       }
     },
-    [updateMatches, getGuessResult, updateGameState]
+    [getGuessResult, updateGame]
   );
 
   const handleSubmit = useCallback(
     async (guess) => {
-      if (allowInput) {
-        setGuesses((prev) => [...prev, guess]);
-        setAllowInput(false);
-        setAllowSubmit(false);
-        await submitGuess(guess);
-      }
+      setAllowInput(false);
+      await submitGuess(guess);
     },
-    [allowInput, submitGuess]
+    [submitGuess]
   );
 
   useEffect(() => {
@@ -123,29 +117,14 @@ export const Tweedle = () => {
             ),
           };
         });
-
-        if (currentGuess.length === 5 && !updatingGuess && !animatingBlocks) {
-          setAllowSubmit(true);
-        } else {
-          if (!updatingGuess && !animatingBlocks) {
-            setAllowInput(true);
-          }
-          setAllowSubmit(false);
-        }
       }
     };
 
     updateCurrentGuess();
-  }, [
-    currentGuess,
-    guessCount,
-    matchingLetters,
-    updatingGuess,
-    animatingBlocks,
-  ]);
+  }, [currentGuess, guessCount, matchingLetters]);
 
-  const updateGameFromPreviousSession = useCallback(
-    async (words) => {
+  useEffect(() => {
+    async function updateGameFromPreviousSession(words) {
       for (var wordIndex = 0; wordIndex < words.length; wordIndex++) {
         const word = words[wordIndex];
         for (var i = 0; i < word.length; i++) {
@@ -154,14 +133,10 @@ export const Tweedle = () => {
 
         const guessResult = await getGuessResult(word);
         await delay(100);
-        await updateMatches(word, guessResult.result);
-        await updateGameState(guessResult.result);
+        await updateGame(word, guessResult.result);
       }
-    },
-    [updateMatches, getGuessResult, updateGameState]
-  );
+    }
 
-  useEffect(() => {
     async function loadPreviousSession() {
       const sessionGuesses = JSON.parse(
         window.localStorage.getItem(getTodayDate())
@@ -172,11 +147,12 @@ export const Tweedle = () => {
         setGuesses(sessionGuesses);
       }
       await delay(400);
-      setUpdatingGuess(false);
       setAllowInput(true);
     }
+
     loadPreviousSession();
-  }, [updateGameFromPreviousSession]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     window.localStorage.setItem(getTodayDate(), JSON.stringify(guesses));
@@ -216,15 +192,13 @@ export const Tweedle = () => {
 
     async function handleGuessCountChange() {
       if (guessCount === 6) {
-        setAllowInput(false);
         setGameState('lost');
       } else {
-        setAnimatingBlocks(true);
         addNewRow();
         await delay(2200);
-        setAnimatingBlocks(false);
       }
     }
+
     handleGuessCountChange();
   }, [guessCount]);
 
@@ -241,11 +215,15 @@ export const Tweedle = () => {
   document.onkeydown = (event) => handleOnScreenKeyboardChange(event.key);
 
   async function handleOnScreenKeyboardChange(key) {
-    if (allowInput) {
+    if (allowInput && gameState === 'playing') {
       if (key === '⌫' || key === 'Backspace') {
         setCurrentGuess((prev) => prev.slice(0, -1));
       } else if (key === '⏏' || key === 'Enter') {
-        allowSubmit && handleSubmit(currentGuess);
+        if (currentGuess.length === 5) {
+          setAllowInput(false);
+          await handleSubmit(currentGuess);
+          setAllowInput(true);
+        }
       } else if (currentGuess.length < 5 && key.length === 1) {
         const alpha_chars_only = key.replace(/[^a-zA-Z]/gi, '');
         addLetterToGuess(alpha_chars_only);
