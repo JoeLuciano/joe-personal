@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.91ea9e79.css",
-    "main.js": "/static/js/main.40f25c60.js",
+    "main.js": "/static/js/main.e1dd5cc7.js",
     "static/js/787.5809834d.chunk.js": "/static/js/787.5809834d.chunk.js",
     "static/media/MS Project Report.pdf": "/static/media/MS Project Report.be433cd763f9868e9e9e.pdf",
     "static/media/Virtual Power Plants.pdf": "/static/media/Virtual Power Plants.f3e4c04ab582090d489f.pdf",
@@ -9,11 +9,11 @@
     "static/media/PythonWheel.svg": "/static/media/PythonWheel.83e50671bf8b1268bd0a72eaee2f6551.svg",
     "index.html": "/index.html",
     "main.91ea9e79.css.map": "/static/css/main.91ea9e79.css.map",
-    "main.40f25c60.js.map": "/static/js/main.40f25c60.js.map",
+    "main.e1dd5cc7.js.map": "/static/js/main.e1dd5cc7.js.map",
     "787.5809834d.chunk.js.map": "/static/js/787.5809834d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.91ea9e79.css",
-    "static/js/main.40f25c60.js"
+    "static/js/main.e1dd5cc7.js"
   ]
 }

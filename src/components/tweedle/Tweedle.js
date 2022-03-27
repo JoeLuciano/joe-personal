@@ -10,12 +10,17 @@ import './Tweedle.css';
 import { SmartFetchContext } from 'contexts/GlobalContexts';
 import { OnScreenKeyboard } from './onScreenKeyboard/OnScreenKeyboard';
 import {
+  GuessObjectsContext,
   GuessesContext,
   HandleOnScreenKeyboardChangeContext,
 } from 'contexts/TweedleContexts';
 import { AnimatePresence } from 'framer-motion';
 
 const fontSize = 0.5;
+
+function delay(time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
 
 const getTodayDate = () => {
   var today = new Date();
@@ -27,7 +32,6 @@ const getTodayDate = () => {
 };
 
 export const Tweedle = () => {
-  const [guesses, setGuesses] = useState(Array);
   const [guessObjects, setGuessObjects] = useState(null);
   const [allowInput, setAllowInput] = useState(false);
   const [currentGuess, setCurrentGuess] = useState('');
@@ -37,10 +41,6 @@ export const Tweedle = () => {
   const [showAccountStats, setShowAccountStats] = useState(true);
 
   const smartFetch = useContext(SmartFetchContext);
-
-  function delay(time) {
-    return new Promise((resolve) => setTimeout(resolve, time));
-  }
 
   const updateMatches = useCallback(async (guess, result) => {
     const getMatchForLetter = (index) => (prev) => {
@@ -63,6 +63,8 @@ export const Tweedle = () => {
         setGameState('won');
       } else {
         setGuessCount((prev) => prev + 1);
+        setCurrentGuess('');
+        setMatchingLetters(Array(5).fill('none'));
         await delay(2200);
       }
     },
@@ -80,48 +82,45 @@ export const Tweedle = () => {
     [smartFetch]
   );
 
-  const submitGuess = useCallback(
+  const handleSubmit = useCallback(
     async (guess) => {
+      setAllowInput(false);
       const guessResult = await getGuessResult(guess);
       if (guessResult.ok) {
-        setGuesses((prev) => [...prev, guess]);
+        updateSessionGuesses([...getSessionGuesses(), guess]);
         await updateGame(guess, guessResult.result);
       }
     },
     [getGuessResult, updateGame]
   );
 
-  const handleSubmit = useCallback(
-    async (guess) => {
-      setAllowInput(false);
-      await submitGuess(guess);
-    },
-    [submitGuess]
-  );
-
   useEffect(() => {
     const updateCurrentGuess = () => {
-      if (guessCount < 6) {
-        setGuessObjects((prev) => {
-          return {
-            ...prev,
-            [guessCount]: (
-              <WordleRow
-                id={`GUESSCOUNT${guessCount}`}
-                key={guessCount}
-                positionY={0}
-                currentGuess={currentGuess}
-                matchingLetters={matchingLetters}
-                fontSize={fontSize}
-              />
-            ),
-          };
-        });
-      }
+      setGuessObjects((prev) => {
+        return {
+          ...prev,
+          [guessCount]: (
+            <WordleRow
+              id={`GUESSCOUNT${guessCount}`}
+              key={guessCount}
+              positionY={guessCount}
+            />
+          ),
+        };
+      });
     };
 
-    updateCurrentGuess();
-  }, [currentGuess, guessCount, matchingLetters]);
+    async function handleGuessCountChange() {
+      if (guessCount === 6) {
+        setGameState('lost');
+      } else {
+        updateCurrentGuess();
+        await delay(2200);
+      }
+    }
+
+    handleGuessCountChange();
+  }, [guessCount]);
 
   useEffect(() => {
     async function updateGameFromPreviousSession(words) {
@@ -138,13 +137,11 @@ export const Tweedle = () => {
     }
 
     async function loadPreviousSession() {
-      const sessionGuesses = JSON.parse(
-        window.localStorage.getItem(getTodayDate())
-      );
       await delay(1800);
+      const sessionGuesses = getSessionGuesses();
       if (sessionGuesses && sessionGuesses.length !== 0) {
         await updateGameFromPreviousSession(sessionGuesses);
-        setGuesses(sessionGuesses);
+        updateSessionGuesses(sessionGuesses);
       }
       await delay(400);
       setAllowInput(true);
@@ -154,53 +151,17 @@ export const Tweedle = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
+  const updateSessionGuesses = (guesses) => {
     window.localStorage.setItem(getTodayDate(), JSON.stringify(guesses));
-  }, [guesses]);
+  };
 
-  useEffect(() => {
-    function addNewRow() {
-      setGuessObjects((prev) => {
-        setCurrentGuess('');
-        setMatchingLetters(Array(5).fill('none'));
-
-        let shiftedRows = [];
-        if (prev) {
-          for (const rowNum in prev) {
-            const row = prev[rowNum];
-            const shiftedRow = React.cloneElement(row, {
-              positionY: row.props.positionY + fontSize * 1.2,
-            });
-            shiftedRows.push(shiftedRow);
-          }
-        }
-
-        return {
-          ...shiftedRows,
-          [guessCount]: (
-            <WordleRow
-              key={guessCount}
-              positionY={0}
-              currentGuess={[]}
-              matchingLetters={[]}
-              fontSize={fontSize}
-            />
-          ),
-        };
-      });
+  const getSessionGuesses = () => {
+    const currentGuesses = window.localStorage.getItem(getTodayDate());
+    if (currentGuesses !== 'undefined') {
+      return JSON.parse(currentGuesses);
     }
-
-    async function handleGuessCountChange() {
-      if (guessCount === 6) {
-        setGameState('lost');
-      } else {
-        addNewRow();
-        await delay(2200);
-      }
-    }
-
-    handleGuessCountChange();
-  }, [guessCount]);
+    return [];
+  };
 
   const cameraPosition = new Vector3(0, 0, 6);
   const lookAtPos = new Vector3(0, 1, 0);
@@ -243,6 +204,7 @@ export const Tweedle = () => {
           <AccountStats setShowAccountStats={setShowAccountStats} />
         )}
       </AnimatePresence>
+
       <div className='react-container'>
         <React.Suspense fallback={null}>
           <Canvas
@@ -253,7 +215,12 @@ export const Tweedle = () => {
             }}>
             <ambientLight intensity={1} />
             <pointLight position={[10, 10, 10]} />
-            {guessObjects && Object.values(guessObjects)}
+            <GuessObjectsContext.Provider value={{ fontSize, guessCount }}>
+              <GuessesContext.Provider
+                value={{ matchingLetters, currentGuess }}>
+                {guessObjects && Object.values(guessObjects)}
+              </GuessesContext.Provider>
+            </GuessObjectsContext.Provider>
             <CameraAdjustment />
             <OrbitControls />
           </Canvas>

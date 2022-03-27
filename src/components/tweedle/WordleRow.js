@@ -1,15 +1,13 @@
 import WordleBox from './WordleBox';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useSpring, a } from '@react-spring/three';
-import { Text } from '@react-three/drei';
+import { GuessObjectsContext, GuessesContext } from 'contexts/TweedleContexts';
 
-export default function WordleRow({
-  positionY,
-  currentGuess,
-  matchingLetters,
-  fontSize,
-}) {
+export default function WordleRow({ positionY }) {
   const [boxScale, setBoxScale] = useState(0);
+
+  const { fontSize, guessCount } = useContext(GuessObjectsContext);
+  const { currentGuess, matchingLetters } = useContext(GuessesContext);
 
   const leftMost = -(2.6 * fontSize);
   const left = -(1.3 * fontSize);
@@ -28,40 +26,51 @@ export default function WordleRow({
   });
 
   const { position } = useSpring({
-    position: [0, positionY, 0],
+    position: [0, (guessCount - positionY) / 1.5, 0],
     config: { duration: 500 },
   });
+
+  const [rowGuess, setRowGuess] = useState([]);
+  const [rowMatches, setRowMatches] = useState([]);
+
+  useEffect(() => {
+    const isCurrentRow = positionY === guessCount;
+    if (isCurrentRow) {
+      setRowGuess(currentGuess);
+      setRowMatches(matchingLetters);
+    }
+  }, [positionY, guessCount, currentGuess, matchingLetters]);
 
   return (
     <a.group rotation={[0, 0, 0]} scale={scale} position={position}>
       <WordleBox
         posX={leftMost}
-        letter={currentGuess[0]}
-        match={matchingLetters[0]}
+        letter={rowGuess[0]}
+        match={rowMatches[0]}
         fontSize={fontSize}
       />
       <WordleBox
         posX={left}
-        letter={currentGuess[1]}
-        match={matchingLetters[1]}
+        letter={rowGuess[1]}
+        match={rowMatches[1]}
         fontSize={fontSize}
       />
       <WordleBox
         posX={middle}
-        letter={currentGuess[2]}
-        match={matchingLetters[2]}
+        letter={rowGuess[2]}
+        match={rowMatches[2]}
         fontSize={fontSize}
       />
       <WordleBox
         posX={right}
-        letter={currentGuess[3]}
-        match={matchingLetters[3]}
+        letter={rowGuess[3]}
+        match={rowMatches[3]}
         fontSize={fontSize}
       />
       <WordleBox
         posX={rightMost}
-        letter={currentGuess[4]}
-        match={matchingLetters[4]}
+        letter={rowGuess[4]}
+        match={rowMatches[4]}
         fontSize={fontSize}
       />
     </a.group>
