@@ -87,7 +87,12 @@ export const Tweedle = () => {
       setAllowInput(false);
       const guessResult = await getGuessResult(guess);
       if (guessResult.ok) {
-        updateSessionGuesses([...getSessionGuesses(), guess]);
+        const sessionGuesses = getSessionGuesses();
+        if (sessionGuesses && sessionGuesses.length !== 0) {
+          updateSessionGuesses([...sessionGuesses, guess]);
+        } else {
+          updateSessionGuesses([guess]);
+        }
         await updateGame(guess, guessResult.result);
       }
     },
